@@ -7,15 +7,11 @@ setwd('/Users/Diego/Desktop/Data/Nicaragua/implementation_nicaragua/DUMPS')
 ############  Reading the data in - simply change the file name to analyze another data
 
 
-ambient <- read.csv('flxbxA2.7.29.2015.sqld_ambient_table.csv')
-inside <- read.csv('flxbxA2.7.29.2015.sqld_inside_table.csv')
-refrigerator <- read.csv('flxbxA2.7.29.2015.sqld_mfi_table.csv')
-switch <- read.csv('flxbxA2.7.29.2015.sqld_switch_table.csv')
-house <- read.csv('flxbxA2.7.29.2015.sqld_zwave_table.csv')
-
-
-
-
+ambient <- read.csv('flxbxA18.7.30.2015.sqld_ambient_table.csv')
+inside <- read.csv('flxbxA18.7.30.2015.sqld_inside_table.csv')
+refrigerator <- read.csv('flxbxA18.7.30.2015.sqld_mfi_table.csv')
+switch <- read.csv('flxbxA18.7.30.2015.sqld_switch_table.csv')
+house <- read.csv('flxbxA18.7.30.2015.sqld_zwave_table.csv')
 
 
 ############  Data preparation
@@ -59,6 +55,7 @@ unique(switch$date)
 unique(house$date)
 unique(refrigerator$date)
 
+
 #Dividing my 1000 to have reasonable values
 inside$temp1 <- inside$fridge_temp1/1000
 inside$temp2 <- inside$fridge_temp2/1000
@@ -79,11 +76,11 @@ par(mfrow=c(5,1),mai=c(0.6,0.6,0.1,0.1))
 
 plot(ambient$time_stamp,ambient$ambient_temp,xlab='Day',ylab='Ambient (C)',cex=0.1)
 
-plot(inside$time_stamp,inside$temp1, xlab='Day',ylab='Inside T1 (C)',cex=0.1)
+plot(inside$time_stamp,inside$temp1, xlab='Day',ylab='Inside T1 (C)',cex=0.1,ylim=c(-10,40))
 par(new=TRUE)
-plot(inside$time_stamp,inside$temp2, xlab='Day',ylab='Inside T2 (C)',cex=0.1, col='red')
+plot(inside$time_stamp,inside$temp2, xlab='Day',ylab='Inside T2 (C)',cex=0.1, col='red',ylim=c(-10,40))
 
-plot(refrigerator$time_stamp,refrigerator$power,xlab='Day',ylab='Fridge (W)',cex=0.2,pch=19)
+plot(refrigerator$time_stamp,refrigerator$power,xlab='Day',ylab='Fridge (W)',cex=0.2,pch=19,ylim=c(0,800))
 lines(refrigerator$time_stamp, refrigerator$power)
 
 plot(switch$time_stamp,switch$open,xlab='Day',ylab='Openings')
@@ -94,38 +91,32 @@ lines(house$time_stamp, house$house_Power)
 
 
 
-
-
 ########### Ploting a one day subset
 
 #Creating a subet of only one day to plot
 
-day_ambient <- subset(ambient,ambient$date == '2015-07-15')
-day_inside <- subset(inside, inside$date == '2015-07-15')
-day_refrigerator <- subset(refrigerator, refrigerator$date == '2015-07-15')
-day_switch <- subset(switch, switch$date == '2015-07-15')
-day_house <- subset(house, house$date == '2015-07-15')
+day_ambient <- subset(ambient,ambient$date == '2015-07-19')
+day_inside <- subset(inside, inside$date == '2015-07-19')
+day_refrigerator <- subset(refrigerator, refrigerator$date == '2015-07-19')
+day_switch <- subset(switch, switch$date == '2015-07-19')
+day_house <- subset(house, house$date == '2015-07-19')
 
 
 par(mfrow=c(5,1),mai=c(0.6,0.6,0.1,0.1))
 
-plot(day_ambient$time_stamp, day_ambient$ambient_temp,xlab='Day',ylab='Ambient (C)',cex=0.1,ylim=c(25,40))
+plot(day_ambient$time_stamp, day_ambient$ambient_temp,xlab='Day',ylab='Ambient (C)',cex=0.1)
 
-plot(day_inside$time_stamp, day_inside$temp1, xlab='Day',ylab='Inside T1 (C)',cex=0.1, ylim=c(-10,20))
+plot(day_inside$time_stamp, day_inside$temp1, xlab='Day',ylab='Inside T1 (C)',cex=0.1,ylim=c(-10,20))
 par(new=TRUE)
-plot(day_inside$time_stamp, day_inside$temp2, xlab='Day',ylab='Inside T2 (C)',cex=0.1,ylim=c(-10,20), col='red')
+plot(day_inside$time_stamp, day_inside$temp2, xlab='Day',ylab='Inside T2 (C)',cex=0.1, col='red',ylim=c(-10,20))
 
-plot(day_refrigerator$time_stamp, day_refrigerator$power,ylim=c(100,180),xlab='Day',ylab='Fridge (W)',cex=0.2,pch=19)
+plot(day_refrigerator$time_stamp, day_refrigerator$power,xlab='Day',ylab='Fridge (W)',cex=0.2,pch=19)
 lines(day_refrigerator$time_stamp, day_refrigerator$power)
 
-plot(day_switch$time_stamp, day_switch$open,ylim=c(0,1),xlab='Day',ylab='Openings')
+plot(day_switch$time_stamp, day_switch$open,xlab='Day',ylab='Openings')
 
-plot(day_house$time_stamp, day_house$house_Power,ylim=c(0,2000),xlab='Day',ylab='House (W)',cex=0.1)
+plot(day_house$time_stamp, day_house$house_Power,xlab='Day',ylab='House (W)',cex=0.1)
 lines(day_house$time_stamp, day_house$house_Power)
-
-
-
-
 
 
 

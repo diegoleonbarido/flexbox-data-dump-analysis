@@ -1,0 +1,10 @@
+library(data.table)#
+library(lubridate)#
+#
+setwd('/Users/Diego/Desktop/Nicaragua/Smart Urban Clusters/Implementation/Data/flxbxA2.7.16.2015')#
+############  Reading the data in - simply change the file name to analyze another data#
+ambient <- read.csv('flxbxA2.7.16.2015.sql_ambient_table.csv')#
+inside <- read.csv('flxbxA2.7.16.2015.sql_inside_table.csv')#
+refrigerator <- read.csv('flxbxA2.7.16.2015.sql_mfi_table.csv')#
+switch <- read.csv('flxbxA2.7.16.2015.sql_switch_table.csv')#
+house <- read.csv('flxbxA2.7.16.2015.sql_zwave_table.csv')

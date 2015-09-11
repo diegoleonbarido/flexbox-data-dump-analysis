@@ -7,15 +7,11 @@ setwd('/Users/Diego/Desktop/Data/Nicaragua/implementation_nicaragua/DUMPS')
 ############  Reading the data in - simply change the file name to analyze another data
 
 
-ambient <- read.csv('flxbxA2.7.29.2015.sqld_ambient_table.csv')
-inside <- read.csv('flxbxA2.7.29.2015.sqld_inside_table.csv')
-refrigerator <- read.csv('flxbxA2.7.29.2015.sqld_mfi_table.csv')
-switch <- read.csv('flxbxA2.7.29.2015.sqld_switch_table.csv')
-house <- read.csv('flxbxA2.7.29.2015.sqld_zwave_table.csv')
-
-
-
-
+ambient <- read.csv('flxbxA3.7.29.2015.sqld_ambient_table.csv')
+inside <- read.csv('flxbxA3.7.29.2015.sqld_inside_table.csv')
+refrigerator <- read.csv('flxbxA3.7.29.2015.sqld_mfi_table.csv')
+switch <- read.csv('flxbxA3.7.29.2015.sqld_switch_table.csv')
+house <- read.csv('flxbxA3.7.29.2015.sqld_zwave_table.csv')
 
 
 ############  Data preparation
@@ -59,6 +55,7 @@ unique(switch$date)
 unique(house$date)
 unique(refrigerator$date)
 
+
 #Dividing my 1000 to have reasonable values
 inside$temp1 <- inside$fridge_temp1/1000
 inside$temp2 <- inside$fridge_temp2/1000
@@ -100,11 +97,11 @@ lines(house$time_stamp, house$house_Power)
 
 #Creating a subet of only one day to plot
 
-day_ambient <- subset(ambient,ambient$date == '2015-07-15')
-day_inside <- subset(inside, inside$date == '2015-07-15')
-day_refrigerator <- subset(refrigerator, refrigerator$date == '2015-07-15')
-day_switch <- subset(switch, switch$date == '2015-07-15')
-day_house <- subset(house, house$date == '2015-07-15')
+day_ambient <- subset(ambient,ambient$date == '2015-07-28')
+day_inside <- subset(inside, inside$date == '2015-07-28')
+day_refrigerator <- subset(refrigerator, refrigerator$date == '2015-07-28')
+day_switch <- subset(switch, switch$date == '2015-07-28')
+day_house <- subset(house, house$date == '2015-07-28')
 
 
 par(mfrow=c(5,1),mai=c(0.6,0.6,0.1,0.1))
@@ -122,10 +119,6 @@ plot(day_switch$time_stamp, day_switch$open,ylim=c(0,1),xlab='Day',ylab='Opening
 
 plot(day_house$time_stamp, day_house$house_Power,ylim=c(0,2000),xlab='Day',ylab='House (W)',cex=0.1)
 lines(day_house$time_stamp, day_house$house_Power)
-
-
-
-
 
 
 
