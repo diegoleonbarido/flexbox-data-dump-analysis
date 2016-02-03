@@ -8,6 +8,7 @@ library(gridExtra)
 library(RColorBrewer)
 library(xtable)
 library(grid)
+library(Hmisc)
 
 #Function libraries
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/date_functions.R')
@@ -15,10 +16,20 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/merging_binding.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/read_data.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/time_series_plots.R')
+source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/cleaning_data_functions.R')
+source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/hourly_plots.R')
 
 
-  
-###############  Reading data
+
+###### NOTE
+# Section 1: Reading data
+# Section 2: Non clean data plots
+# Section 3: Clean data plots
+# Section 4: Daily Plots
+
+
+
+###############  Section 1: Reading data
 ####             Reading data - specify the number of the dump and the flexbox ID
 data_list <- read.data('DUMP1','A1') 
 
@@ -28,7 +39,7 @@ refrigerator <- data_list[[3]]
 switch <- data_list[[4]]
 house <- data_list[[5]]
 
-  
+
 ############  Converting dates and using the date function
 ####          Converts dates
 dates_data_frame <- date.data.frame(ambient,inside,refrigerator,switch,house) 
@@ -48,7 +59,7 @@ print(table.table)
 
 
 ############ Small changes to data
-  
+
 # Dividing my 1000 to have reasonable values
 inside$temp1 <- inside$fridge_temp1/1000
 inside$temp2 <- inside$fridge_temp2/1000
@@ -56,12 +67,12 @@ inside$temp2 <- inside$fridge_temp2/1000
 # Opening and closing for the SWITCH
 switch$value <- ifelse(switch$open=='True',1,0)
 
-  
-############################### NON CLEAN DATA PLOTS 
+
+############################### Section 2: NON CLEAN DATA PLOTS 
 # NOTE: NON Clean data the time series and correlation plots below depict data with gross outliers and poor measurements
 
 ###### Time series plots of the last seven days
-  
+
 time.series.data <- time.series.sevendays(ambient,inside,refrigerator,switch,house)
 
 ambient.plot <- ggplot(time.series.data[[1]],aes(x=time_stamp, y=ambient_temp)) + geom_point(size=1) + ggtitle(expression(paste("Ambient Temperature",degree,"C"))) + xlab('Date') + ylab(expression(paste(degree,"C"))) + theme(plot.title=element_text(size=8),axis.title=element_text(size=8),plot.margin= unit(c(0,1,0,1),units='cm'))
@@ -75,7 +86,7 @@ grid.arrange(ambient.plot,inside.temp.plot,refrigerator.plot,switch.plot,house.p
 ###### Merging and binding data before plotting
 # Note: Returns data frames ready to be plotted. All values are combined with ambient temperature. For example, ambient temperature and power
 # ambient temperature and fridge energy, household energy, etc. 
-  
+
 merged_data_list <- merge.bind(ambient,refrigerator,inside,house,switch) 
 
 ##### Correlation Plots 
@@ -96,7 +107,7 @@ grid.arrange(plot1,plot2,plot3,plot4,ncol=2,nrow=2)
 
 
 
-############################### !! CLEAN DATA PLOTS !!
+############################### Section 3. !! CLEAN DATA PLOTS !!
 # NOTE1: Clean data plots after removing outliers
 # NOTE2: Uses area under curve and not sum to calculate values
 
@@ -112,9 +123,6 @@ switch.plot.clean <- ggplot() + geom_point(data=time.series.data.clean[[4]],aes(
 house.plot.clean <- ggplot() + geom_line(data=time.series.data.clean[[5]],aes(x=time_stamp, y=house_Power),color='black',size=1) + ggtitle(expression(paste("House (W)"))) + xlab('Date') + ylab("W") + theme(plot.title=element_text(size=8),axis.title=element_text(size=8),plot.margin= unit(c(0,1,0,1),units='cm'))
 
 grid.arrange(ambient.plot.clean,inside.temp.plot.clean,refrigerator.plot.clean,switch.plot.clean,house.plot.clean,ncol=1,nrow=5)
-
-
-
 
 ###### Merging and binding data before plotting
 # Note: Returns data frames ready to be plotted. All values are combined with ambient temperature. For example, ambient temperature and power
@@ -132,9 +140,83 @@ plot4 <- ggplot(merged.data.list.clean[[4]],aes(x=average_hr_ambient, y=sum_open
 grid.arrange(plot1,plot2,plot3,plot4,ncol=2,nrow=2)
 
 
-hist(merged.data.list.clean[[3]]$average_hr_hpower)
 
 
+
+
+##################  4. Daily Plots
+
+#Quick data clean based on the 99th percentile and zero values
+
+house_energy_clean <- clean.data.percentile(house) #gets rid of 99th percentile
+house_energy_clean_zero <- clean.data.percentile.zero(house) #gets rid of 99th percentile and zero values
+
+#Creating a data vector with all possible points in the vector
+time.vector.seconds <- time.vector.seconds(house_energy_clean_zero)
+
+#Merging data before proceeding with the analysis
+house_energy_clean_zero$time_stamp <- as.POSIXct(house_energy_clean_zero$time_stamp)
+data.seconds <- merge(time.vector.seconds,house_energy_clean_zero,by=('time_stamp'),all=TRUE) %>% select(time_stamp,id,house_Power,house_Energy) 
+
+###### Second by Second Analysis
+
+#Sensor Analysis: Missing Data
+  #How many zeros did we read from the data that we actually read?
+    num.zeros <- subset(house, house$house_Power == 0) 
+    (length(num.zeros$house_Power)/(length(house$house_Power)))*100 #Percentage of zeros that we read, when we read data
+  #How many missing values do we have after merging with the data vector?
+    data.seconds$house_Power[is.na(data.seconds$house_Power)] <- 0
+    num.zeros.complete <- subset(data.seconds, data.seconds$house_Power == 0) 
+    (length(num.zeros.complete$house_Power)/(length(data.seconds$house_Power))) #Percentage of zeros that we read, when we read data
+    
   
-  
+
+#Overlayed second plots
+second.analysis <- second.plotting(data.seconds) 
+#Adding Zeros so we can plot the data
+second.analysis$house_Power[is.na(second.analysis$house_Power)] <- 0
+ggplot(data=second.analysis,aes(id,house_Power)) + geom_point(alpha=0.05,colour='blue') + labs(title="Daily Energy Consumption") + ylab("Power (KW)") + xlab("Minute") 
+
+#Second-By-Second Plots Below 1
+second.analysis.one <- subset(second.analysis,second.analysis$house_Power<1)
+ggplot(data=second.analysis.one,aes(id,house_Power)) + geom_point(alpha=0.05,colour='blue') + labs(title="Daily Energy Consumption") + ylab("Power (KW)") + xlab("Minute") 
+
+
+
+
+#Hourly Plots
+hour.analysis <- hourly.plotting(data.seconds)
+ggplot(data=hour.analysis,aes(hour,house_Power)) + geom_point(alpha=0.01,colour='blue') + labs(title="Daily Energy Consumption") + ylab("Power (KW)") + xlab("Hour") 
+
+    #Hourly Plots Below 1
+    hour.analysis.one <- subset(hour.analysis,data$house_Power<1)
+    ggplot(data=hour.analysis.one,aes(hour,house_Power)) + geom_point(alpha=0.01,colour='blue') + labs(title="Daily Energy Consumption") + ylab("Power (KW)") + xlab("Hour") 
+
+
+
+
+
+
+###############
+#Just one day
+one_day <- subset(house_energy_clean_zero, house_energy_clean_zero$date == '2015-08-02' & house_energy_clean_zero$house_Power < 1000)
+
+
+plot(1:length(one_day$house_Power),one_day$house_Power)
+trapz(as.numeric(just_vals$id),as.numeric(just_vals$house_Power))
+
+plot(1:length(just_vals$house_Power),just_vals$house_Power)
+
+sum(just_vals$house_Power,na.rm=TRUE)
+
+caca <- subset(one_day,one_day$house_Power != 0)
+plot(1:length(caca$house_Power),caca$house_Power)
+
+caca$second_lag <- lag(as.integer(caca$second), -1, na.pad = TRUE)
+################
+
+
+
+
+
 

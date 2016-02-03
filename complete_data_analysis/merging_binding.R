@@ -54,7 +54,7 @@ mean_inside_vars <- mean_inside %>% mutate(average_hr_inside = x,hour=Group.1) %
 mean_ambient_p <- aggregate(some_vars_ambient_power$ambient_temp,list(some_vars_ambient_power$hour,some_vars_ambient_power$day,some_vars_ambient_power$month),FUN=mean)
 mean_ambient_vars_p <- mean_ambient_p %>% mutate(average_hr_ambient = x,hour=Group.1) %>% select(hour,average_hr_ambient) 
 
-mean_power <-  aggregate(some_vars_ambient_power$active_pwr3,list(some_vars_ambient_power$hour,some_vars_ambient_power$day,some_vars_ambient_power$month),FUN=sum)
+mean_power <-  aggregate(some_vars_ambient_power$active_pwr3,list(some_vars_ambient_power$hour,some_vars_ambient_power$day,some_vars_ambient_power$month),FUN=mean)
 mean_power_vars <- mean_power %>% mutate(average_hr_power = x,hour=Group.1) %>% select(hour,average_hr_power) 
 
 
@@ -62,11 +62,11 @@ mean_power_vars <- mean_power %>% mutate(average_hr_power = x,hour=Group.1) %>% 
 mean_ambient_hp <- aggregate(some_vars_ambient_housepower$ambient_temp,list(some_vars_ambient_housepower$hour,some_vars_ambient_housepower$day,some_vars_ambient_housepower$month),FUN=mean)
 mean_ambient_vars_hp <- mean_ambient_hp %>% mutate(average_hr_ambient = x,hour=Group.1) %>% select(hour,average_hr_ambient) 
 
-mean_hpower <-  aggregate(some_vars_ambient_housepower$house_Power,list(some_vars_ambient_housepower$hour,some_vars_ambient_housepower$day,some_vars_ambient_housepower$month),FUN=sum)
+mean_hpower <-  aggregate(some_vars_ambient_housepower$house_Power,list(some_vars_ambient_housepower$hour,some_vars_ambient_housepower$day,some_vars_ambient_housepower$month),FUN=mean)
 mean_hpower_vars <- mean_hpower %>% mutate(average_hr_hpower = x,hour=Group.1) %>% select(hour,average_hr_hpower) 
 
 
-#Ambient and House Power   some_vars_ambient_switch
+#Ambient and switch
 mean_ambient_switch <- aggregate(some_vars_ambient_switch$ambient_temp,list(some_vars_ambient_switch$hour,some_vars_ambient_switch$day,some_vars_ambient_switch$month),FUN=mean)
 mean_ambient_vars_switch <- mean_ambient_switch %>% mutate(average_hr_ambient = x,hour=Group.1) %>% select(hour,average_hr_ambient) 
 
@@ -82,10 +82,6 @@ ambient_switch <- cbind(mean_ambient_vars_switch,mean_switch_vars)
 return(list(ambient_inside,ambient_power,ambient_hpower,ambient_switch))
 
 }
-
-
-
-
 
 
 
@@ -151,14 +147,14 @@ merge.bind.clean <- function(ambient,refrigerator,inside,house,switch) {
   mean_ambient_p <- aggregate(some_vars_ambient_power$ambient_temp,list(some_vars_ambient_power$hour,some_vars_ambient_power$day,some_vars_ambient_power$month),FUN=mean)
   mean_ambient_vars_p <- mean_ambient_p %>% mutate(average_hr_ambient = x,hour=Group.1) %>% select(hour,average_hr_ambient) 
   
-  mean_power <-  aggregate(some_vars_ambient_power$active_pwr3,list(some_vars_ambient_power$hour,some_vars_ambient_power$day,some_vars_ambient_power$month),FUN=trapz)
+  mean_power <-  aggregate(some_vars_ambient_power$active_pwr3,list(some_vars_ambient_power$hour,some_vars_ambient_power$day,some_vars_ambient_power$month),FUN=mean)
   mean_power_vars <- mean_power %>% mutate(average_hr_power = x,hour=Group.1) %>% select(hour,average_hr_power) 
   
   #Ambient and House Power 
   mean_ambient_hp <- aggregate(some_vars_ambient_housepower$ambient_temp,list(some_vars_ambient_housepower$hour,some_vars_ambient_housepower$day,some_vars_ambient_housepower$month),FUN=mean)
   mean_ambient_vars_hp <- mean_ambient_hp %>% mutate(average_hr_ambient = x,hour=Group.1) %>% select(hour,average_hr_ambient) 
   
-  mean_hpower <-  aggregate(some_vars_ambient_housepower$house_Power,list(some_vars_ambient_housepower$hour,some_vars_ambient_housepower$day,some_vars_ambient_housepower$month),FUN=sum)
+  mean_hpower <-  aggregate(some_vars_ambient_housepower$house_Power,list(some_vars_ambient_housepower$hour,some_vars_ambient_housepower$day,some_vars_ambient_housepower$month),FUN=mean)
   mean_hpower_vars <- mean_hpower %>% mutate(average_hr_hpower = x,hour=Group.1) %>% select(hour,average_hr_hpower) 
   
   

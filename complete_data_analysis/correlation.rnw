@@ -39,7 +39,7 @@ CACHE.FIGURES <- TRUE
 <<reding.data,echo=FALSE, results ='hide'>>=
 ############  Reading data
 #Reading data - specify the number of the dump and the flexbox ID
-data_list <- read.data('DUMP1','A2') 
+data_list <- read.data('DUMP1','A3') 
 
 inside <- data_list[[1]]
 ambient <- data_list[[2]]

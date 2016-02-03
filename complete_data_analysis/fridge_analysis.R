@@ -12,37 +12,37 @@ setwd('/Users/Diego/Desktop/Data/Nicaragua/implementation_nicaragua/')
 
 ####### Reading Data and Merging
 
-a1_fridge <- read.csv('DUMPS/flxbxA1.8.03.2015.sqld_mfi_table.csv')
-a2_fridge <- read.csv('DUMPS/flxbxA2.7.29.2015.sqld_mfi_table.csv')
-a3_fridge <- read.csv('DUMPS/flxbxA3.7.29.2015.sqld_mfi_table.csv')
-a4_fridge <- read.csv('DUMPS/flxbxA4.7.29.2015.sqld_mfi_table.csv')
-a5_fridge <- read.csv('DUMPS/flxbxA5.7.29.2015.sqld_mfi_table.csv')
-a6_fridge <- read.csv('DUMPS/flxbxA6.7.29.2015.sqld_mfi_table.csv')
-a7_fridge <- read.csv('DUMPS/flxbxA7.7.29.2015.sqld_mfi_table.csv')
-a8_fridge <- read.csv('DUMPS/flxbxA8.8.03.2015.sqld_mfi_table.csv')
-a9_fridge <- read.csv('DUMPS/flxbxA9.7.31.2015.sqld_mfi_table.csv')
-a10_fridge <- read.csv('DUMPS/flxbxA10.8.03.2015.sqld_mfi_table.csv')
+a1_fridge <- read.csv('DUMPS/DUMP1/flxbxA1.8.03.2015.sqld_mfi_table.csv')
+a2_fridge <- read.csv('DUMPS/DUMP1/flxbxA2.7.29.2015.sqld_mfi_table.csv')
+a3_fridge <- read.csv('DUMPS/DUMP1/flxbxA3.7.29.2015.sqld_mfi_table.csv')
+a4_fridge <- read.csv('DUMPS/DUMP1/flxbxA4.7.29.2015.sqld_mfi_table.csv')
+a5_fridge <- read.csv('DUMPS/DUMP1/flxbxA5.7.29.2015.sqld_mfi_table.csv')
+a6_fridge <- read.csv('DUMPS/DUMP1/flxbxA6.7.29.2015.sqld_mfi_table.csv')
+a7_fridge <- read.csv('DUMPS/DUMP1/flxbxA7.7.29.2015.sqld_mfi_table.csv')
+a8_fridge <- read.csv('DUMPS/DUMP1/flxbxA8.8.03.2015.sqld_mfi_table.csv')
+a9_fridge <- read.csv('DUMPS/DUMP1/flxbxA9.7.31.2015.sqld_mfi_table.csv')
+a10_fridge <- read.csv('DUMPS/DUMP1/flxbxA10.8.06.2015.sqld_mfi_table.csv')
 
-a11_fridge <- read.csv('DUMPS/flxbxA11.7.29.2015.sqld_mfi_table.csv')
-a12_fridge <- read.csv('DUMPS/flxbxA12.7.29.2015.sqld_mfi_table.csv')
-a13_fridge <- read.csv('DUMPS/flxbxA13.7.31.2015.sqld_mfi_table.csv')
-a14_fridge <- read.csv('DUMPS/flxbxA14.7.30.sqld_mfi_table.csv')
-a15_fridge <- read.csv('DUMPS/flxbxA15.7.30.2015.sqld_mfi_table.csv')
-a16_fridge <- read.csv('DUMPS/flxbxA16.7.30.2015.sqld_mfi_table.csv')
-a17_fridge <- read.csv('DUMPS/flxbxA17.7.30.2015.sqld_mfi_table.csv')
-a18_fridge <- read.csv('DUMPS/flxbxA18.7.30.2015.sqld_mfi_table.csv')
-a19_fridge <- read.csv('DUMPS/flxbxA19.8.03.2015.sqld_mfi_table.csv')
-a20_fridge <- read.csv('DUMPS/flxbxA20.8.03.2015.sqld_mfi_table.csv')
+a11_fridge <- read.csv('DUMPS/DUMP1/flxbxA11.7.29.2015.sqld_mfi_table.csv')
+a12_fridge <- read.csv('DUMPS/DUMP1/flxbxA12.7.29.2015.sqld_mfi_table.csv')
+a13_fridge <- read.csv('DUMPS/DUMP1/flxbxA13.7.31.2015.sqld_mfi_table.csv')
+a14_fridge <- read.csv('DUMPS/DUMP1/flxbxA14.7.30.sqld_mfi_table.csv')
+a15_fridge <- read.csv('DUMPS/DUMP1/flxbxA15.7.30.2015.sqld_mfi_table.csv')
+a16_fridge <- read.csv('DUMPS/DUMP1/flxbxA16.7.30.2015.sqld_mfi_table.csv')
+a17_fridge <- read.csv('DUMPS/DUMP1/flxbxA17.7.30.2015.sqld_mfi_table.csv')
+a18_fridge <- read.csv('DUMPS/DUMP1/flxbxA18.7.30.2015.sqld_mfi_table.csv')
+a19_fridge <- read.csv('DUMPS/DUMP1/flxbxA19.8.03.2015.sqld_mfi_table.csv')
+a20_fridge <- read.csv('DUMPS/DUMP1/flxbxA20.8.03.2015.sqld_mfi_table.csv')
 
-a21_fridge <- read.csv('DUMPS/flxbxA21.7.30.2015.sqld_mfi_table.csv')
-a22_fridge <- read.csv('DUMPS/flxbxA22.7.30.2015.sqld_mfi_table.csv')
-a23_fridge <- read.csv('DUMPS/flxbxA23.7.30.2015.sqld_mfi_table.csv')
-a24_fridge <- read.csv('DUMPS/flxbxA24.8.03.2015.sqld_mfi_table.csv')
-a25_fridge <- read.csv('DUMPS/flxbxA25.8.03.2015.sqld_mfi_table.csv')
-a26_fridge <- read.csv('DUMPS/flxbxA26.7.31.2015.sqld_mfi_table.csv')
-a27_fridge <- read.csv('DUMPS/flxbxA27.7.31.2015.sqld_mfi_table.csv')
-a28_fridge <- read.csv('DUMPS/flxbxA28.7.29.2015.sqld_mfi_table.csv')
-a29_fridge <- read.csv('DUMPS/flxbxA29.7.29.2015.sqld_mfi_table.csv')
+a21_fridge <- read.csv('DUMPS/DUMP1/flxbxA21.7.30.2015.sqld_mfi_table.csv')
+a22_fridge <- read.csv('DUMPS/DUMP1/flxbxA22.7.30.2015.sqld_mfi_table.csv')
+a23_fridge <- read.csv('DUMPS/DUMP1/flxbxA23.7.30.2015.sqld_mfi_table.csv')
+a24_fridge <- read.csv('DUMPS/DUMP1/flxbxA24.8.03.2015.sqld_mfi_table.csv')
+a25_fridge <- read.csv('DUMPS/DUMP1/flxbxA25.8.03.2015.sqld_mfi_table.csv')
+a26_fridge <- read.csv('DUMPS/DUMP1/flxbxA26.8.06.2015.sqld_mfi_table.csv')
+a27_fridge <- read.csv('DUMPS/DUMP1/flxbxA27.7.31.2015.sqld_mfi_table.csv')
+a28_fridge <- read.csv('DUMPS/DUMP1/flxbxA28.7.29.2015.sqld_mfi_table.csv')
+a29_fridge <- read.csv('DUMPS/DUMP1/flxbxA29.7.29.2015.sqld_mfi_table.csv')
 
 # Adding an identifier
 
@@ -81,7 +81,7 @@ a29_fridge$FLEXBOXID <- 'A29'
 all_fridge_data <- rbind(a1_fridge,a2_fridge,a3_fridge,a4_fridge,a5_fridge,a6_fridge,a7_fridge,a8_fridge,a9_fridge,a10_fridge,a11_fridge,a12_fridge,a13_fridge,a14_fridge,a15_fridge,a16_fridge,a17_fridge,a18_fridge,a19_fridge,a20_fridge,a21_fridge,a22_fridge,a23_fridge,a24_fridge,a25_fridge,a26_fridge,a27_fridge,a28_fridge,a29_fridge)
 
 #### Bringing in the survey data
-survey_data <- read.csv('all_data/survey_data_comlpete.csv')
+survey_data <- read.csv('all_data/all_survey_data_complete.csv')
 names(survey_data)[names(survey_data)=="flexbox_id"] <- "FLEXBOXID"
 
 #Keep Vars
@@ -99,17 +99,21 @@ complete_data$datetime_rgx_new <- paste(complete_data$datetime_rgx,"-0000",sep="
 complete_data$time_stamp <- strptime(complete_data$datetime_rgx_new,"%Y-%m-%d %H:%M:%S %z")
 complete_data$date <- as.Date(complete_data$time_stamp)
 
-#### #Calculating power for the fridge
-complete_data$power <- complete_data$vrms3*complete_data$i_rms3
+    ###  #Power adjustment
+    complete_data$power <- complete_data$active_pwr3/1000
+  
 
 ###  #House Data 
 house_data <- subset(complete_data,complete_data$tipo_encuesta == 'casa')
 me_data <- subset(complete_data,complete_data$tipo_encuesta == 'micro_empresa')
 
 
-############
-# Plotting 
-############
+
+
+################################
+# Plotting All Days in the Dump
+################################
+
 
 #Densiy plot
 house_density <- ggplot(data=house_data, aes(x=power, fill=FLEXBOXID)) + geom_density(alpha=.3) + xlim(0, 500) +  labs(title = "Household Power Consumption (Density)")
@@ -120,6 +124,12 @@ grid.arrange(house_density,me_density)
 house_trends <- ggplot(data=house_data, aes(x=time_stamp, y=power, group=FLEXBOXID, colour=FLEXBOXID)) + geom_line(size=1.5,alpha=0.6) +  geom_point(size=3, fill="white") + labs(title = "Household Power Consumption")
 me_trends <- ggplot(data=me_data, aes(x=time_stamp, y=power, group=FLEXBOXID, colour=FLEXBOXID)) + geom_line(size=1.5,alpha=0.6) +  geom_point(size=3, fill="white") + labs(title = "Micro-Enterprise Power Consumption")
 grid.arrange(house_trends,me_trends)
+
+
+
+
+
+
 
 
 
