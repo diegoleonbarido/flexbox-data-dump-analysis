@@ -12,37 +12,37 @@ setwd('/Users/Diego/Desktop/Data/Nicaragua/implementation_nicaragua/')
 
 ####### Reading Data and Merging
 
-a1_temp <- read.csv('DUMPS/flxbxA1.8.03.2015.sqld_inside_table.csv')
-a2_temp <- read.csv('DUMPS/flxbxA2.7.29.2015.sqld_inside_table.csv')
-a3_temp <- read.csv('DUMPS/flxbxA3.7.29.2015.sqld_inside_table.csv')
-a4_temp <- read.csv('DUMPS/flxbxA4.7.29.2015.sqld_inside_table.csv')
-a5_temp <- read.csv('DUMPS/flxbxA5.7.29.2015.sqld_inside_table.csv')
-a6_temp <- read.csv('DUMPS/flxbxA6.7.29.2015.sqld_inside_table.csv')
-a7_temp <- read.csv('DUMPS/flxbxA7.7.29.2015.sqld_inside_table.csv')
-a8_temp <- read.csv('DUMPS/flxbxA8.8.03.2015.sqld_inside_table.csv')
-a9_temp <- read.csv('DUMPS/flxbxA9.7.31.2015.sqld_inside_table.csv')
-a10_temp <- read.csv('DUMPS/flxbxA10.8.03.2015.sqld_inside_table.csv')
+a1_temp <- read.csv('DUMPS/DUMP1/flxbxA1.8.03.2015.sqld_inside_table.csv')
+a2_temp <- read.csv('DUMPS/DUMP1/flxbxA2.7.29.2015.sqld_inside_table.csv')
+a3_temp <- read.csv('DUMPS/DUMP1/flxbxA3.7.29.2015.sqld_inside_table.csv')
+a4_temp <- read.csv('DUMPS/DUMP1/flxbxA4.7.29.2015.sqld_inside_table.csv')
+a5_temp <- read.csv('DUMPS/DUMP1/flxbxA5.7.29.2015.sqld_inside_table.csv')
+a6_temp <- read.csv('DUMPS/DUMP1/flxbxA6.7.29.2015.sqld_inside_table.csv')
+a7_temp <- read.csv('DUMPS/DUMP1/flxbxA7.7.29.2015.sqld_inside_table.csv')
+a8_temp <- read.csv('DUMPS/DUMP1/flxbxA8.8.03.2015.sqld_inside_table.csv')
+a9_temp <- read.csv('DUMPS/DUMP1/flxbxA9.7.31.2015.sqld_inside_table.csv')
+a10_temp <- read.csv('DUMPS/DUMP1/flxbxA10.8.03.2015.sqld_inside_table.csv')
 
-a11_temp <- read.csv('DUMPS/flxbxA11.7.29.2015.sqld_inside_table.csv')
-a12_temp <- read.csv('DUMPS/flxbxA12.7.29.2015.sqld_inside_table.csv')
-a13_temp <- read.csv('DUMPS/flxbxA13.7.31.2015.sqld_inside_table.csv')
-a14_temp <- read.csv('DUMPS/flxbxA14.7.30.sqld_inside_table.csv')
-a15_temp <- read.csv('DUMPS/flxbxA15.7.30.2015.sqld_inside_table.csv')
-a16_temp <- read.csv('DUMPS/flxbxA16.7.30.2015.sqld_inside_table.csv')
-a17_temp <- read.csv('DUMPS/flxbxA17.7.30.2015.sqld_inside_table.csv')
-a18_temp <- read.csv('DUMPS/flxbxA18.7.30.2015.sqld_inside_table.csv')
-a19_temp <- read.csv('DUMPS/flxbxA19.8.03.2015.sqld_inside_table.csv')
-a20_temp <- read.csv('DUMPS/flxbxA20.8.03.2015.sqld_inside_table.csv')
+a11_temp <- read.csv('DUMPS/DUMP1/flxbxA11.7.29.2015.sqld_inside_table.csv')
+a12_temp <- read.csv('DUMPS/DUMP1/flxbxA12.7.29.2015.sqld_inside_table.csv')
+a13_temp <- read.csv('DUMPS/DUMP1/flxbxA13.7.31.2015.sqld_inside_table.csv')
+a14_temp <- read.csv('DUMPS/DUMP1/flxbxA14.7.30.sqld_inside_table.csv')
+a15_temp <- read.csv('DUMPS/DUMP1/flxbxA15.7.30.2015.sqld_inside_table.csv')
+a16_temp <- read.csv('DUMPS/DUMP1/flxbxA16.7.30.2015.sqld_inside_table.csv')
+a17_temp <- read.csv('DUMPS/DUMP1/flxbxA17.7.30.2015.sqld_inside_table.csv')
+a18_temp <- read.csv('DUMPS/DUMP1/flxbxA18.7.30.2015.sqld_inside_table.csv')
+a19_temp <- read.csv('DUMPS/DUMP1/flxbxA19.8.03.2015.sqld_inside_table.csv')
+a20_temp <- read.csv('DUMPS/DUMP1/flxbxA20.8.03.2015.sqld_inside_table.csv')
 
-a21_temp <- read.csv('DUMPS/flxbxA21.7.30.2015.sqld_inside_table.csv')
-a22_temp <- read.csv('DUMPS/flxbxA22.7.30.2015.sqld_inside_table.csv')
-a23_temp <- read.csv('DUMPS/flxbxA23.7.30.2015.sqld_inside_table.csv')
-a24_temp <- read.csv('DUMPS/flxbxA24.8.03.2015.sqld_inside_table.csv')
-a25_temp <- read.csv('DUMPS/flxbxA25.8.03.2015.sqld_inside_table.csv')
-a26_temp <- read.csv('DUMPS/flxbxA26.7.31.2015.sqld_inside_table.csv')
-a27_temp <- read.csv('DUMPS/flxbxA27.7.31.2015.sqld_inside_table.csv')
-a28_temp <- read.csv('DUMPS/flxbxA28.7.29.2015.sqld_inside_table.csv')
-a29_temp <- read.csv('DUMPS/flxbxA29.7.29.2015.sqld_inside_table.csv')
+a21_temp <- read.csv('DUMPS/DUMP1/flxbxA21.7.30.2015.sqld_inside_table.csv')
+a22_temp <- read.csv('DUMPS/DUMP1/flxbxA22.7.30.2015.sqld_inside_table.csv')
+a23_temp <- read.csv('DUMPS/DUMP1/flxbxA23.7.30.2015.sqld_inside_table.csv')
+a24_temp <- read.csv('DUMPS/DUMP1/flxbxA24.8.03.2015.sqld_inside_table.csv')
+a25_temp <- read.csv('DUMPS/DUMP1/flxbxA25.8.03.2015.sqld_inside_table.csv')
+a26_temp <- read.csv('DUMPS/DUMP1/flxbxA26.7.31.2015.sqld_inside_table.csv')
+a27_temp <- read.csv('DUMPS/DUMP1/flxbxA27.7.31.2015.sqld_inside_table.csv')
+a28_temp <- read.csv('DUMPS/DUMP1/flxbxA28.7.29.2015.sqld_inside_table.csv')
+a29_temp <- read.csv('DUMPS/DUMP1/flxbxA29.7.29.2015.sqld_inside_table.csv')
 
 # Adding an identifier
 
@@ -78,7 +78,8 @@ a27_temp$FLEXBOXID <- 'A7'
 a28_temp$FLEXBOXID <- 'A28'
 a29_temp$FLEXBOXID <- 'A29'
 
-all_temp_data <- rbind(a1_temp,a2_temp,a3_temp,a4_temp,a5_temp,a6_temp,a7_temp,a8_temp,a9_temp,a10_temp,a11_temp,a12_temp,a13_temp,a14_temp,a15_temp,a16_temp,a17_temp,a18_temp,a19_temp,a20_temp,a21_temp,a22_temp,a23_temp,a24_temp,a25_temp,a26_temp,a27_temp,a28_temp,a29_temp)
+all_temp_data <- rbind(a1_temp,a2_temp,a3_temp)
+                       ,a4_temp,a5_temp,a6_temp,a7_temp,a8_temp,a9_temp,a10_temp,a11_temp,a12_temp,a13_temp,a14_temp,a15_temp,a16_temp,a17_temp,a18_temp,a19_temp,a20_temp,a21_temp,a22_temp,a23_temp,a24_temp,a25_temp,a26_temp,a27_temp,a28_temp,a29_temp)
 
 #### Bringing in the survey data
 survey_data <- read.csv('all_data/all_survey_data_complete.csv')
@@ -107,6 +108,9 @@ me_temp_data <- subset(complete_data,complete_data$tipo_encuesta == 'micro_empre
 ############
 # Plotting 
 ############
+
+
+
 
 #Densiy plot
 #NOTE: You can change the 'aes(x=fridge_temp1)' to 'aes(x=fridge_temp2)'

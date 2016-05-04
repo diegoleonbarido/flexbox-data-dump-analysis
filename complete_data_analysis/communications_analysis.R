@@ -5,6 +5,8 @@ library(DBI)
 library(sqldf)
 library(RSQLite)
 library(RMySQL)
+library(data.table)
+library(lubridate)
 
 
 #Set up connection to server 
@@ -71,11 +73,43 @@ par(new=TRUE)
 plot(ecdf(d28$max),xlim=c(0,3000),col='mediumorchid1',main='Latency CDF Five Units',xlab='Latency (Milliseconds)')
 legend(2000,0.6,c("A1","A17","A24","A26","A28") ,lty=c(1,1), lwd=c(2,2),col=c("red","khaki2","mediumspringgreen","lightskyblue","mediumorchid1"),pt.cex = 0.3)
 
+
+
 # Testing how different the distributions are from each other
 
+# Kolmigorov 
 ks.test(d17$avg, d24$avg, alternative = c("two.sided"))
+ks.test(d17$avg, d26$avg, alternative = c("two.sided"))
+ks.test(d17$avg, d28$avg, alternative = c("two.sided"))
+ks.test(d17$avg, d1$avg, alternative = c("two.sided"))
 
-t.test(d17$avg, d24$avg)
+ks.test(d24$avg, d26$avg, alternative = c("two.sided"))
+ks.test(d24$avg, d28$avg, alternative = c("two.sided"))
+ks.test(d24$avg, d1$avg, alternative = c("two.sided"))
+
+ks.test(d26$avg, d28$avg, alternative = c("two.sided"))
+ks.test(d26$avg, d1$avg, alternative = c("two.sided"))
+
+ks.test(d28$avg, d1$avg, alternative = c("two.sided"))
+
+#Wilcox test
+wilcox.test(d17$avg, d24$avg,  exact=FALSE,correct=FALSE)
+wilcox.test(d17$avg, d26$avg,  exact=FALSE,correct=FALSE)
+wilcox.test(d17$avg, d28$avg,  exact=FALSE,correct=FALSE)
+wilcox.test(d17$avg, d1$avg,  exact=FALSE,correct=FALSE)
+
+wilcox.test(d24$avg, d26$avg,  exact=FALSE,correct=FALSE)
+wilcox.test(d24$avg, d28$avg,  exact=FALSE,correct=FALSE)
+wilcox.test(d24$avg, d1$avg,  exact=FALSE,correct=FALSE)
+
+wilcox.test(d26$avg, d28$avg,  exact=FALSE,correct=FALSE)
+wilcox.test(d26$avg, d1$avg,  exact=FALSE,correct=FALSE)
+
+wilcox.test(d28$avg, d1$avg,  exact=FALSE,correct=FALSE)
+
+
+
+
 
 
 

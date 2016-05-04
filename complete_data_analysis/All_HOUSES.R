@@ -1,7 +1,5 @@
-########### Purpose: This code puts together a variety of functions from the analysis. 
+########### Purpose: Brings in all the data together and begins performing analysis.
 
-
-############ Script to Analyze data from A1
 library(data.table)
 library(lubridate)
 library(plyr)
@@ -34,7 +32,9 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 # Section 3: Clean data plots
 # Section 4: Daily Plots
 # Section 5: BoxPLot Distributions
-# Section 6: Normalization and Clustering (including week of the day analysis)       
+# Section 6: Normalization and Clustering (including week of the day analysis)
+# Section 7: Density Plots for Temperature and Power
+# Section 8: TCL Parameter (duty cycle, energy capacity, power capacity, etc)
 
 
 
@@ -43,7 +43,7 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 #### Reading Data: 1) Provide a list of houses, and 2) Specify the number of the dump
 ### NOTE: A27,A28,A29 causes problems
 
-flexlist <- c('A1','A2','A3','A4','A5','A6','A7','A8','A9','A10','A11','A12','A13','A14','A15','A16','A17','A18','A19','A20','A21','A22','A23','A24','A25')
+flexlist <- c('A1','A2','A3','A4','A5','A6','A7','A8','A9','A10','A11','A12','A13','A14','A15','A16','A17','A18','A19','A20','A21','A22','A23','A24','A25','A27','A28','A29')
 data.list.houses <- read.data.all('DUMP1',flexlist) 
 
 inside <- data.list.houses[[1]]
@@ -377,6 +377,56 @@ merged.all.data.list.clean <- merge.bind.all.clean(ambient,refrigerator,inside,h
     median.day <- aggregate(day.energy$energy,by=list(day.energy$day.id),FUN=median)
     mean.type.day <- aggregate(day.energy$energy,by=list(day.energy$type.day),FUN=mean)
     median.type.day <- aggregate(day.energy$energy,by=list(day.energy$type.day),FUN=median)
+    
+    
+    
+
+#######################################################
+#######################################################
+    
+##### Section 7: Density Plots for Temperature and Power
+    
+    
+    
+    
+    
+    
+    
+#######################################################
+#######################################################
+    
+##### Section 8: TCL Parameter (duty cycle, energy capacity, power capacity, etc)
+    
+
+# 1. Ambient temperature
+    # forecast.io , weather.com 
+    
+    
+    
+# 2. Dead-band
+    
+    # Uninterrupted Dead-band
+    min_deadband <- min(inside$fridge_temp1,na.rm=TRUE)
+    max_deadband <- max(inside$fridge_temp1,na.rm=TRUE)
+    
+    # Iinterrupted Dead-band
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+
+  
     
   
   
