@@ -167,7 +167,6 @@ henergy.consumption.hour.house <- function(data_input) {
 
 ################# 3. FRIDGE ENERGY CONSUMPTION PER HOUR
 
-
 fenergy.consumption.hour <- function(data_input) {
   
   #Getting rid of zeros and NaNs  
@@ -176,12 +175,12 @@ fenergy.consumption.hour <- function(data_input) {
   unique.data.input[unique.data.input==0] <- NA #Getting rid of zeros
   unique.data.input <- unique.data.input[complete.cases(unique.data.input),] #Getting rid of all NAs
   
-  if (dim(unique.data.input)[1] == 0 | length(unique(unique.data.input$energy_sum3)) < 10 ) {
+  if (dim(unique.data.input)[1] == 0 | length(unique(unique.data.input$energy_sum3))/length(unique.data.input$energy_sum3) < .30 ) {
     unique.data.input <-  unique(data_input[c("house.id","date","hour","energy_sum2")])
     unique.data.input[unique.data.input==0] <- NA #Getting rid of zeros
     unique.data.input <- unique.data.input[complete.cases(unique.data.input),] #Getting rid of all NAs
     
-    if (dim(unique.data.input)[1] == 0 | length(unique(unique.data.input$energy_sum2)) < 10) {
+    if (dim(unique.data.input)[1] == 0 | length(unique(unique.data.input$energy_sum2))/length(unique.data.input$energy_sum2) < 0.30 ) {
       unique.data.input <-  unique(data_input[c("house.id","date","hour","energy_sum1")])
       unique.data.input[unique.data.input==0] <- NA #Getting rid of zeros
       unique.data.input <- unique.data.input[complete.cases(unique.data.input),] #Getting rid of all NAs
@@ -196,7 +195,6 @@ fenergy.consumption.hour <- function(data_input) {
   } else {}
   
   names(unique.data.input)[4] <- "energy_sum3"
-  
   
   #Making sure that we are keeping non-negative and non-outlier data
   unique.microids <- unique(unique.data.input$house.id)
@@ -431,12 +429,10 @@ neighbor.comparison <- function(data_input){
     }
   
   
-  microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]],microids.df[[18]],microids.df[[19]])
+  #microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]],microids.df[[18]],microids.df[[19]])
   
   #Reincorporate this when we get data for A8
-  #microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]],microids.df[[18]],microids.df[[19]],microids.df[[20]])
-  
-  
+  microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]],microids.df[[18]],microids.df[[19]],microids.df[[20]])
   
   #Setting unique combinations of microids
   unique.microids <- unique(microid.data.input$house.id)

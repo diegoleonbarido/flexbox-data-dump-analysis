@@ -31,14 +31,16 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/cleaning_data_functions.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/hourly_plots_functions.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_consumption_functions.R')
+source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/scraping_scripts.R')
 
 
 ###### NOTE
 # Section 1: Reading data
-# Section 2: Neighbor Comparison
-# Section 3: Hour of the Day
-# Section 4: Day of the week analysis
-# Section 5: Fridge Hour of the Day
+# Section X: Survey Rate Plots
+# Section X: Neighbor Comparison
+# Section X: Hour of the Day
+# Section X: Day of the week analysis
+# Section X: Fridge Hour of the Day
 
 ###### Next time
 
@@ -49,17 +51,52 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 
 
 
-###############  Section 1: Reading data (specify houses, specify dump)
+############# Section 1: Grid Analysis
 
-flexlist <- c('A1','A3','A6','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
-dump <- 'DUMP6'
+grid.data <- get.data(as.Date(timeSequence(from = (Sys.Date() - 32), to = (Sys.Date() - 2))))
 
-surveys <- 
+grid.plot1 <- ggplot(grid.data[[1]], aes(Hora, generation)) + geom_line(aes(color = resource),size=3) + xlab("Hora del Dia") + ylab("Generacion y Consumo de Energia en Nicaragua (MW)") + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.title=element_blank())
 
+mypath <- file.path(paste("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports",dump,"Latex","figure","gridplot1.jpg",sep = "/"))
+jpeg(file=mypath)
+grid.draw(grid.plot1)
+dev.off()
+
+grid.plot2 <- ggplot(grid.data[[2]], aes(x = resources, y = pct, fill = resource)) +  geom_bar(stat = "identity",width=0.6) + xlab('') + ylim(0,sum(percent_resources$pct)) + ylab('Contribucion de Cada Recurso a la Generacion de Energia en Nicaragua (%)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.title=element_blank()) + scale_fill_brewer(palette="YlGnBu")
+
+mypath <- file.path(paste("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports",dump,"Latex","figure","gridplot2.jpg",sep = "/"))
+jpeg(file=mypath)
+grid.draw(grid.plot2)
+dev.off()
+
+grid_text1 <- paste("Esta es una grafica que demuestra la demanda promedio por hora para todo el pais de Nicaragua de los ultimos treinta dias. La linea roja demuestra el consumo promedio de energia por hora del pais, la azul demuestra la reduccion de la demanda cuando se toma en cuenta el viento, y la linea verde demuestra la generacion de energia por parte de el viento. Mientras mas energia renovable hay en el pais, menos petroleo se consume. Su participacion en este proyecto esta ayudando a mejor integrar la energia renovable en la red electrica Nicaraguense. Cuando el viento se va, entonces nosotros estaremos adaptando el consumo de su refrigerador para que Nicaragua consuma menos petroleo y pueda integrar mejor a las energias renovables.")
+grid_text2 <- paste("La segunda grafica demuestra la diversidad de la energia que fue producida en Nicaragua en los ultimos 30 dias. En este mes el petroleo produjo el ",round(grid.data[[2]]$pct[which(grid.data[[2]]$resource == 'Petroleo')]),"por ciento de la energia, mientras que el Viento produjo el ",round(grid.data[[2]]$pct[which(grid.data[[2]]$resource == 'Viento')]),"por ciento de la energia. La Biomasa y la Geotermia producieron",round(grid.data[[2]]$pct[which(grid.data[[2]]$resource == 'Biomasa')]),"por ciento y",round(grid.data[[2]]$pct[which(grid.data[[2]]$resource == 'Geotermia')]),"por ciento respectivamente. La energia hidroelectrica produjo aproximadamente el ",round(grid.data[[2]]$pct[which(grid.data[[2]]$resource == 'Hidroelectrica')]),"por ciento de la energia de los ultimos 30 dias. Finalmente, la interconexion regional contribuyo con un ", round(grid.data[[2]]$pct[which(grid.data[[2]]$resource == 'Interconexion')]),"por ciento a la produccion de energa en Nicaragua.")
+
+filepath <- file(paste("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports",dump,"Latex","grid_text1.txt",sep="/"))
+writeLines(grid_text1, filepath)
+close(filepath)
+
+filepath <- file(paste("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports",dump,"Latex","grid_text2.txt",sep="/"))
+writeLines(grid_text2, filepath)
+close(filepath)
+
+
+
+
+###############  Section 2: Reading data (specify houses, specify dump)
+
+flexlist <- c('A1','A3','A6','A7','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
+dump <- 'DUMP7'
+
+#### Survey Data 
+
+survey.data.results <- read.survey.data(flexlist)
+
+pepino <- read.data(dump,flexlist)
 
 #### Cluster house 
 
-data.list.houses <- read.house.fridge(dump,flexlist) #  read.data.all  or   read.data.all.parallel
+data.list.houses <- read.house.fridge(dump,flexlist) # read.house.fridge or  read.data.all  or   read.data.all.parallel
 cluster.house <- data.list.houses[[2]] %>% mutate(house_Energy=houseAll_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,house_Energy,house.id)
 cluster.fridge <- data.list.houses[[1]]
 dates_data_frame <- date.fridge.house(cluster.fridge,cluster.house) 
@@ -81,11 +118,44 @@ for (i in 1:length(flexlist)) {
   selected.house <- flexlist[i]  
   refrigerator <- subset(dates_data_frame[[1]],house.id == selected.house)
   house <- subset(dates_data_frame[[2]],house.id == selected.house)
+  
+  
+############# Section X: Survey Data
+  
+#Cost plot
 
+  unique.house.sdata <- subset(survey.data.results,survey.data.results$house.id == flexlist[i])
+  
+  costvars <- subset(unique.house.sdata,unique.house.sdata$cost==1)
+  subvars <- subset(unique.house.sdata,unique.house.sdata$cost==0)
+  
+  costvars_plot <- ggplot(costvars, aes(x = house.id, y = mean.val, fill = type.val)) +  geom_bar(stat = "identity",width=0.6) + xlab('') + ylim(0,max(max(costvars$mean.val,na.rm=TRUE),max(subvars$mean.val,na.rm=TRUE),na.rm=TRUE)+50) + ylab('Contribucion al Gasto Total Energetico (%)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.title=element_blank())
+  subvars_plot <- ggplot(subvars, aes(x = house.id, y = mean.val, fill = type.val)) +  geom_bar(stat = "identity",width=0.6) + xlab('') + ylim(0,max(max(costvars$mean.val,na.rm=TRUE),max(subvars$mean.val,na.rm=TRUE),na.rm=TRUE)+50) + ylab('Contribucion al Gasto Total Energetico (%)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.title=element_blank())
+  
+  if (is.nan(mean(unique.house.sdata$mean.val,na.rm=TRUE)) == FALSE ) {
+  
+  #Storing in file
+  count.plot <- count.plot + 1
+  count.plot.list[[count.plot]] = costvars_plot
+  count.plot.name[[count.plot]] = 'costvars_plot'
+  
+  text.survey <- paste("En general el costo de energia es el que causa el mayor gasto en su recibo. Usted tambien tiene otros varios gastos relacionados al IVA, la comercializacion, retrasos en el gasto, y alumbrado publico entre otros. Los colores en el grafico demuestran los diferentes gastos y cada uno tiene un porcentaje. Como el gasto energetico es el gasto mas alto, esto quiere decir que usted tiene todavia una gran oportunidad para reducir su gasto energetico.")
+  text.list[[count.plot]] <- text.survey
+  
+      if (is.nan(mean(subvars$mean.val,na.rm=TRUE)) == FALSE) {
+      count.plot <- count.plot + 1
+      count.plot.list[[count.plot]] = subvars_plot
+      count.plot.name[[count.plot]] = 'subvars_plot'
+      
+      text.survey.subs <- paste("A usted, los subsidios lo ayudan a pagar su gasto electrico. La grafica de la derecha demuestra el porcentaje de su tarifa que el subsidio le ayuda a pagar.")
+      text.list[[count.plot]] <- text.survey.subs
+      
+      } else {}
+  
+  } else {}
+  
 
-
-
-############### Section 2: Neighbor Comparison
+############### Section X: Neighbor Comparison
 
 e.neighbor$level <- ifelse(e.neighbor$norm.energy <= quantile(e.neighbor$norm.energy, c(.25)),'Bajo',ifelse(e.neighbor$norm.energy > quantile(e.neighbor$norm.energy, c(.25)) & e.neighbor$norm.energy <= quantile(e.neighbor$norm.energy, c(.50)),'Medio',ifelse(e.neighbor$norm.energy > quantile(e.neighbor$norm.energy, c(.50)) & e.neighbor$norm.energy <= quantile(e.neighbor$norm.energy, c(.75)),'Alto','Muy Alto' )))
 e.neighbor.average <- aggregate(e.neighbor$norm.energy,by=list(e.neighbor$level),FUN=mean) %>% mutate(group=Group.1,norm.energy=x) %>% select(group,norm.energy)
@@ -111,7 +181,7 @@ count.plot <- count.plot + 1
 count.plot.list[[count.plot]] = neighbor.plot
 count.plot.name[[count.plot]] = 'neighbor_plot'
 
-texta <- paste("Dentro de todas las casas y micro-empresas del estudio usted es parte del grupo de consumo energetico",vecino1,". De todas las casas y micro-empresas que están en el estudio usted gasta mas que el grupo de consumo",word1," y un poco menos que otras casas y micro-empresas dentro de el grupo",word2,". Usted podria utilizar su energia mas eficientemente.")
+texta <- paste("Dentro de todas las casas y micro-empresas del estudio usted es parte del grupo de consumo energetico",vecino1,". De todas las casas y micro-empresas que estan en el estudio usted gasta mas que el grupo de consumo",word1," y un poco menos que otras casas y micro-empresas dentro de el grupo",word2,". Usted podria utilizar su energia mas eficientemente.")
 textb <- paste("Dentro de todas las casas y micro-empresas del estudio usted es parte del grupo de consumo energetico",vecino1,". Usted es parte del grupo que consumo mas energia dentro del programa. Tiene que ser mas consciente de las horas y dias cuando consume mas energia y prestar atencion a su consumo. En el futuro, utilizaremos un modem para que usted pueda verificar su consumo mas frecuentemente, y asi administrar mejor su energia.")
 textc <- paste("Dentro de todas las casas y micro-empresas del estudio usted es parte del grupo de consumo energetico",vecino1,". Usted es parte del grupo que consumo menos energia dentro del programa. Aunque usted consume menos que otras personas, todavia tiene oportunidad para consumir menos y continuar prestando atencion a su consumo. En el futuro, utilizaremos un modem para que usted pueda verificar su consumo mas frecuentemente, y asi administrar mejor su energia.")
 
@@ -180,10 +250,12 @@ text.list[[count.plot]] <- paste("Los dias cuando usted consume mas energia son 
 
 ################# # Section 5: Fridge Analysis 
 
+# 5.1 Normalized Fridge Energy Consumption
+
 energy.refrigerator <- fenergy.consumption.hour(refrigerator)
 
-norm.mean <- aggregate(energy.refrigerator$norm.energy,list(energy.refrigerator$house.id,energy.refrigerator$hour),FUN=mean) %>% mutate(house.id=Group.1,hour=Group.2,norm.energy=x) %>% select(house.id,hour,norm.energy)
-norm.median <- aggregate(energy.refrigerator$norm.energy,list(energy.refrigerator$house.id,energy.refrigerator$hour),FUN=median) %>% mutate(house.id=Group.1,hour=Group.2,norm.energy=x) %>% select(house.id,hour,norm.energy)
+norm.mean <- aggregate(energy.refrigerator$norm.energy,list(energy.refrigerator$house.id,energy.refrigerator$hour),FUN=mean,na.rm=TRUE) %>% mutate(house.id=Group.1,hour=Group.2,norm.energy=x) %>% select(house.id,hour,norm.energy)
+norm.median <- aggregate(energy.refrigerator$norm.energy,list(energy.refrigerator$house.id,energy.refrigerator$hour),FUN=median,na.rm=TRUE) %>% mutate(house.id=Group.1,hour=Group.2,norm.energy=x) %>% select(house.id,hour,norm.energy)
 
 f.plot.norm.mean<- ggplot(norm.mean,aes(x=hour,y=norm.energy)) + geom_line()
 f.plot.norm.median<- ggplot(norm.median,aes(x=hour,y=norm.energy)) + geom_line() + geom_point(size=3)+ xlab('Hora del Dia') + ylab('Energia por Hora (Normalizada de 0 a 1)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold"))
@@ -209,30 +281,45 @@ count.plot.name[[count.plot]] = 'fplot_norm_median'
 text.list[[count.plot]] <- paste("Con respecto a su refrigerador, durante la madrugada (2am - 5am) su consumo mas alto ocurre a las",hora0,"am",". Durante la manana (5am-11am) su consumo mas alto es las",hora1,"de la manana. Durante la tarde (12pm-18pm) su consumo mas alto es a las",hora2,"pm del dia. Durante la noche (de las 19 horas a la 1 am), su consumo mas alto ocurre a las",hora3,"de la noche. En promedio, el consumo mas alto ocurre durante las",hora4,"de la",hora5)
 
 
+# 5.2 Percentage Energy Consumption from Fridge
+
+fridge_pct <- join(energy.refrigerator,energy.house,by=c("house.id","date","hour"))
+fridge_pct$fridge_percent <- (fridge_pct$fridge.energy/fridge_pct$energy)*100
+pct_aggregation <- aggregate(fridge_pct$fridge_percent,by=list(fridge_pct$hour),FUN=mean) %>% mutate(hour=Group.1,pct_energy=x) %>% select(hour,pct_energy)
+
+fridge_energy_pct <- ggplot(pct_aggregation, aes(x=hour,y=pct_energy)) + geom_bar(stat='identity',fill="lightskyblue1",color="red",width = 0.8) + xlab('Hora del Dia') + ylab('Porcentaje de Consumo del Refrigerador por Hora  (%)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold"))
+
+#Storing in file
+count.plot <- count.plot + 1
+count.plot.list[[count.plot]] = fridge_energy_pct
+count.plot.name[[count.plot]] = 'fridge_energy_pct'
+
+text.list[[count.plot]] <- paste("En promedio su refrigerador consume el",round(mean(pct_aggregation$pct_energy,na.rm=TRUE))," porciento de la energia total de su hogar o micro-empresa. Usted puede observar que a las",which(pct_aggregation$pct_energy == max(pct_aggregation$pct_energy)),"horas del dia es cuando su refrigerador consume el porcentaje mas alto de la energia del hogar.")
+
 ##########################
 
 
 
 # Save plots to jpeg making a separate file for each plot.
-for (j in 1:3) {
+for (j in 1:count.plot) {
   plot.name = paste(selected.house,"_",count.plot.name[[j]],sep="")
   name <- substring(plot.name,1,35)
-  mypath <- file.path("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports/",dump,"/",paste(plot.name,".jpg",sep = ""))
+  mypath <- file.path("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports",dump,"Latex/figure",paste(plot.name,".jpg",sep = ""))
   jpeg(file=mypath)
   print(count.plot.list[[j]])
   dev.off()
 }
 
-plot.name = paste(selected.house,"_",count.plot.name[[4]],sep="")
-name <- substring(plot.name,1,35)
-mypath <- file.path("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports/",dump,"/",paste(plot.name,".jpg",sep = ""))
-jpeg(file=mypath)
-grid.draw(count.plot.list[[4]])
-dev.off()
+#plot.name = paste(selected.house,"_",count.plot.name[[4]],sep="")
+#name <- substring(plot.name,1,35)
+#mypath <- file.path("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports",dump,"Latex/figure",paste(plot.name,".jpg",sep = ""))
+#jpeg(file=mypath)
+#grid.draw(count.plot.list[[4]])
+#dev.off()
 
 # Saving text files to file
-for (l in 1:4) {
-  filepath <- file(paste("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports/",dump,"/",selected.house,"_",count.plot.name[[l]],'.txt',sep=''))
+for (l in 1:count.plot) {
+  filepath <- file(paste("/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_reports/",dump,"/Latex/",selected.house,"_",count.plot.name[[l]],'.txt',sep=''))
   writeLines(text.list[[l]], filepath)
   close(filepath)
 }
