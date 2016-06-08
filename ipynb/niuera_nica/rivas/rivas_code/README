@@ -1,8 +1,0 @@
-To install this, you must create a psql database:
-
-sudo -u postgres psql postgres
-create database niuera_analyzer;
-create user niuera_analyzer;
-\password niuera_analyzer
-#password is analysis
-grant all privileges on database niuera_other_db to niuera_analyzer;
