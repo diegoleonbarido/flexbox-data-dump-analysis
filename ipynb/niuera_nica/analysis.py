@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import pandas as pd
-from organized_attempt import nicaragua_data as nica_data
+from niuera_nica import object_builder as nica_data
 
 def plot_supply_curve(nica_data_object,start_date,end_date):
     plt.figure()

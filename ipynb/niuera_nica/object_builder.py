@@ -147,6 +147,21 @@ class NicaraguaData(object):
 
     def _get_posdepacho_spot_price_df(self,start_date,end_date):
         '''
+        Returns a dataframe of spot prices on the market, scraped from the CNDC website, 
+        specifically the 'Precios Energia' column in Posdepacho.
+        '''
+        dfs = []
+        num_years = end_date.year-start_date.year+1
+        for val in range(0,num_years):
+            year = str(start_date.year+val)
+            if os.path.exists(self.data_dir+'/NatDataSpotPrice/'+str(year)+'spot_prices.csv'): 
+                df = pd.read_csv(self.data_dir+'/NatDataSpotPrice/'+str(year)+'spot_prices.csv',index_col='datetime',parse_dates=True) 
+                dfs.append(df)
+        df_spot_prices = pd.concat(dfs)
+        return df_spot_prices
+
+    def _get_posdepacho_spot_price_df_old(self,start_date,end_date):
+        '''
         Loads a dataframe containing the hourly spot price between 'start_date' and 'end_date'. 
         Data is taken from the NatPosDepacho_Spot_Market folder, which should contain a seperate csv
         file for each month, which was downloaded as zip files that need to be unzipped from 
