@@ -126,15 +126,19 @@ read.data.all <- function(dump,flexboxlist) {
       switch$house.id <- flexboxlist[i]
       house$house.id <- flexboxlist[i]
       
-      if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
-        vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
-        house <- house[,vars]
-        house$house.id <- flexboxlist[i] 
-      } else {
-        vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
-        house <- house[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
-        house$house.id <- flexboxlist[i] 
-      }
+      vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
+      house <- house[,vars]
+      house$house.id <- flexboxlist[i] 
+      
+      #if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
+       # vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
+        #house <- house[,vars]
+        #house$house.id <- flexboxlist[i] 
+      #} else {
+       # vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
+      #  house <- house[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
+      #  house$house.id <- flexboxlist[i] 
+      #}
       
       
     } else {
@@ -161,15 +165,19 @@ read.data.all <- function(dump,flexboxlist) {
       refrigerator <- rbind(refrigerator,refrigerator.else)
       switch <- rbind(switch,switch.else)
       
-      if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
-        vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
-        house.else <- house.else[,vars]
-        house.else$house.id <- flexboxlist[i] 
-      } else {
-        vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
-        house.else <- house.else[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
-        house.else$house.id <- flexboxlist[i] 
-      }
+      vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
+      house.else <- house.else[,vars]
+      house.else$house.id <- flexboxlist[i] 
+      
+      #if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
+       # vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
+        #house.else <- house.else[,vars]
+        #house.else$house.id <- flexboxlist[i] 
+      #} else {
+       # vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
+        #house.else <- house.else[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
+        #house.else$house.id <- flexboxlist[i] 
+      #}
       
       house <- rbind(house,house.else)
     }
@@ -323,16 +331,19 @@ read.house.fridge <- function(dump,flexboxlist) {
       house<- read.csv(files[true_zwave_i])
 
       refrigerator$house.id <- flexboxlist[i]
-      
-      if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
       vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
       house <- house[,vars]
       house$house.id <- flexboxlist[i] 
-      } else {
-      vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
-      house <- house[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
-      house$house.id <- flexboxlist[i] 
-      }
+      
+      #if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
+      #vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
+      #house <- house[,vars]
+      #house$house.id <- flexboxlist[i] 
+      #} else {
+      #vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
+      #house <- house[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
+      #house$house.id <- flexboxlist[i] 
+      #}
       
     } else {
       
@@ -341,16 +352,19 @@ read.house.fridge <- function(dump,flexboxlist) {
       
       refrigerator.else$house.id <- flexboxlist[i]
       house.else$house.id <- flexboxlist[i]
-      
-      if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
-        vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
-        house.else <- house.else[,vars]
-        house.else$house.id <- flexboxlist[i] 
-        } else {
-      vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
-      house.else <- house.else[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
+      vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
+      house.else <- house.else[,vars]
       house.else$house.id <- flexboxlist[i] 
-    }
+      
+      #if (flexboxlist[i]=='A1' | flexboxlist[i]=='A17' | flexboxlist[i]=='A24' | flexboxlist[i]=='A26' | flexboxlist[i]=='A28'){
+      #  vars <- c('id','datetime','houseAll_Voltage','houseAll_Current','houseAll_Power','houseAll_Energy')
+      # house.else <- house.else[,vars]
+      #  house.else$house.id <- flexboxlist[i] 
+      #  } else {
+      #vars <- c('id','datetime','house_Voltage','house_Current','house_Power','house_Energy')
+      #house.else <- house.else[,vars] %>% mutate(houseAll_Voltage=house_Voltage,houseAll_Current=house_Current,houseAll_Power=house_Power,houseAll_Energy=house_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,houseAll_Energy)
+      #house.else$house.id <- flexboxlist[i] 
+     #}
       
       refrigerator <- rbind(refrigerator,refrigerator.else)
       house <- rbind(house,house.else)
@@ -365,15 +379,28 @@ read.house.fridge <- function(dump,flexboxlist) {
 read.survey.data <- function(flexlist) {
   
   setwd('/Users/Diego/Desktop/Nicaragua/Surveys/Survey Monthly Updates/Results')
-  survey.data <- read.csv('all_monthly_updates_khaza.csv') %>% select(flexbox_id,encuesta_id,start,end,today,r_total_cordobas,r_monthly_cordobas,r_publiclight,r_comercialization,r_subsidy_under150,r_subsidy_commercialization1,r_subsidylighting150,r_subsidy_elderly,r_rechargedelay,r_ineregulation,r_tax,r_subsidy,r_reconnection_charge)
+  survey.data <- read.csv('all_monthly_updates_odaly.csv') %>% select(flexbox_id,encuesta_id,start,end,today,r_total_cordobas,r_monthly_cordobas,r_publiclight,r_comercialization,r_subsidy_under150,r_subsidy_commercialization1,r_subsidylighting150,r_subsidy_elderly,r_rechargedelay,r_ineregulation,r_tax,r_subsidy,r_reconnection_charge,r_arreglo_deuda,r_cuota_deuda)
+  
+  importe.data <- read.csv('importes_odaly.csv') %>% select(Casa,Mes,Ano,tipo,importe)
+  importe.data.subset <- subset(importe.data,importe.data$tipo == "Recibos de energia electrica")
+  energia.data <- read.csv('energia_odaly.csv') %>% mutate(Casa=FLEXBOX.ID) %>% select(Casa,Mes,Ano,Energia)
+  
+  im_en <- merge(energia.data,importe.data.subset,by=c("Mes","Ano","Casa"))
+  
+  im_en$mes <- ifelse(im_en$Mes=="Enero",1,ifelse(im_en$Mes=="Febrero",2,ifelse(im_en$Mes=="Marzo",3,ifelse(im_en$Mes=="Abril",4,ifelse(im_en$Mes=="Mayo",5,ifelse(im_en$Mes=="Junio",6,ifelse(im_en$Mes=="Julio",7,ifelse(im_en$Mes=="Agosto",8,ifelse(im_en$Mes=="Septiembre",9,ifelse(im_en$Mes=="Octubre",10,ifelse(im_en$Mes=="Noviembre",11,12)))))))))))
+  im_en$fecha <- as.Date(paste(paste(im_en$Ano,im_en$mes,sep="-"),"-01",sep=""))
+  im_en$energia <- as.numeric(gsub("[[:punct:]]", " ", sub(".*=", "", im_en$Energia)))
+  
+  im_en_sorted <- im_en[order(im_en$Casa,im_en$fecha),]
   
   #Comercializacion is supposed to be a negative
   
   #Doing a new sum to make sure that we are calculating the total correctly
-  survey.data$r_total_calculated  <- rowSums(cbind(survey.data$r_monthly_cordobas,survey.data$r_publiclight, survey.data$r_comercialization, survey.data$r_rechargedelay, survey.data$r_ineregulation , survey.data$r_tax, survey.data$r_reconnection_charge, survey.data$r_subsidy_under150 , survey.data$r_subsidy_commercialization1 , survey.data$r_subsidylighting150 , survey.data$r_subsidy_elderly ),na.rm=TRUE)
-  survey.data$r_total_costs  <- rowSums(cbind(survey.data$r_monthly_cordobas,survey.data$r_publiclight, survey.data$r_comercialization, survey.data$r_rechargedelay, survey.data$r_ineregulation , survey.data$r_tax, survey.data$r_reconnection_charge),na.rm=TRUE)
+  survey.data$r_total_calculated  <- rowSums(cbind(survey.data$r_monthly_cordobas,survey.data$r_publiclight, survey.data$r_comercialization, survey.data$r_rechargedelay, survey.data$r_ineregulation , survey.data$r_tax, survey.data$r_reconnection_charge, survey.data$r_subsidy_under150 , survey.data$r_subsidy_commercialization1 , survey.data$r_subsidylighting150 , survey.data$r_subsidy_elderly,survey.data$r_arreglo_deuda,survey.data$r_cuota_deuda),na.rm=TRUE)
+  survey.data$r_total_costs  <- rowSums(cbind(survey.data$r_monthly_cordobas,survey.data$r_publiclight, survey.data$r_comercialization, survey.data$r_rechargedelay, survey.data$r_ineregulation , survey.data$r_tax, survey.data$r_reconnection_charge,survey.data$r_arreglo_deuda,survey.data$r_cuota_deuda),na.rm=TRUE)
   
   survey.data$not_correct <- ifelse(round(survey.data$r_total_cordobas) == round(survey.data$r_total_calculated),0,1)
+  #whywrong <- subset(survey.data,survey.data$not_correct==1)
   #Exported this file to the xls so that Odaly can check why so many variables are missing and why it is so wrong!
   #write.csv(survey.data,'whywrong.csv')
   
@@ -387,15 +414,17 @@ read.survey.data <- function(flexlist) {
   survey.data.correct$pct_inereg <- (survey.data.correct$r_ineregulation/survey.data.correct$r_total_cordobas)*100
   survey.data.correct$pct_tax <- (survey.data.correct$r_tax/survey.data.correct$r_total_cordobas)*100
   survey.data.correct$pct_reconnection <- (survey.data.correct$r_reconnection_charge/survey.data.correct$r_total_cordobas)*100
-  
+  survey.data.correct$pct_arreglo_deuda <- (survey.data.correct$r_arreglo_deuda/survey.data.correct$r_total_cordobas)*100
+  survey.data.correct$pct_cuota_deuda <- (survey.data.correct$r_cuota_deuda/survey.data.correct$r_total_cordobas)*100
+ 
   survey.data.correct$pct_subsidy_under150 <- (abs(survey.data.correct$r_subsidy_under150)/survey.data.correct$r_total_costs)*100
   survey.data.correct$pct_subsidycommercialization1 <- (abs(survey.data.correct$r_subsidy_commercialization1)/survey.data.correct$r_total_costs)*100
   survey.data.correct$pct_subsidylighting150 <- (abs(survey.data.correct$r_subsidylighting150)/survey.data.correct$r_total_costs)*100
   survey.data.correct$pct_subsidy_elderly <- (abs(survey.data.correct$r_subsidy_elderly)/survey.data.correct$r_total_costs)*100
  
   #Iterating over all values and houses 
-  list_true_vars <- c("pct_energia","pct_luz","pct_recargo","pct_comercializacion","pct_inereg","pct_tax","pct_subsidy_under150","pct_subsidycommercialization1","pct_subsidylighting150","pct_subsidy_elderly")
-  list_name_vars <- c("Gasto Energía (kWh)","Alumbrado Público","Cargo por Recargo","Comercialización","Regulación INE","IVA","S.Menos 150","S.Comercialización","S.Alumbrado","S.Jubilados")
+  list_true_vars <- c("pct_energia","pct_luz","pct_recargo","pct_comercializacion","pct_inereg","pct_tax","pct_reconnection","pct_arreglo_deuda","pct_cuota_deuda","pct_subsidy_under150","pct_subsidycommercialization1","pct_subsidylighting150","pct_subsidy_elderly")
+  list_name_vars <- c("Gasto Energía (kWh)","Alumbrado Público","Cargo por Recargo","Comercialización","Regulación INE","IVA","Reconección","Arreglo Deuda","Cuota Deuda","S.Menos 150","S.Comercialización","S.Alumbrado","S.Jubilados")
   
   for (i in 1:length(flexlist)) {
     
@@ -429,7 +458,7 @@ read.survey.data <- function(flexlist) {
   
   houses.energy.df$cost <- ifelse(houses.energy.df$type.val == "S.Menos 150" | houses.energy.df$type.val == "S.Comercialización" | houses.energy.df$type.val == "S.Alumbrado" | houses.energy.df$type.val == "S.Jubilados",0,1)
   
-  return(houses.energy.df)
+  return(list(houses.energy.df,im_en_sorted))
 }
 
 

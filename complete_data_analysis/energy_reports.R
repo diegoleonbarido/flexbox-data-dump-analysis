@@ -42,12 +42,10 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 # Section X: Day of the week analysis
 # Section X: Fridge Hour of the Day
 
-###### Next time
+###### Set list of houses and variables
 
-# Hours when they can reduce their consumption
-# Tips and strategies
-# Advise on what other people are doing to reduce their consumption
-# Fridge energy consumption times for the people who consume the least
+flexlist <- c('A1','A3','A6','A7','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
+dump <- 'DUMP8'
 
 
 
@@ -85,14 +83,10 @@ close(filepath)
 
 ###############  Section 2: Reading data (specify houses, specify dump)
 
-flexlist <- c('A1','A3','A6','A7','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
-dump <- 'DUMP7'
 
 #### Survey Data 
 
 survey.data.results <- read.survey.data(flexlist)
-
-pepino <- read.data(dump,flexlist)
 
 #### Cluster house 
 
@@ -103,7 +97,9 @@ dates_data_frame <- date.fridge.house(cluster.fridge,cluster.house)
 
 e.neighbor <- neighbor.comparison(cluster.house)
 
-# Iterate
+######
+###### Iterate
+#####
 
 for (i in 1:length(flexlist)) {
   
@@ -124,7 +120,12 @@ for (i in 1:length(flexlist)) {
   
 #Cost plot
 
-  unique.house.sdata <- subset(survey.data.results,survey.data.results$house.id == flexlist[i])
+  energy.receipt.data <- survey.data.results[[1]]
+  time.series.receipt <- survey.data.results[[2]]
+  
+  unique.house.sdata <- subset(energy.receipt.data,energy.receipt.data$house.id == flexlist[i])
+  
+  #Receipt Data Plots
   
   costvars <- subset(unique.house.sdata,unique.house.sdata$cost==1)
   subvars <- subset(unique.house.sdata,unique.house.sdata$cost==0)
@@ -154,6 +155,35 @@ for (i in 1:length(flexlist)) {
   
   } else {}
   
+  
+  #Energy and Cost Time Series Plots
+  
+  your.data <- subset(time.series.receipt,time.series.receipt$Casa == flexlist[i])
+  your.data$color <- ifelse(your.data$fecha== tail(your.data$fecha,1),"this_day","other_days")
+  
+  historico.energia <- ggplot(your.data, aes(x=fecha,y=energia)) + geom_line(stat='identity') + geom_point() + xlab('Fecha (Mes)') + ylab('Consumo de Energia Historico (kWh)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + guides(fill=FALSE)
+  
+  #Storing in file
+  count.plot <- count.plot + 1
+  count.plot.list[[count.plot]] = historico.energia
+  count.plot.name[[count.plot]] = 'historico_energia'
+  
+  max.energia.date <- your.data$fecha[which(your.data$energia == max(your.data$energia))]
+  min.energia.date <- your.data$fecha[which(your.data$energia == min(your.data$energia))]
+  text.list[[count.plot]] <-  paste("Su consumo de energia historico mas alto ocurrio el mes de ",max.energia.date," y el mes de consumo mas bajo ocurrio el ",min.energia.date)
+  
+  
+  historico.cordobas <- ggplot(your.data, aes(x=fecha,y=importe)) + geom_line(stat='identity') + geom_point() + xlab('Fecha (Mes)') + ylab('Gasto en Energia Historico (Cordobas)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + guides(fill=FALSE)
+  
+  #Storing in file
+  count.plot <- count.plot + 1
+  count.plot.list[[count.plot]] = historico.cordobas
+  count.plot.name[[count.plot]] = 'historico_cordobas'
+  
+  max.cordobas.date <- your.data$fecha[which(your.data$importe == max(your.data$importe))]
+  min.cordobas.date <- your.data$fecha[which(your.data$importe == min(your.data$importe))]
+  text.list[[count.plot]] <- paste("Su consumo de Cordobas mas alto ocurrio el mes de ",max.cordobas.date," y el mes de gasto mas bajo ocurrio el ",min.cordobas.date)
+   
 
 ############### Section X: Neighbor Comparison
 
@@ -285,7 +315,10 @@ text.list[[count.plot]] <- paste("Con respecto a su refrigerador, durante la mad
 
 fridge_pct <- join(energy.refrigerator,energy.house,by=c("house.id","date","hour"))
 fridge_pct$fridge_percent <- (fridge_pct$fridge.energy/fridge_pct$energy)*100
-pct_aggregation <- aggregate(fridge_pct$fridge_percent,by=list(fridge_pct$hour),FUN=mean) %>% mutate(hour=Group.1,pct_energy=x) %>% select(hour,pct_energy)
+accurate_fridge_pct <- subset(fridge_pct,fridge_pct$fridge_percent<=100)
+pct_aggregation <- aggregate(accurate_fridge_pct$fridge_percent,by=list(accurate_fridge_pct$hour),FUN=mean,na.rm=TRUE) %>% mutate(hour=Group.1,pct_energy=x) %>% select(hour,pct_energy)
+
+pct_aggregation$pct_energy[pct_aggregation$pct_energy == "Inf"] <- 0
 
 fridge_energy_pct <- ggplot(pct_aggregation, aes(x=hour,y=pct_energy)) + geom_bar(stat='identity',fill="lightskyblue1",color="red",width = 0.8) + xlab('Hora del Dia') + ylab('Porcentaje de Consumo del Refrigerador por Hora  (%)') + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold"))
 

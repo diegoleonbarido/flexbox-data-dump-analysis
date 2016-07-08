@@ -115,6 +115,9 @@ henergy.consumption.hour.house <- function(data_input) {
   
   microid.data.input <- microids.df[[1]]
   
+  microid.data.input$date_hour <- paste(microid.data.input$date,microid.data.input$hour)
+  microid.data.input$time_stamp <- strptime(microid.data.input$date_hour,"%Y-%m-%d %H")
+  
   #Setting unique combinations and values so that we can iterate
   unique.combinations <- unique(microid.data.input[c("house.id","date","hour")])
   unique.microids <- unique(unique.combinations$house.id)
@@ -188,11 +191,11 @@ fenergy.consumption.hour <- function(data_input) {
     
   } else {}
   
-  if (data_input$house.id == 'A26') {
-    unique.data.input <-  unique(data_input[c("house.id","date","hour","energy_sum2")])
-    unique.data.input[unique.data.input==0] <- NA #Getting rid of zeros
-    unique.data.input <- unique.data.input[complete.cases(unique.data.input),] #Getting rid of all NAs
-  } else {}
+  #if (data_input$house.id == 'A26') {
+  #  unique.data.input <-  unique(data_input[c("house.id","date","hour","energy_sum2")])
+  #  unique.data.input[unique.data.input==0] <- NA #Getting rid of zeros
+  #  unique.data.input <- unique.data.input[complete.cases(unique.data.input),] #Getting rid of all NAs
+  #} else {}
   
   names(unique.data.input)[4] <- "energy_sum3"
   
@@ -200,6 +203,7 @@ fenergy.consumption.hour <- function(data_input) {
   unique.microids <- unique(unique.data.input$house.id)
   microids.df <- list()
   
+  #Getting rid of outliers
   for (i in 1:length(unique.microids)) {
     iterate.df <- subset(unique.data.input,unique.data.input$house.id == unique.microids[i])
     iterate.df$lagged <-  lag(iterate.df$energy_sum3,k=1)
@@ -210,6 +214,140 @@ fenergy.consumption.hour <- function(data_input) {
   
   #microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]],microids.df[[18]],microids.df[[19]],microids.df[[20]])
   microid.data.input <- microids.df[[1]]
+  
+  ### Making sure that if the MFI was reset that we are keeping good data
+  
+  for (i in 1:length(unique.microids)) {
+    iterate.df <- subset(microid.data.input,microid.data.input$house.id == unique.microids[i])
+    iterate.df$lagged_again <-  lag(iterate.df$energy_sum3,k=1)
+    iterate.df <- iterate.df[complete.cases(iterate.df),] #Getting rid of all NAs
+    iterate.df$diff_again <- iterate.df$energy_sum3 - iterate.df$lagged_again
+    #microids.df[[i]] <- subset(iterate.df,iterate.df$diff <= quantile(iterate.df$diff,c(0.99)) & iterate.df$diff > 0)
+  }
+  
+  mfi_reset_events <- subset(iterate.df,iterate.df$diff_again < quantile(iterate.df$diff_again,c(0.01)))
+  diff_values <- mfi_reset_events$diff_again
+  
+  ### Runnig a for loop to make sure that the fridge energy consumption is always montonically increasing
+  
+  if (length(diff_values) > 1) {
+  
+  for (i in 1:length(diff_values)){
+    
+    if (i == 1) {
+      index1 = which(iterate.df$diff_again == diff_values[1])
+      first_subset <- iterate.df[1:(index1-1),]
+    } 
+      else if(i == 2 & length(diff_values) >= 2) {
+        index2 = which(iterate.df$diff_again == diff_values[2])
+        second_subset <- iterate.df[(index1+1):index2-1,]
+        second_subset$energy_sum3 <- second_subset$energy_sum3 + tail(first_subset$energy_sum3,1)
+    } 
+      else if(i == 3 & length(diff_values) >= 3) {
+        index3 = which(iterate.df$diff_again == diff_values[3])
+        third_subset <- iterate.df[(index2+1):index3-1,]
+        third_subset$energy_sum3 <- third_subset$energy_sum3 + tail(second_subset$energy_sum3,1)
+    } 
+      else if(i == 4 & length(diff_values) >= 4) {
+        index4 = which(iterate.df$diff_again == diff_values[4])
+        fourth_subset <- iterate.df[(index3+1):index4-1,]
+        fourth_subset$energy_sum3 <- fourth_subset$energy_sum3 + tail(third_subset$energy_sum3,1)
+    } 
+      else if(i == 5 & length(diff_values) >= 5) {
+        index5 = which(iterate.df$diff_again == diff_values[5])
+        fifth_subset <- iterate.df[(index4+1):index5-1,]
+        fifth_subset$energy_sum3 <- fifth_subset$energy_sum3 + tail(fourth_subset$energy_sum3,1)
+    } 
+      else if(i == 6 & length(diff_values) >= 6) {
+        index6 = which(iterate.df$diff_again == diff_values[6])
+        sixth_subset <- iterate.df[(index5+1):index6-1,]
+        sixth_subset$energy_sum3 <- sixth_subset$energy_sum3 + tail(fifth_subset$energy_sum3,1)
+      } 
+      else if(i == 7 & length(diff_values) >= 7) {
+        index7 = which(iterate.df$diff_again == diff_values[7])
+        seventh_subset <- iterate.df[(index6+1):index7-1,]
+        seventh_subset$energy_sum3 <- seventh_subset$energy_sum3 + tail(sixth_subset$energy_sum3,1)
+      } 
+      else if(i == 8 & length(diff_values) >= 8) {
+        index8 = which(iterate.df$diff_again == diff_values[8])
+        eighth_subset <- iterate.df[(index7+1):index8-1,]
+        eighth_subset$energy_sum3 <- eighth_subset$energy_sum3 + tail(seventh_subset$energy_sum3,1)
+      } 
+      else if(i == 9 & length(diff_values) >= 9) {
+        index9 = which(iterate.df$diff_again == diff_values[9])
+        ninth_subset <- iterate.df[(index8+1):index9-1,]
+        ninth_subset$energy_sum3 <- ninth_subset$energy_sum3 + tail(eighth_subset$energy_sum3,1)
+      } 
+      else if(i == 10 & length(diff_values) >= 10) {
+        index10 = which(iterate.df$diff_again == diff_values[10])
+        tenth_subset <- iterate.df[(index9+1):index10-1,]
+        tenth_subset$energy_sum3 <- tenth_subset$energy_sum3 + tail(ninth_subset$energy_sum3,1)
+      } 
+       else if(i == 11 & length(diff_values) >= 11) {
+      index11 = which(iterate.df$diff_again == diff_values[10])
+      eleventh_subset <- iterate.df[(index10+1):index11-1,]
+      eleventh_subset$energy_sum3 <- eleventh_subset$energy_sum3 + tail(tenth_subset$energy_sum3,1)
+       }
+      else if(i == 12 & length(diff_values) >= 12) {
+         index12 = which(iterate.df$diff_again == diff_values[10])
+         twelfth_subset <- iterate.df[(index11+1):index12-1,]
+         twelfth_subset$energy_sum3 <- twelfth_subset$energy_sum3 + tail(eleventh_subset$energy_sum3,1)
+      } 
+     else if(i == 13 & length(diff_values) >= 13) {
+      index13 = which(iterate.df$diff_again == diff_values[10])
+      thirteenth_subset <- iterate.df[(index12+1):index13-1,]
+      thirteenth_subset$energy_sum3 <- thirteenth_subset$energy_sum3 + tail(twelfth_subset$energy_sum3,1)
+     } 
+    else if(i == 14 & length(diff_values) >= 14) {
+      index14 = which(iterate.df$diff_again == diff_values[10])
+      fourteenth_subset <- iterate.df[(index13+1):index14-1,]
+      fourteenth_subset$energy_sum3 <- fourteenth_subset$energy_sum3 + tail(thirteenth_subset$energy_sum3,1)
+    } 
+    else if(i == 15 & length(diff_values) >= 15) {
+      index15 = which(iterate.df$diff_again == diff_values[10])
+      fifeteenth_subset <- iterate.df[(index14+1):index15-1,]
+      fifeteenth_subset$energy_sum3 <- fifeteenth_subset$energy_sum3 + tail(fourteenth_subset$energy_sum3,1)
+    } else {} 
+  } 
+    
+  #Binding all the slices and or subsets together
+    
+    if (length(diff_values) == 2){
+      super <- rbind(first_subset,second_subset)
+    } else if (length(diff_values) == 3) {
+      super <- rbind(first_subset,second_subset,third_subset)
+    } else if (length(diff_values) == 4) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset)
+    } else if (length(diff_values) == 5) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset)
+    } else if (length(diff_values) == 6) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset)
+    } else if (length(diff_values) == 7) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset)
+    } else if (length(diff_values) == 8) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset)
+    } else if (length(diff_values) == 9) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset)
+    } else if (length(diff_values) == 10) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset)
+    } else if (length(diff_values) == 11) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset)
+    } else if (length(diff_values) == 12) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset)
+    } else if (length(diff_values) == 13) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset)
+    } else if (length(diff_values) == 14) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset)
+    } else if (length(diff_values) == 15) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset)
+    } else {}
+    
+    microid.data.input <- super
+  } else {}
+  
+  microid.data.input$date_hour <- paste(microid.data.input$date,microid.data.input$hour)
+  microid.data.input$time_stamp <- strptime(microid.data.input$date_hour,"%Y-%m-%d %H")
+  
   
   #Setting unique combinations and values so that we can iterate
   unique.combinations <- unique(microid.data.input[c("house.id","date","hour")])
@@ -243,9 +381,6 @@ fenergy.consumption.hour <- function(data_input) {
   
   return(fenergy.hourly.consumption)
 }
-
-
-
 
 
 ################## 4. Day of the week analysis (CLUSTER)
