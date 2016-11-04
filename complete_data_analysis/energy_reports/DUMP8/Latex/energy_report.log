@@ -1,0 +1,3007 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  8 JUL 2016 01:24
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**energy_report.tex
+(./energy_report.tex
+LaTeX2e <2014/05/01>
+Babel <3.9k> and hyphenation patterns for 78 languages loaded.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/04/25 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/05/08 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2014/04/23 v1.1a Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 137.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count88
+\Gm@cntv=\count89
+\c@Gm@tempcnt=\count90
+\Gm@bindingoffset=\dimen105
+\Gm@wd@mp=\dimen106
+\Gm@odd@mp=\dimen107
+\Gm@even@mp=\dimen108
+\Gm@layoutwidth=\dimen109
+\Gm@layoutheight=\dimen110
+\Gm@layouthoffset=\dimen111
+\Gm@layoutvoffset=\dimen112
+\Gm@dimlist=\toks15
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks16
+\verbatim@line=\toks17
+\verbatim@in@stream=\read1
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/sidecap/sidecap.sty
+Package: sidecap 2003/06/06 v1.6f SideCap Package (RN/HjG)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\SC@BOXWD=\dimen113
+\SC@CAPWD=\dimen114
+\SC@tempdima=\dimen115
+\SC@tempdimb=\dimen116
+\c@SC@C=\count91
+\SC@BOX=\box26
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen117
+\WF@size=\dimen118
+\c@WF@wrappedlines=\count92
+\WF@box=\box27
+\WF@everypar=\toks18
+Package: wrapfig 2003/01/31  v 3.6
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/textpos/textpos.sty
+Package: textpos 2014/01/03 v1.7j
+
+Package: textpos 2014/01/03 1.7j, absolute positioning of text on the page
+\TP@textbox=\box28
+\TPHorizModule=\dimen119
+\TPVertModule=\dimen120
+\TP@margin=\dimen121
+\TP@absmargin=\dimen122
+Grid set 16 x 16 = 38.39343pt x 49.68562pt
+\TPboxrulesize=\dimen123
+\TP@tbargs=\toks19
+\TP@prevdepth=\dimen124
+) (/usr/local/texlive/2014/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip43
+\fb@frw=\dimen125
+\fb@frh=\dimen126
+\FrameRule=\dimen127
+\FrameSep=\dimen128
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/alltt.sty
+Package: alltt 1997/06/16 v2.0g defines alltt environment
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip44
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks20
+\ex@=\dimen129
+))
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen130
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count93
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count94
+\leftroot@=\count95
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count96
+\DOTSCASE@=\count97
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box29
+\strutbox@=\box30
+\big@size=\dimen131
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count98
+\c@MaxMatrixCols=\count99
+\dotsspace@=\muskip10
+\c@parentequation=\count100
+\dspbrk@lvl=\count101
+\tag@help=\toks21
+\row@=\count102
+\column@=\count103
+\maxfields@=\count104
+\andhelp@=\toks22
+\eqnshift@=\dimen132
+\alignsep@=\dimen133
+\tagshift@=\dimen134
+\tagwidth@=\dimen135
+\totwidth@=\dimen136
+\lineht@=\dimen137
+\@envbody=\toks23
+\multlinegap=\skip45
+\multlinetaggap=\skip46
+\mathdisplay@stack=\toks24
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2014/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+)
+(./energy_report.aux)
+\openout1 = `energy_report.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+
+(/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count105
+\scratchdimen=\dimen138
+\scratchbox=\box31
+\nofMPsegments=\count106
+\nofMParguments=\count107
+\everyMPshowfont=\toks25
+\MPscratchCnt=\count108
+\MPscratchDim=\dimen139
+\MPnumerator=\count109
+\makeMPintoPDFobject=\count110
+\everyMPtoPDFconversion=\toks26
+) (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(25.29494pt, 563.70512pt, 25.29494pt)
+* v-part:(T,H,B)=(25.29494pt, 744.38011pt, 25.29494pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=563.70512pt
+* \textheight=744.38011pt
+* \oddsidemargin=-46.97505pt
+* \evensidemargin=-46.97505pt
+* \topmargin=-83.97505pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/ms/ragged2e.sty
+Package: ragged2e 2009/05/21 v2.1 ragged2e Package (MS)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/ms/everysel.sty
+Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
+
+ABD: EverySelectfont initializing macros
+LaTeX Info: Redefining \selectfont on input line 126.
+)
+\CenteringLeftskip=\skip47
+\RaggedLeftLeftskip=\skip48
+\RaggedRightLeftskip=\skip49
+\CenteringRightskip=\skip50
+\RaggedLeftRightskip=\skip51
+\RaggedRightRightskip=\skip52
+\CenteringParfillskip=\skip53
+\RaggedLeftParfillskip=\skip54
+\RaggedRightParfillskip=\skip55
+\JustifyingParfillskip=\skip56
+\CenteringParindent=\skip57
+\RaggedLeftParindent=\skip58
+\RaggedRightParindent=\skip59
+\JustifyingParindent=\skip60
+)
+Package color Info: Redefining color shadecolor on input line 69.
+
+<figure/gridplot1.jpg, id=1, 481.8pt x 481.8pt>
+File: figure/gridplot1.jpg Graphic file (type jpg)
+ <use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 70.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+
+(./grid_text1.txt)
+LaTeX Font Info:    Try loading font information for U+msa on input line 78.
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 78.
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 74--79
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 84.
+<figure/gridplot2.jpg, id=2, 481.8pt x 481.8pt>
+File: figure/gridplot2.jpg Graphic file (type jpg)
+ <use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 85.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+
+(./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 89--94
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 97.
+<figure/A1_historico_energia.jpg, id=3, 481.8pt x 481.8pt>
+File: figure/A1_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A1_historico_energia.jpg>
+Package pdftex.def Info: figure/A1_historico_energia.jpg used on input line 98.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A1_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 102--107
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 110.
+[1
+
+{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figur
+e/gridplot1.jpg> <./figure/gridplot2.jpg>]
+<figure/A1_historico_cordobas.jpg, id=10, 481.8pt x 481.8pt>
+File: figure/A1_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A1_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A1_historico_cordobas.jpg used on input line 11
+1.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A1_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 115--120
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 123.
+<figure/A1_neighbor_plot.jpg, id=11, 481.8pt x 481.8pt>
+File: figure/A1_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A1_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A1_neighbor_plot.jpg used on input line 124.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A1_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 128--133
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 136.
+[2 <./figure/A1_historico_energia.jpg> <./figure/A1_historico_cordobas.jpg>]
+<figure/A1_costvars_plot.jpg, id=15, 481.8pt x 481.8pt>
+File: figure/A1_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A1_costvars_plot.jpg>
+Package pdftex.def Info: figure/A1_costvars_plot.jpg used on input line 137.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A1_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 141--146
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 149.
+<figure/A1_plot_norm_median.jpg, id=16, 481.8pt x 481.8pt>
+File: figure/A1_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A1_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A1_plot_norm_median.jpg used on input line 150.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A1_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 155--160
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 164.
+[3 <./figure/A1_neighbor_plot.jpg> <./figure/A1_costvars_plot.jpg>]
+<figure/A1_day_of_week_plot.jpg, id=20, 481.8pt x 481.8pt>
+File: figure/A1_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A1_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A1_day_of_week_plot.jpg used on input line 165.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A1_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 170--175
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 180.
+<figure/A1_fplot_norm_median.jpg, id=21, 481.8pt x 481.8pt>
+File: figure/A1_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A1_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A1_fplot_norm_median.jpg used on input line 181
+.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A1_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 186--191
+[]$[]$ 
+ []
+
+[4 <./figure/A1_plot_norm_median.jpg> <./figure/A1_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 196.
+
+<figure/A1_fridge_energy_pct.jpg, id=25, 481.8pt x 481.8pt>
+File: figure/A1_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A1_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A1_fridge_energy_pct.jpg used on input line 197
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A1_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 201--206
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 214.
+[5 <./figure/A1_fplot_norm_median.jpg> <./figure/A1_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 215.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 219--224
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 229.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 230.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 234--239
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 242.
+<figure/A3_historico_energia.jpg, id=29, 481.8pt x 481.8pt>
+File: figure/A3_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A3_historico_energia.jpg>
+Package pdftex.def Info: figure/A3_historico_energia.jpg used on input line 243
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 247--252
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 255.
+[6] <figure/A3_historico_cordobas.jpg, id=33, 481.8pt x 481.8pt>
+File: figure/A3_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A3_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A3_historico_cordobas.jpg used on input line 25
+6.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 260--265
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 269.
+<figure/A3_neighbor_plot.jpg, id=34, 481.8pt x 481.8pt>
+File: figure/A3_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A3_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A3_neighbor_plot.jpg used on input line 270.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 274--279
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 282.
+[7 <./figure/A3_historico_energia.jpg> <./figure/A3_historico_cordobas.jpg>]
+<figure/A3_costvars_plot.jpg, id=39, 481.8pt x 481.8pt>
+File: figure/A3_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A3_costvars_plot.jpg>
+Package pdftex.def Info: figure/A3_costvars_plot.jpg used on input line 283.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 287--292
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 295.
+<figure/A3_subvars_plot.jpg, id=40, 481.8pt x 481.8pt>
+File: figure/A3_subvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A3_subvars_plot.jpg>
+Package pdftex.def Info: figure/A3_subvars_plot.jpg used on input line 296.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_subvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 300--305
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 308.
+[8 <./figure/A3_neighbor_plot.jpg> <./figure/A3_costvars_plot.jpg>]
+<figure/A3_plot_norm_median.jpg, id=44, 481.8pt x 481.8pt>
+File: figure/A3_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A3_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A3_plot_norm_median.jpg used on input line 309.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 314--319
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 323.
+<figure/A3_day_of_week_plot.jpg, id=45, 481.8pt x 481.8pt>
+File: figure/A3_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A3_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A3_day_of_week_plot.jpg used on input line 324.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 329--334
+[]$[]$ 
+ []
+
+[9 <./figure/A3_subvars_plot.jpg> <./figure/A3_plot_norm_median.jpg>]
+Package color Info: Redefining color shadecolor on input line 339.
+
+<figure/A3_fplot_norm_median.jpg, id=49, 481.8pt x 481.8pt>
+File: figure/A3_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A3_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A3_fplot_norm_median.jpg used on input line 340
+.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A3_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 345--350
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 355.
+[10 <./figure/A3_day_of_week_plot.jpg> <./figure/A3_fplot_norm_median.jpg>]
+<figure/A3_fridge_energy_pct.jpg, id=53, 481.8pt x 481.8pt>
+File: figure/A3_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A3_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A3_fridge_energy_pct.jpg used on input line 356
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A3_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 360--365
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 371.
+[11 <./figure/A3_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+ <use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 372.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+
+(./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 376--381
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 386.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 387.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 391--396
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 399.
+<figure/A6_historico_energia.jpg, id=57, 481.8pt x 481.8pt>
+File: figure/A6_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A6_historico_energia.jpg>
+Package pdftex.def Info: figure/A6_historico_energia.jpg used on input line 400
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A6_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 404--409
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 412.
+[12] <figure/A6_historico_cordobas.jpg, id=61, 481.8pt x 481.8pt>
+File: figure/A6_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A6_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A6_historico_cordobas.jpg used on input line 41
+3.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A6_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 417--422
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 426.
+<figure/A6_neighbor_plot.jpg, id=62, 481.8pt x 481.8pt>
+File: figure/A6_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A6_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A6_neighbor_plot.jpg used on input line 427.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A6_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 431--436
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 439.
+[13 <./figure/A6_historico_energia.jpg> <./figure/A6_historico_cordobas.jpg>]
+<figure/A6_costvars_plot.jpg, id=67, 481.8pt x 481.8pt>
+File: figure/A6_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A6_costvars_plot.jpg>
+Package pdftex.def Info: figure/A6_costvars_plot.jpg used on input line 440.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A6_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 444--449
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 452.
+<figure/A6_plot_norm_median.jpg, id=68, 481.8pt x 481.8pt>
+File: figure/A6_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A6_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A6_plot_norm_median.jpg used on input line 453.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A6_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 458--463
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 467.
+[14 <./figure/A6_neighbor_plot.jpg> <./figure/A6_costvars_plot.jpg>]
+<figure/A6_day_of_week_plot.jpg, id=72, 481.8pt x 481.8pt>
+File: figure/A6_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A6_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A6_day_of_week_plot.jpg used on input line 468.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A6_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 473--478
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 483.
+<figure/A6_fplot_norm_median.jpg, id=73, 481.8pt x 481.8pt>
+File: figure/A6_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A6_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A6_fplot_norm_median.jpg used on input line 484
+.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A6_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 489--494
+[]$[]$ 
+ []
+
+[15 <./figure/A6_plot_norm_median.jpg> <./figure/A6_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 499.
+
+<figure/A6_fridge_energy_pct.jpg, id=77, 481.8pt x 481.8pt>
+File: figure/A6_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A6_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A6_fridge_energy_pct.jpg used on input line 500
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A6_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 504--509
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 515.
+[16 <./figure/A6_fplot_norm_median.jpg> <./figure/A6_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 516.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 520--525
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 530.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 531.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 535--540
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 543.
+<figure/A7_historico_energia.jpg, id=81, 481.8pt x 481.8pt>
+File: figure/A7_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A7_historico_energia.jpg>
+Package pdftex.def Info: figure/A7_historico_energia.jpg used on input line 544
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A7_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 548--553
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 556.
+[17] <figure/A7_historico_cordobas.jpg, id=85, 481.8pt x 481.8pt>
+File: figure/A7_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A7_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A7_historico_cordobas.jpg used on input line 55
+7.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A7_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 561--566
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 570.
+<figure/A7_neighbor_plot.jpg, id=86, 481.8pt x 481.8pt>
+File: figure/A7_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A7_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A7_neighbor_plot.jpg used on input line 571.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A7_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 575--580
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 583.
+[18 <./figure/A7_historico_energia.jpg> <./figure/A7_historico_cordobas.jpg>]
+<figure/A7_costvars_plot.jpg, id=90, 481.8pt x 481.8pt>
+File: figure/A7_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A7_costvars_plot.jpg>
+Package pdftex.def Info: figure/A7_costvars_plot.jpg used on input line 584.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A7_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 588--593
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 596.
+<figure/A7_plot_norm_median.jpg, id=91, 481.8pt x 481.8pt>
+File: figure/A7_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A7_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A7_plot_norm_median.jpg used on input line 597.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A7_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 602--607
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 611.
+[19 <./figure/A7_neighbor_plot.jpg> <./figure/A7_costvars_plot.jpg>]
+<figure/A7_day_of_week_plot.jpg, id=96, 481.8pt x 481.8pt>
+File: figure/A7_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A7_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A7_day_of_week_plot.jpg used on input line 612.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A7_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 617--622
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 627.
+<figure/A7_fplot_norm_median.jpg, id=97, 481.8pt x 481.8pt>
+File: figure/A7_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A7_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A7_fplot_norm_median.jpg used on input line 628
+.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A7_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 633--638
+[]$[]$ 
+ []
+
+[20 <./figure/A7_plot_norm_median.jpg> <./figure/A7_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 643.
+
+<figure/A7_fridge_energy_pct.jpg, id=101, 481.8pt x 481.8pt>
+File: figure/A7_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A7_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A7_fridge_energy_pct.jpg used on input line 644
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A7_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 648--653
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 659.
+[21 <./figure/A7_fplot_norm_median.jpg> <./figure/A7_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 660.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 664--669
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 674.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 675.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 679--684
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 687.
+<figure/A9_historico_energia.jpg, id=105, 481.8pt x 481.8pt>
+File: figure/A9_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A9_historico_energia.jpg>
+Package pdftex.def Info: figure/A9_historico_energia.jpg used on input line 688
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A9_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 692--697
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 700.
+[22] <figure/A9_historico_cordobas.jpg, id=109, 481.8pt x 481.8pt>
+File: figure/A9_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A9_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A9_historico_cordobas.jpg used on input line 70
+1.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A9_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 705--710
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 714.
+<figure/A9_neighbor_plot.jpg, id=110, 481.8pt x 481.8pt>
+File: figure/A9_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A9_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A9_neighbor_plot.jpg used on input line 715.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A9_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 719--724
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 727.
+[23 <./figure/A9_historico_energia.jpg> <./figure/A9_historico_cordobas.jpg>]
+<figure/A9_costvars_plot.jpg, id=114, 481.8pt x 481.8pt>
+File: figure/A9_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A9_costvars_plot.jpg>
+Package pdftex.def Info: figure/A9_costvars_plot.jpg used on input line 728.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A9_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 732--737
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 740.
+<figure/A9_plot_norm_median.jpg, id=115, 481.8pt x 481.8pt>
+File: figure/A9_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A9_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A9_plot_norm_median.jpg used on input line 741.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A9_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 746--751
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 755.
+[24 <./figure/A9_neighbor_plot.jpg> <./figure/A9_costvars_plot.jpg>]
+<figure/A9_day_of_week_plot.jpg, id=119, 481.8pt x 481.8pt>
+File: figure/A9_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A9_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A9_day_of_week_plot.jpg used on input line 756.
+
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A9_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 761--766
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 771.
+<figure/A9_fplot_norm_median.jpg, id=120, 481.8pt x 481.8pt>
+File: figure/A9_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A9_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A9_fplot_norm_median.jpg used on input line 772
+.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A9_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 777--782
+[]$[]$ 
+ []
+
+[25 <./figure/A9_plot_norm_median.jpg> <./figure/A9_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 787.
+
+<figure/A9_fridge_energy_pct.jpg, id=125, 481.8pt x 481.8pt>
+File: figure/A9_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A9_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A9_fridge_energy_pct.jpg used on input line 788
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A9_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 792--797
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 803.
+[26 <./figure/A9_fplot_norm_median.jpg> <./figure/A9_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 804.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 808--813
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 818.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 819.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 823--828
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 831.
+<figure/A11_historico_energia.jpg, id=129, 481.8pt x 481.8pt>
+File: figure/A11_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A11_historico_energia.jpg>
+Package pdftex.def Info: figure/A11_historico_energia.jpg used on input line 83
+2.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A11_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 836--841
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 844.
+[27] <figure/A11_historico_cordobas.jpg, id=133, 481.8pt x 481.8pt>
+File: figure/A11_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A11_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A11_historico_cordobas.jpg used on input line 8
+45.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A11_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 849--854
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 858.
+<figure/A11_neighbor_plot.jpg, id=134, 481.8pt x 481.8pt>
+File: figure/A11_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A11_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A11_neighbor_plot.jpg used on input line 859.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A11_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 863--868
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 871.
+[28 <./figure/A11_historico_energia.jpg> <./figure/A11_historico_cordobas.jpg>]
+<figure/A11_costvars_plot.jpg, id=138, 481.8pt x 481.8pt>
+File: figure/A11_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A11_costvars_plot.jpg>
+Package pdftex.def Info: figure/A11_costvars_plot.jpg used on input line 872.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A11_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 876--881
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 884.
+<figure/A11_plot_norm_median.jpg, id=139, 481.8pt x 481.8pt>
+File: figure/A11_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A11_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A11_plot_norm_median.jpg used on input line 885
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A11_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 890--895
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 899.
+[29 <./figure/A11_neighbor_plot.jpg> <./figure/A11_costvars_plot.jpg>]
+<figure/A11_day_of_week_plot.jpg, id=143, 481.8pt x 481.8pt>
+File: figure/A11_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A11_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A11_day_of_week_plot.jpg used on input line 900
+.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A11_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 905--910
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 915.
+<figure/A11_fplot_norm_median.jpg, id=144, 481.8pt x 481.8pt>
+File: figure/A11_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A11_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A11_fplot_norm_median.jpg used on input line 91
+6.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A11_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 921--926
+[]$[]$ 
+ []
+
+[30 <./figure/A11_plot_norm_median.jpg> <./figure/A11_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 931.
+
+<figure/A11_fridge_energy_pct.jpg, id=148, 481.8pt x 481.8pt>
+File: figure/A11_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A11_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A11_fridge_energy_pct.jpg used on input line 93
+2.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A11_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 936--941
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 947.
+[31 <./figure/A11_fplot_norm_median.jpg> <./figure/A11_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 948.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 952--957
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 962.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 963.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 967--972
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 975.
+<figure/A12_historico_energia.jpg, id=153, 481.8pt x 481.8pt>
+File: figure/A12_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A12_historico_energia.jpg>
+Package pdftex.def Info: figure/A12_historico_energia.jpg used on input line 97
+6.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A12_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 980--985
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 988.
+[32] <figure/A12_historico_cordobas.jpg, id=157, 481.8pt x 481.8pt>
+File: figure/A12_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A12_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A12_historico_cordobas.jpg used on input line 9
+89.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A12_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 993--998
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1002.
+<figure/A12_neighbor_plot.jpg, id=158, 481.8pt x 481.8pt>
+File: figure/A12_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A12_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A12_neighbor_plot.jpg used on input line 1003.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A12_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1007--1012
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1015.
+[33 <./figure/A12_historico_energia.jpg> <./figure/A12_historico_cordobas.jpg>]
+<figure/A12_costvars_plot.jpg, id=162, 481.8pt x 481.8pt>
+File: figure/A12_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A12_costvars_plot.jpg>
+Package pdftex.def Info: figure/A12_costvars_plot.jpg used on input line 1016.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A12_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1020--1025
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1028.
+<figure/A12_plot_norm_median.jpg, id=163, 481.8pt x 481.8pt>
+File: figure/A12_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A12_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A12_plot_norm_median.jpg used on input line 102
+9.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A12_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1034--1039
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1043.
+[34 <./figure/A12_neighbor_plot.jpg> <./figure/A12_costvars_plot.jpg>]
+<figure/A12_day_of_week_plot.jpg, id=167, 481.8pt x 481.8pt>
+File: figure/A12_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A12_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A12_day_of_week_plot.jpg used on input line 104
+4.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A12_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1049--1054
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1059.
+<figure/A12_fplot_norm_median.jpg, id=168, 481.8pt x 481.8pt>
+File: figure/A12_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A12_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A12_fplot_norm_median.jpg used on input line 10
+60.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A12_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1065--1070
+[]$[]$ 
+ []
+
+[35 <./figure/A12_plot_norm_median.jpg> <./figure/A12_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 1075.
+
+<figure/A12_fridge_energy_pct.jpg, id=172, 481.8pt x 481.8pt>
+File: figure/A12_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A12_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A12_fridge_energy_pct.jpg used on input line 10
+76.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A12_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1080--1085
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1091.
+[36 <./figure/A12_fplot_norm_median.jpg> <./figure/A12_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 1092.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1096--1101
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1106.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 1107.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1111--1116
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1119.
+<figure/A14_historico_energia.jpg, id=176, 481.8pt x 481.8pt>
+File: figure/A14_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A14_historico_energia.jpg>
+Package pdftex.def Info: figure/A14_historico_energia.jpg used on input line 11
+20.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1124--1129
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1132.
+[37] <figure/A14_historico_cordobas.jpg, id=181, 481.8pt x 481.8pt>
+File: figure/A14_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A14_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A14_historico_cordobas.jpg used on input line 1
+133.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1137--1142
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1146.
+<figure/A14_neighbor_plot.jpg, id=182, 481.8pt x 481.8pt>
+File: figure/A14_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A14_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A14_neighbor_plot.jpg used on input line 1147.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1151--1156
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1159.
+[38 <./figure/A14_historico_energia.jpg> <./figure/A14_historico_cordobas.jpg>]
+<figure/A14_costvars_plot.jpg, id=186, 481.8pt x 481.8pt>
+File: figure/A14_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A14_costvars_plot.jpg>
+Package pdftex.def Info: figure/A14_costvars_plot.jpg used on input line 1160.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1164--1169
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1172.
+<figure/A14_subvars_plot.jpg, id=187, 481.8pt x 481.8pt>
+File: figure/A14_subvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A14_subvars_plot.jpg>
+Package pdftex.def Info: figure/A14_subvars_plot.jpg used on input line 1173.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_subvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1177--1182
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1185.
+[39 <./figure/A14_neighbor_plot.jpg> <./figure/A14_costvars_plot.jpg>]
+<figure/A14_plot_norm_median.jpg, id=191, 481.8pt x 481.8pt>
+File: figure/A14_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A14_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A14_plot_norm_median.jpg used on input line 118
+6.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1191--1196
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1200.
+<figure/A14_day_of_week_plot.jpg, id=192, 481.8pt x 481.8pt>
+File: figure/A14_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A14_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A14_day_of_week_plot.jpg used on input line 120
+1.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1206--1211
+[]$[]$ 
+ []
+
+[40 <./figure/A14_subvars_plot.jpg> <./figure/A14_plot_norm_median.jpg>]
+Package color Info: Redefining color shadecolor on input line 1216.
+
+<figure/A14_fplot_norm_median.jpg, id=196, 481.8pt x 481.8pt>
+File: figure/A14_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A14_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A14_fplot_norm_median.jpg used on input line 12
+17.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A14_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1222--1227
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1232.
+[41 <./figure/A14_day_of_week_plot.jpg> <./figure/A14_fplot_norm_median.jpg>]
+<figure/A14_fridge_energy_pct.jpg, id=200, 481.8pt x 481.8pt>
+File: figure/A14_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A14_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A14_fridge_energy_pct.jpg used on input line 12
+33.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A14_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1237--1242
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1247.
+[42 <./figure/A14_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+ <use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 1248.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+
+(./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1252--1257
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1262.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 1263.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1267--1272
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1275.
+<figure/A16_historico_energia.jpg, id=204, 481.8pt x 481.8pt>
+File: figure/A16_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A16_historico_energia.jpg>
+Package pdftex.def Info: figure/A16_historico_energia.jpg used on input line 12
+76.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A16_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1280--1285
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1288.
+[43] <figure/A16_historico_cordobas.jpg, id=209, 481.8pt x 481.8pt>
+File: figure/A16_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A16_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A16_historico_cordobas.jpg used on input line 1
+289.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A16_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1293--1298
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1302.
+<figure/A16_neighbor_plot.jpg, id=210, 481.8pt x 481.8pt>
+File: figure/A16_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A16_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A16_neighbor_plot.jpg used on input line 1303.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A16_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1307--1312
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1315.
+[44 <./figure/A16_historico_energia.jpg> <./figure/A16_historico_cordobas.jpg>]
+<figure/A16_costvars_plot.jpg, id=214, 481.8pt x 481.8pt>
+File: figure/A16_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A16_costvars_plot.jpg>
+Package pdftex.def Info: figure/A16_costvars_plot.jpg used on input line 1316.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A16_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1320--1325
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1328.
+<figure/A16_plot_norm_median.jpg, id=215, 481.8pt x 481.8pt>
+File: figure/A16_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A16_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A16_plot_norm_median.jpg used on input line 132
+9.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A16_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1334--1339
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1343.
+[45 <./figure/A16_neighbor_plot.jpg> <./figure/A16_costvars_plot.jpg>]
+<figure/A16_day_of_week_plot.jpg, id=219, 481.8pt x 481.8pt>
+File: figure/A16_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A16_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A16_day_of_week_plot.jpg used on input line 134
+4.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A16_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1349--1354
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1359.
+<figure/A16_fplot_norm_median.jpg, id=220, 481.8pt x 481.8pt>
+File: figure/A16_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A16_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A16_fplot_norm_median.jpg used on input line 13
+60.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A16_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1365--1370
+[]$[]$ 
+ []
+
+[46 <./figure/A16_plot_norm_median.jpg> <./figure/A16_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 1375.
+
+<figure/A16_fridge_energy_pct.jpg, id=224, 481.8pt x 481.8pt>
+File: figure/A16_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A16_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A16_fridge_energy_pct.jpg used on input line 13
+76.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A16_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1380--1385
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1389.
+File: figure/gridplot1.jpg Graphic file (type jpg)
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 1390.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1394--1399
+[]$[]$ 
+ []
+
+[47 <./figure/A16_fplot_norm_median.jpg> <./figure/A16_fridge_energy_pct.jpg>]
+Package color Info: Redefining color shadecolor on input line 1404.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 1405.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1409--1414
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1417.
+<figure/A17_historico_energia.jpg, id=228, 481.8pt x 481.8pt>
+File: figure/A17_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A17_historico_energia.jpg>
+Package pdftex.def Info: figure/A17_historico_energia.jpg used on input line 14
+18.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A17_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1422--1427
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1430.
+[48] <figure/A17_historico_cordobas.jpg, id=232, 481.8pt x 481.8pt>
+File: figure/A17_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A17_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A17_historico_cordobas.jpg used on input line 1
+431.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A17_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1435--1440
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1444.
+<figure/A17_neighbor_plot.jpg, id=233, 481.8pt x 481.8pt>
+File: figure/A17_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A17_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A17_neighbor_plot.jpg used on input line 1445.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A17_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1449--1454
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1457.
+[49 <./figure/A17_historico_energia.jpg> <./figure/A17_historico_cordobas.jpg>]
+<figure/A17_costvars_plot.jpg, id=238, 481.8pt x 481.8pt>
+File: figure/A17_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A17_costvars_plot.jpg>
+Package pdftex.def Info: figure/A17_costvars_plot.jpg used on input line 1458.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A17_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1462--1467
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1470.
+<figure/A17_plot_norm_median.jpg, id=239, 481.8pt x 481.8pt>
+File: figure/A17_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A17_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A17_plot_norm_median.jpg used on input line 147
+1.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A17_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1476--1481
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1485.
+[50 <./figure/A17_neighbor_plot.jpg> <./figure/A17_costvars_plot.jpg>]
+<figure/A17_day_of_week_plot.jpg, id=243, 481.8pt x 481.8pt>
+File: figure/A17_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A17_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A17_day_of_week_plot.jpg used on input line 148
+6.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A17_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1491--1496
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1501.
+<figure/A17_fplot_norm_median.jpg, id=244, 481.8pt x 481.8pt>
+File: figure/A17_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A17_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A17_fplot_norm_median.jpg used on input line 15
+02.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A17_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1507--1512
+[]$[]$ 
+ []
+
+[51 <./figure/A17_plot_norm_median.jpg> <./figure/A17_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 1517.
+
+<figure/A17_fridge_energy_pct.jpg, id=249, 481.8pt x 481.8pt>
+File: figure/A17_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A17_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A17_fridge_energy_pct.jpg used on input line 15
+18.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A17_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1522--1527
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1530.
+File: figure/gridplot1.jpg Graphic file (type jpg)
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 1531.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1535--1540
+[]$[]$ 
+ []
+
+[52 <./figure/A17_fplot_norm_median.jpg> <./figure/A17_fridge_energy_pct.jpg>]
+Package color Info: Redefining color shadecolor on input line 1545.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 1546.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1550--1555
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1558.
+<figure/A18_historico_energia.jpg, id=253, 481.8pt x 481.8pt>
+File: figure/A18_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A18_historico_energia.jpg>
+Package pdftex.def Info: figure/A18_historico_energia.jpg used on input line 15
+59.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1563--1568
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1571.
+[53] <figure/A18_historico_cordobas.jpg, id=257, 481.8pt x 481.8pt>
+File: figure/A18_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A18_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A18_historico_cordobas.jpg used on input line 1
+572.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1576--1581
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1585.
+<figure/A18_neighbor_plot.jpg, id=258, 481.8pt x 481.8pt>
+File: figure/A18_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A18_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A18_neighbor_plot.jpg used on input line 1586.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1590--1595
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1598.
+[54 <./figure/A18_historico_energia.jpg> <./figure/A18_historico_cordobas.jpg>]
+<figure/A18_costvars_plot.jpg, id=262, 481.8pt x 481.8pt>
+File: figure/A18_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A18_costvars_plot.jpg>
+Package pdftex.def Info: figure/A18_costvars_plot.jpg used on input line 1599.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1603--1608
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1611.
+<figure/A18_subvars_plot.jpg, id=263, 481.8pt x 481.8pt>
+File: figure/A18_subvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A18_subvars_plot.jpg>
+Package pdftex.def Info: figure/A18_subvars_plot.jpg used on input line 1612.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_subvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1616--1621
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1624.
+[55 <./figure/A18_neighbor_plot.jpg> <./figure/A18_costvars_plot.jpg>]
+<figure/A18_plot_norm_median.jpg, id=268, 481.8pt x 481.8pt>
+File: figure/A18_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A18_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A18_plot_norm_median.jpg used on input line 162
+5.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1630--1635
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1639.
+<figure/A18_day_of_week_plot.jpg, id=269, 481.8pt x 481.8pt>
+File: figure/A18_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A18_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A18_day_of_week_plot.jpg used on input line 164
+0.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1645--1650
+[]$[]$ 
+ []
+
+[56 <./figure/A18_subvars_plot.jpg> <./figure/A18_plot_norm_median.jpg>]
+Package color Info: Redefining color shadecolor on input line 1655.
+
+<figure/A18_fplot_norm_median.jpg, id=273, 481.8pt x 481.8pt>
+File: figure/A18_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A18_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A18_fplot_norm_median.jpg used on input line 16
+56.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A18_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1661--1666
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1671.
+[57 <./figure/A18_day_of_week_plot.jpg> <./figure/A18_fplot_norm_median.jpg>]
+<figure/A18_fridge_energy_pct.jpg, id=277, 481.8pt x 481.8pt>
+File: figure/A18_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A18_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A18_fridge_energy_pct.jpg used on input line 16
+72.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A18_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1676--1681
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1686.
+[58 <./figure/A18_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+ <use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 1687.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+
+(./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1691--1696
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1701.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 1702.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1706--1711
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1714.
+<figure/A19_historico_energia.jpg, id=281, 481.8pt x 481.8pt>
+File: figure/A19_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A19_historico_energia.jpg>
+Package pdftex.def Info: figure/A19_historico_energia.jpg used on input line 17
+15.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A19_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1719--1724
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1727.
+[59] <figure/A19_historico_cordobas.jpg, id=285, 481.8pt x 481.8pt>
+File: figure/A19_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A19_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A19_historico_cordobas.jpg used on input line 1
+728.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A19_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1732--1737
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1741.
+<figure/A19_neighbor_plot.jpg, id=286, 481.8pt x 481.8pt>
+File: figure/A19_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A19_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A19_neighbor_plot.jpg used on input line 1742.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A19_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1746--1751
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1754.
+[60 <./figure/A19_historico_energia.jpg> <./figure/A19_historico_cordobas.jpg>]
+<figure/A19_costvars_plot.jpg, id=290, 481.8pt x 481.8pt>
+File: figure/A19_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A19_costvars_plot.jpg>
+Package pdftex.def Info: figure/A19_costvars_plot.jpg used on input line 1755.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A19_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1759--1764
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1767.
+<figure/A19_plot_norm_median.jpg, id=291, 481.8pt x 481.8pt>
+File: figure/A19_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A19_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A19_plot_norm_median.jpg used on input line 176
+8.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A19_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1773--1778
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1782.
+[61 <./figure/A19_neighbor_plot.jpg> <./figure/A19_costvars_plot.jpg>]
+<figure/A19_day_of_week_plot.jpg, id=296, 481.8pt x 481.8pt>
+File: figure/A19_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A19_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A19_day_of_week_plot.jpg used on input line 178
+3.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A19_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1788--1793
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1798.
+<figure/A19_fplot_norm_median.jpg, id=297, 481.8pt x 481.8pt>
+File: figure/A19_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A19_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A19_fplot_norm_median.jpg used on input line 17
+99.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A19_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1804--1809
+[]$[]$ 
+ []
+
+[62 <./figure/A19_plot_norm_median.jpg> <./figure/A19_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 1814.
+
+<figure/A19_fridge_energy_pct.jpg, id=301, 481.8pt x 481.8pt>
+File: figure/A19_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A19_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A19_fridge_energy_pct.jpg used on input line 18
+15.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A19_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1819--1824
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1829.
+[63 <./figure/A19_fplot_norm_median.jpg> <./figure/A19_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 1830.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1834--1839
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1844.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 1845.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1849--1854
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1857.
+<figure/A20_historico_energia.jpg, id=305, 481.8pt x 481.8pt>
+File: figure/A20_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A20_historico_energia.jpg>
+Package pdftex.def Info: figure/A20_historico_energia.jpg used on input line 18
+58.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1862--1867
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1870.
+[64] <figure/A20_historico_cordobas.jpg, id=309, 481.8pt x 481.8pt>
+File: figure/A20_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A20_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A20_historico_cordobas.jpg used on input line 1
+871.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1875--1880
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1884.
+<figure/A20_neighbor_plot.jpg, id=310, 481.8pt x 481.8pt>
+File: figure/A20_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A20_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A20_neighbor_plot.jpg used on input line 1885.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1889--1894
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1897.
+[65 <./figure/A20_historico_energia.jpg> <./figure/A20_historico_cordobas.jpg>]
+<figure/A20_costvars_plot.jpg, id=314, 481.8pt x 481.8pt>
+File: figure/A20_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A20_costvars_plot.jpg>
+Package pdftex.def Info: figure/A20_costvars_plot.jpg used on input line 1898.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1902--1907
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1910.
+<figure/A20_subvars_plot.jpg, id=315, 481.8pt x 481.8pt>
+File: figure/A20_subvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A20_subvars_plot.jpg>
+Package pdftex.def Info: figure/A20_subvars_plot.jpg used on input line 1911.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_subvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1915--1920
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1923.
+[66 <./figure/A20_neighbor_plot.jpg> <./figure/A20_costvars_plot.jpg>]
+<figure/A20_plot_norm_median.jpg, id=319, 481.8pt x 481.8pt>
+File: figure/A20_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A20_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A20_plot_norm_median.jpg used on input line 192
+4.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1929--1934
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1938.
+<figure/A20_day_of_week_plot.jpg, id=320, 481.8pt x 481.8pt>
+File: figure/A20_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A20_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A20_day_of_week_plot.jpg used on input line 193
+9.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1944--1949
+[]$[]$ 
+ []
+
+[67 <./figure/A20_subvars_plot.jpg> <./figure/A20_plot_norm_median.jpg>]
+Package color Info: Redefining color shadecolor on input line 1954.
+
+<figure/A20_fplot_norm_median.jpg, id=325, 481.8pt x 481.8pt>
+File: figure/A20_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A20_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A20_fplot_norm_median.jpg used on input line 19
+55.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A20_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1960--1965
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1970.
+[68 <./figure/A20_day_of_week_plot.jpg> <./figure/A20_fplot_norm_median.jpg>]
+<figure/A20_fridge_energy_pct.jpg, id=329, 481.8pt x 481.8pt>
+File: figure/A20_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A20_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A20_fridge_energy_pct.jpg used on input line 19
+71.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A20_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1975--1980
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 1985.
+[69 <./figure/A20_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+ <use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 1986.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+
+(./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 1990--1995
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2000.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 2001.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2005--2010
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2013.
+<figure/A21_historico_energia.jpg, id=333, 481.8pt x 481.8pt>
+File: figure/A21_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A21_historico_energia.jpg>
+Package pdftex.def Info: figure/A21_historico_energia.jpg used on input line 20
+14.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A21_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2018--2023
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2026.
+[70] <figure/A21_historico_cordobas.jpg, id=337, 481.8pt x 481.8pt>
+File: figure/A21_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A21_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A21_historico_cordobas.jpg used on input line 2
+027.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A21_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2031--2036
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2040.
+<figure/A21_neighbor_plot.jpg, id=338, 481.8pt x 481.8pt>
+File: figure/A21_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A21_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A21_neighbor_plot.jpg used on input line 2041.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A21_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2045--2050
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2053.
+[71 <./figure/A21_historico_energia.jpg> <./figure/A21_historico_cordobas.jpg>]
+<figure/A21_costvars_plot.jpg, id=342, 481.8pt x 481.8pt>
+File: figure/A21_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A21_costvars_plot.jpg>
+Package pdftex.def Info: figure/A21_costvars_plot.jpg used on input line 2054.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A21_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2058--2063
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2066.
+<figure/A21_plot_norm_median.jpg, id=343, 481.8pt x 481.8pt>
+File: figure/A21_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A21_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A21_plot_norm_median.jpg used on input line 206
+7.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A21_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2072--2077
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2081.
+[72 <./figure/A21_neighbor_plot.jpg> <./figure/A21_costvars_plot.jpg>]
+<figure/A21_day_of_week_plot.jpg, id=347, 481.8pt x 481.8pt>
+File: figure/A21_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A21_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A21_day_of_week_plot.jpg used on input line 208
+2.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A21_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2087--2092
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2097.
+<figure/A21_fplot_norm_median.jpg, id=348, 481.8pt x 481.8pt>
+File: figure/A21_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A21_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A21_fplot_norm_median.jpg used on input line 20
+98.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A21_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2103--2108
+[]$[]$ 
+ []
+
+[73 <./figure/A21_plot_norm_median.jpg> <./figure/A21_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 2113.
+
+<figure/A21_fridge_energy_pct.jpg, id=353, 481.8pt x 481.8pt>
+File: figure/A21_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A21_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A21_fridge_energy_pct.jpg used on input line 21
+14.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A21_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2118--2123
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2126.
+File: figure/gridplot1.jpg Graphic file (type jpg)
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 2127.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2131--2136
+[]$[]$ 
+ []
+
+[74 <./figure/A21_fplot_norm_median.jpg> <./figure/A21_fridge_energy_pct.jpg>]
+Package color Info: Redefining color shadecolor on input line 2141.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 2142.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2146--2151
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2154.
+<figure/A22_historico_energia.jpg, id=357, 481.8pt x 481.8pt>
+File: figure/A22_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A22_historico_energia.jpg>
+Package pdftex.def Info: figure/A22_historico_energia.jpg used on input line 21
+55.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2159--2164
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2167.
+[75] <figure/A22_historico_cordobas.jpg, id=361, 481.8pt x 481.8pt>
+File: figure/A22_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A22_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A22_historico_cordobas.jpg used on input line 2
+168.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2172--2177
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2181.
+<figure/A22_neighbor_plot.jpg, id=362, 481.8pt x 481.8pt>
+File: figure/A22_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A22_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A22_neighbor_plot.jpg used on input line 2182.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2186--2191
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2194.
+[76 <./figure/A22_historico_energia.jpg> <./figure/A22_historico_cordobas.jpg>]
+<figure/A22_costvars_plot.jpg, id=366, 481.8pt x 481.8pt>
+File: figure/A22_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A22_costvars_plot.jpg>
+Package pdftex.def Info: figure/A22_costvars_plot.jpg used on input line 2195.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2199--2204
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2207.
+<figure/A22_subvars_plot.jpg, id=367, 481.8pt x 481.8pt>
+File: figure/A22_subvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A22_subvars_plot.jpg>
+Package pdftex.def Info: figure/A22_subvars_plot.jpg used on input line 2208.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_subvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2212--2217
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2220.
+[77 <./figure/A22_neighbor_plot.jpg> <./figure/A22_costvars_plot.jpg>]
+<figure/A22_plot_norm_median.jpg, id=371, 481.8pt x 481.8pt>
+File: figure/A22_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A22_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A22_plot_norm_median.jpg used on input line 222
+1.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2226--2231
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2235.
+<figure/A22_day_of_week_plot.jpg, id=372, 481.8pt x 481.8pt>
+File: figure/A22_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A22_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A22_day_of_week_plot.jpg used on input line 223
+6.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2241--2246
+[]$[]$ 
+ []
+
+[78 <./figure/A22_subvars_plot.jpg> <./figure/A22_plot_norm_median.jpg>]
+Package color Info: Redefining color shadecolor on input line 2251.
+
+<figure/A22_fplot_norm_median.jpg, id=376, 481.8pt x 481.8pt>
+File: figure/A22_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A22_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A22_fplot_norm_median.jpg used on input line 22
+52.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A22_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2257--2262
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2267.
+[79 <./figure/A22_day_of_week_plot.jpg> <./figure/A22_fplot_norm_median.jpg>]
+<figure/A22_fridge_energy_pct.jpg, id=381, 481.8pt x 481.8pt>
+File: figure/A22_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A22_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A22_fridge_energy_pct.jpg used on input line 22
+68.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A22_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2272--2277
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2282.
+[80 <./figure/A22_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+ <use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 2283.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+
+(./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2287--2292
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2297.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 2298.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2302--2307
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2310.
+<figure/A24_historico_energia.jpg, id=385, 481.8pt x 481.8pt>
+File: figure/A24_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A24_historico_energia.jpg>
+Package pdftex.def Info: figure/A24_historico_energia.jpg used on input line 23
+11.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A24_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2315--2320
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2323.
+[81] <figure/A24_historico_cordobas.jpg, id=389, 481.8pt x 481.8pt>
+File: figure/A24_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A24_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A24_historico_cordobas.jpg used on input line 2
+324.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A24_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2328--2333
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2337.
+<figure/A24_neighbor_plot.jpg, id=390, 481.8pt x 481.8pt>
+File: figure/A24_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A24_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A24_neighbor_plot.jpg used on input line 2338.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A24_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2342--2347
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2350.
+[82 <./figure/A24_historico_energia.jpg> <./figure/A24_historico_cordobas.jpg>]
+<figure/A24_costvars_plot.jpg, id=394, 481.8pt x 481.8pt>
+File: figure/A24_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A24_costvars_plot.jpg>
+Package pdftex.def Info: figure/A24_costvars_plot.jpg used on input line 2351.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A24_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2355--2360
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2363.
+<figure/A24_plot_norm_median.jpg, id=395, 481.8pt x 481.8pt>
+File: figure/A24_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A24_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A24_plot_norm_median.jpg used on input line 236
+4.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A24_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2369--2374
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2378.
+[83 <./figure/A24_neighbor_plot.jpg> <./figure/A24_costvars_plot.jpg>]
+<figure/A24_day_of_week_plot.jpg, id=399, 481.8pt x 481.8pt>
+File: figure/A24_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A24_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A24_day_of_week_plot.jpg used on input line 237
+9.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A24_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2384--2389
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2394.
+<figure/A24_fplot_norm_median.jpg, id=400, 481.8pt x 481.8pt>
+File: figure/A24_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A24_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A24_fplot_norm_median.jpg used on input line 23
+95.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A24_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2400--2405
+[]$[]$ 
+ []
+
+[84 <./figure/A24_plot_norm_median.jpg> <./figure/A24_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 2410.
+
+<figure/A24_fridge_energy_pct.jpg, id=404, 481.8pt x 481.8pt>
+File: figure/A24_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A24_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A24_fridge_energy_pct.jpg used on input line 24
+11.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A24_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2415--2420
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2423.
+File: figure/gridplot1.jpg Graphic file (type jpg)
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 2424.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2428--2433
+[]$[]$ 
+ []
+
+[85 <./figure/A24_fplot_norm_median.jpg> <./figure/A24_fridge_energy_pct.jpg>]
+Package color Info: Redefining color shadecolor on input line 2438.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 2439.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2443--2448
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2451.
+<figure/A25_historico_energia.jpg, id=409, 481.8pt x 481.8pt>
+File: figure/A25_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A25_historico_energia.jpg>
+Package pdftex.def Info: figure/A25_historico_energia.jpg used on input line 24
+52.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A25_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2456--2461
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2464.
+[86] <figure/A25_historico_cordobas.jpg, id=413, 481.8pt x 481.8pt>
+File: figure/A25_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A25_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A25_historico_cordobas.jpg used on input line 2
+465.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A25_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2469--2474
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2478.
+<figure/A25_neighbor_plot.jpg, id=414, 481.8pt x 481.8pt>
+File: figure/A25_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A25_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A25_neighbor_plot.jpg used on input line 2479.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A25_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2483--2488
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2491.
+[87 <./figure/A25_historico_energia.jpg> <./figure/A25_historico_cordobas.jpg>]
+<figure/A25_costvars_plot.jpg, id=418, 481.8pt x 481.8pt>
+File: figure/A25_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A25_costvars_plot.jpg>
+Package pdftex.def Info: figure/A25_costvars_plot.jpg used on input line 2492.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A25_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2496--2501
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2506.
+<figure/A25_plot_norm_median.jpg, id=419, 481.8pt x 481.8pt>
+File: figure/A25_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A25_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A25_plot_norm_median.jpg used on input line 250
+7.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A25_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2512--2517
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2521.
+[88 <./figure/A25_neighbor_plot.jpg> <./figure/A25_costvars_plot.jpg>]
+<figure/A25_day_of_week_plot.jpg, id=423, 481.8pt x 481.8pt>
+File: figure/A25_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A25_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A25_day_of_week_plot.jpg used on input line 252
+2.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A25_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2527--2532
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2537.
+<figure/A25_fplot_norm_median.jpg, id=424, 481.8pt x 481.8pt>
+File: figure/A25_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A25_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A25_fplot_norm_median.jpg used on input line 25
+38.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A25_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2543--2548
+[]$[]$ 
+ []
+
+[89 <./figure/A25_plot_norm_median.jpg> <./figure/A25_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 2553.
+
+<figure/A25_fridge_energy_pct.jpg, id=428, 481.8pt x 481.8pt>
+File: figure/A25_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A25_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A25_fridge_energy_pct.jpg used on input line 25
+54.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A25_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2558--2563
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2568.
+[90 <./figure/A25_fplot_norm_median.jpg> <./figure/A25_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 2569.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2573--2578
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2583.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 2584.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2588--2593
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2596.
+<figure/A26_historico_energia.jpg, id=432, 481.8pt x 481.8pt>
+File: figure/A26_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A26_historico_energia.jpg>
+Package pdftex.def Info: figure/A26_historico_energia.jpg used on input line 25
+97.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A26_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2601--2606
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2609.
+[91] <figure/A26_historico_cordobas.jpg, id=437, 481.8pt x 481.8pt>
+File: figure/A26_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A26_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A26_historico_cordobas.jpg used on input line 2
+610.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A26_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2614--2619
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2623.
+<figure/A26_neighbor_plot.jpg, id=438, 481.8pt x 481.8pt>
+File: figure/A26_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A26_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A26_neighbor_plot.jpg used on input line 2624.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A26_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2628--2633
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2636.
+[92 <./figure/A26_historico_energia.jpg> <./figure/A26_historico_cordobas.jpg>]
+<figure/A26_costvars_plot.jpg, id=442, 481.8pt x 481.8pt>
+File: figure/A26_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A26_costvars_plot.jpg>
+Package pdftex.def Info: figure/A26_costvars_plot.jpg used on input line 2637.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A26_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2641--2646
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2649.
+<figure/A26_plot_norm_median.jpg, id=443, 481.8pt x 481.8pt>
+File: figure/A26_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A26_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A26_plot_norm_median.jpg used on input line 265
+0.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A26_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2655--2660
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2664.
+[93 <./figure/A26_neighbor_plot.jpg> <./figure/A26_costvars_plot.jpg>]
+<figure/A26_day_of_week_plot.jpg, id=447, 481.8pt x 481.8pt>
+File: figure/A26_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A26_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A26_day_of_week_plot.jpg used on input line 266
+5.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A26_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2670--2675
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2680.
+<figure/A26_fplot_norm_median.jpg, id=448, 481.8pt x 481.8pt>
+File: figure/A26_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A26_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A26_fplot_norm_median.jpg used on input line 26
+81.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A26_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2686--2691
+[]$[]$ 
+ []
+
+[94 <./figure/A26_plot_norm_median.jpg> <./figure/A26_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 2696.
+
+<figure/A26_fridge_energy_pct.jpg, id=452, 481.8pt x 481.8pt>
+File: figure/A26_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A26_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A26_fridge_energy_pct.jpg used on input line 26
+97.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A26_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2701--2706
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2709.
+File: figure/gridplot1.jpg Graphic file (type jpg)
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 2710.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2714--2719
+[]$[]$ 
+ []
+
+[95 <./figure/A26_fplot_norm_median.jpg> <./figure/A26_fridge_energy_pct.jpg>]
+Package color Info: Redefining color shadecolor on input line 2724.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 2725.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2729--2734
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2737.
+<figure/A28_historico_energia.jpg, id=456, 481.8pt x 481.8pt>
+File: figure/A28_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A28_historico_energia.jpg>
+Package pdftex.def Info: figure/A28_historico_energia.jpg used on input line 27
+38.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A28_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2742--2747
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2750.
+[96] <figure/A28_historico_cordobas.jpg, id=460, 481.8pt x 481.8pt>
+File: figure/A28_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A28_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A28_historico_cordobas.jpg used on input line 2
+751.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A28_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2755--2760
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2764.
+<figure/A28_neighbor_plot.jpg, id=461, 481.8pt x 481.8pt>
+File: figure/A28_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A28_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A28_neighbor_plot.jpg used on input line 2765.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A28_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2769--2774
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2777.
+[97 <./figure/A28_historico_energia.jpg> <./figure/A28_historico_cordobas.jpg>]
+<figure/A28_costvars_plot.jpg, id=466, 481.8pt x 481.8pt>
+File: figure/A28_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A28_costvars_plot.jpg>
+Package pdftex.def Info: figure/A28_costvars_plot.jpg used on input line 2778.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A28_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2782--2787
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2790.
+<figure/A28_plot_norm_median.jpg, id=467, 481.8pt x 481.8pt>
+File: figure/A28_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A28_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A28_plot_norm_median.jpg used on input line 279
+1.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A28_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2796--2801
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2805.
+[98 <./figure/A28_neighbor_plot.jpg> <./figure/A28_costvars_plot.jpg>]
+<figure/A28_day_of_week_plot.jpg, id=471, 481.8pt x 481.8pt>
+File: figure/A28_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A28_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A28_day_of_week_plot.jpg used on input line 280
+6.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A28_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2811--2816
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2821.
+<figure/A28_fplot_norm_median.jpg, id=472, 481.8pt x 481.8pt>
+File: figure/A28_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A28_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A28_fplot_norm_median.jpg used on input line 28
+22.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A28_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2827--2832
+[]$[]$ 
+ []
+
+[99 <./figure/A28_plot_norm_median.jpg> <./figure/A28_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 2837.
+
+<figure/A28_fridge_energy_pct.jpg, id=476, 481.8pt x 481.8pt>
+File: figure/A28_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A28_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A28_fridge_energy_pct.jpg used on input line 28
+38.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A28_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2842--2847
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2852.
+[100 <./figure/A28_fplot_norm_median.jpg> <./figure/A28_fridge_energy_pct.jpg>]
+File: figure/gridplot1.jpg Graphic file (type jpg)
+<use figure/gridplot1.jpg>
+Package pdftex.def Info: figure/gridplot1.jpg used on input line 2853.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text1.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2857--2862
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2867.
+File: figure/gridplot2.jpg Graphic file (type jpg)
+<use figure/gridplot2.jpg>
+Package pdftex.def Info: figure/gridplot2.jpg used on input line 2868.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./grid_text2.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2872--2877
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2880.
+<figure/A29_historico_energia.jpg, id=480, 481.8pt x 481.8pt>
+File: figure/A29_historico_energia.jpg Graphic file (type jpg)
+
+<use figure/A29_historico_energia.jpg>
+Package pdftex.def Info: figure/A29_historico_energia.jpg used on input line 28
+81.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A29_historico_energia.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2885--2890
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2893.
+[101] <figure/A29_historico_cordobas.jpg, id=485, 481.8pt x 481.8pt>
+File: figure/A29_historico_cordobas.jpg Graphic file (type jpg)
+
+<use figure/A29_historico_cordobas.jpg>
+Package pdftex.def Info: figure/A29_historico_cordobas.jpg used on input line 2
+894.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A29_historico_cordobas.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2898--2903
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2907.
+<figure/A29_neighbor_plot.jpg, id=486, 481.8pt x 481.8pt>
+File: figure/A29_neighbor_plot.jpg Graphic file (type jpg)
+
+<use figure/A29_neighbor_plot.jpg>
+Package pdftex.def Info: figure/A29_neighbor_plot.jpg used on input line 2908.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A29_neighbor_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2912--2917
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2920.
+[102 <./figure/A29_historico_energia.jpg> <./figure/A29_historico_cordobas.jpg>
+] <figure/A29_costvars_plot.jpg, id=490, 481.8pt x 481.8pt>
+File: figure/A29_costvars_plot.jpg Graphic file (type jpg)
+
+<use figure/A29_costvars_plot.jpg>
+Package pdftex.def Info: figure/A29_costvars_plot.jpg used on input line 2921.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A29_costvars_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2925--2930
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2933.
+<figure/A29_plot_norm_median.jpg, id=491, 481.8pt x 481.8pt>
+File: figure/A29_plot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A29_plot_norm_median.jpg>
+Package pdftex.def Info: figure/A29_plot_norm_median.jpg used on input line 293
+4.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A29_plot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2939--2944
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2948.
+[103 <./figure/A29_neighbor_plot.jpg> <./figure/A29_costvars_plot.jpg>]
+<figure/A29_day_of_week_plot.jpg, id=496, 481.8pt x 481.8pt>
+File: figure/A29_day_of_week_plot.jpg Graphic file (type jpg)
+
+<use figure/A29_day_of_week_plot.jpg>
+Package pdftex.def Info: figure/A29_day_of_week_plot.jpg used on input line 294
+9.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A29_day_of_week_plot.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2954--2959
+[]$[]$ 
+ []
+
+Package color Info: Redefining color shadecolor on input line 2964.
+<figure/A29_fplot_norm_median.jpg, id=497, 481.8pt x 481.8pt>
+File: figure/A29_fplot_norm_median.jpg Graphic file (type jpg)
+
+<use figure/A29_fplot_norm_median.jpg>
+Package pdftex.def Info: figure/A29_fplot_norm_median.jpg used on input line 29
+65.
+(pdftex.def)             Requested size: 361.3491pt x 361.3491pt.
+ (./A29_fplot_norm_median.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2970--2975
+[]$[]$ 
+ []
+
+[104 <./figure/A29_plot_norm_median.jpg> <./figure/A29_day_of_week_plot.jpg>]
+Package color Info: Redefining color shadecolor on input line 2980.
+
+<figure/A29_fridge_energy_pct.jpg, id=501, 481.8pt x 481.8pt>
+File: figure/A29_fridge_energy_pct.jpg Graphic file (type jpg)
+
+<use figure/A29_fridge_energy_pct.jpg>
+Package pdftex.def Info: figure/A29_fridge_energy_pct.jpg used on input line 29
+81.
+(pdftex.def)             Requested size: 313.16628pt x 313.16628pt.
+ (./A29_fridge_energy_pct.txt)
+Overfull \hbox (176.60687pt too wide) in paragraph at lines 2985--2990
+[]$[]$ 
+ []
+
+[105 <./figure/A29_fplot_norm_median.jpg> <./figure/A29_fridge_energy_pct.jpg>]
+(./energy_report.aux) ) 
+Here is how much of TeX's memory you used:
+ 4585 strings out of 493117
+ 82735 string characters out of 6135433
+ 116331 words of memory out of 5000000
+ 7400 multiletter control sequences out of 15000+600000
+ 5339 words of font info for 22 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 38i,6n,32p,774b,170s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2014/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr10.pfb>
+Output written on energy_report.pdf (105 pages, 4651119 bytes).
+PDF statistics:
+ 514 PDF objects out of 1000 (max. 8388607)
+ 236 compressed objects within 3 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 836 words of extra memory for PDF output out of 10000 (max. 10000000)
+
