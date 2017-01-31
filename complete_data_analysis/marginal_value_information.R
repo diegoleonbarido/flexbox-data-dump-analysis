@@ -3,15 +3,18 @@
 # 1. Timeseries Plots for Households 
   # 1.1 Treatment (plot, adjustments,etc)
   # 1.2 Control
-  # 1.3 Comparison between treatment and control groups for cost and energy time series data
+  # 1.3 Comparison between treatment and control groups, analyze how this varies by willingness to pay, and how it varies by people who kept the energy data or not
   # 1.4 Coefficient of variability
+  # 1.5 Who is saving energy? Those who like the information more, or the ones who like the report more? Is it those who like the texts the most? Is it those with the willingness to pay?
+  # 1.6 Are the people who chose the information those who have the largest energy savings? Are the people with the highest willingness to pay saving energy with information?
 
-  # Propensity score matching, pairing groups, looking at trends month after month rather than month comparisons
+
+  # Need to Do: Propensity score matching, pairing groups, looking at trends month after month rather than month comparisons
   # Make sure that for the houses that received the text message, you include the months when the texting began 
   # Things to control for: number of people living inside the house, number of appliances, business modifictions
 
 # 2. Learning
-  # 2.1 Accuracy of energy expenditures and energy costs
+  # 2.1 Accuracy of energy expenditures and energy costs (calculate mean historical values vs. the one time payment for the control group, not only compare the one month to the one remembrance)
   # 2.2 Tariff Values
 
 
@@ -26,6 +29,7 @@
   # 3.8 Compare satisfaction with the data products based on income
   # 3.9 Do people who implement fridge energy savings strategies experience savings? 
   # 3.9.1 Do people who say they've experienced greater savings, or increased control actually experience savgins?
+  # 3.9.2 Of the people who paid for willingness to pay, and those who actually kept the information, what were their perceptions on information before the study began?
 
 # 4. Sensor data comparison 
   # 3.1 Z-wave vs. time series data from CNDC - how far off are the values? (changes over time)
@@ -35,12 +39,20 @@
 # 4. Reports and Text Messages
   # 4.1 Existence and bersistence of behavioral change after paper reports (need dates from Odaly) vs. sms (server)
 
-# 5. DR, grid data and carbon
+# 5. Scarcity 
+
+
+# 6. DR, grid data and carbon
   # 4.2 
 
 
 ############ Libraries
 
+library(RPostgreSQL)
+library(DBI)
+library(sqldf)
+library(RSQLite)
+library(RMySQL)
 library(data.table)
 library(lubridate)
 library(plyr)
@@ -57,6 +69,7 @@ library(doParallel)
 library(doMC)
 library(tidyr)
 library(qdap)
+
 
 # Turn warnings off
 options(warn=-1)
@@ -76,30 +89,210 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/hourly_plots_functions.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_consumption_functions.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/scraping_scripts.R')
+source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/tariff_analysis_functions.R')
 
 
 ############ Define Functions
+
+#Trimming
+trim <- function (x) gsub("^\\s+|\\s+$", "", x)
 
 substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
 
-############ Define Groups
+#Month by month reductions
+month_by_month <- function(group_data,variable){
+  group_data[, lag_variable:=c(NA, get(variable)[-.N]), by=Casa]
+  group_data$diff_variable <- group_data[,get(variable)] - group_data[,lag_variable]
+  return(group_data)
+}
 
-flexlist <- c('A1','A3','A6','A7','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
-control_group_list <- c("7","20","26","45","77","124","185","191","203","204","302","304","305","307","310","311")
 
+#Differences for each month one year afterwards (e.g June 2016 - June 2015)
+
+month_diffs <- function(group_data,variable){
+  
+  years_data <- c(2014,2015,2016)
+  Casa_ID <- unique(group_data$Casa)
+  
+  for(i in 1:length(Casa_ID)){
+    
+    for(j in 1:length(years_data)) {
+      
+      t_year1_year2 <-  group_data[Casa==Casa_ID[i] & Ano==years_data[j] |  Casa==Casa_ID[i] & Ano==(years_data[j]+1) ]
+      
+      n_occur <- data.frame(table(t_year1_year2$Mes))
+      n_occur_freq2 <- n_occur[n_occur$Freq > 1,]
+      
+      keep_months_casa <- t_year1_year2[Mes %in% n_occur_freq2$Var1,]
+      
+      just_diffs <- keep_months_casa[, month_diff := diff(get("energia_ajustada")), by = list(Mes)]
+      keep_year <- just_diffs[Ano >= max(just_diffs$Ano)]
+      
+      if(j==1){
+        keep_year_large <- keep_year
+      } else {
+        keep_year_large <- rbind(keep_year_large,keep_year)
+      }
+    }
+    
+    if(i==1){
+      keep_house_large <- keep_year_large
+    } else {
+      keep_house_large <- rbind(keep_house_large,keep_year_large)
+    }
+  }
+  
+  if(group_data$treatment == 'Treatment'){
+    keep_house_large <- keep_house_large[,list(Casa,month_diff,treatment,Mes,Ano,intervention_group,report_intervention_month,information_group,sms_intervention_month,sms_intervention_month_text,wtp_lw_md_h,fraction_lw_md_h)]
+    return(keep_house_large)
+  } else {
+    keep_house_large <- keep_house_large[,list(Casa,month_diff,treatment,Mes,Ano,intervention_group,report_intervention_month,information_group,sms_intervention_month,sms_intervention_month_text)]
+    keep_house_large$wtp_lw_md_h <- NA
+    keep_house_large$fraction_lw_md_h <- NA
+    return(keep_house_large)
+  }
+  
+}
+
+#month_diffs <- function(group_data,variable) {
+#  just_diffs <- group_data[, month_diff := diff(get(variable)), by = list(Casa, Mes)]
+#  if(group_data$treatment == 'Treatment'){
+#    complete_diffs <- just_diffs[complete.cases(just_diffs$month_diff),]
+#    month_difference <- complete_diffs[Ano==2016] %>% select(Casa,month_diff,treatment,Mes,intervention_group,report_intervention_month,information_group,sms_intervention_month,sms_intervention_month_text,wtp_lw_md_h,fraction_lw_md_h)
+#    return(month_difference)
+#  } else {
+#    complete_diffs <- just_diffs[complete.cases(just_diffs$month_diff),]
+#    month_difference <- complete_diffs[Ano==2016] %>% select(Casa,month_diff,treatment,Mes,intervention_group,report_intervention_month,information_group,sms_intervention_month,sms_intervention_month_text)
+#    month_difference$wtp_lw_md_h <- NA
+#    month_difference$fraction_lw_md_h <- NA
+#    return(month_difference)
+#  }
+#}
+
+
+# Plot with subset
+call_plot_subset <- function(df,group_var,subset_val1,subset_val2,analyze_var,xlab_,ylab_,title_plot) {
+  
+  mean_one <- df[get(group_var)==subset_val1,mean(na.omit(get(analyze_var)))]
+  mean_two <- df[get(group_var)==subset_val2,mean(na.omit(get(analyze_var)))]
+  Means = c(mean_one,mean_two)
+  Names = c(subset_val1,subset_val2)
+  lines_df = data.frame(Names,Means)   
+  
+  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) +geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
+  return(plot_this)
+}
+
+# Plot several variables to subset
+call_plot_subset_several <- function(df,group_var,subset_val1,subset_val2,subset_val3,subset_val4,analyze_var,xlab_,ylab_,title_plot) {
+  mean_one <- df[get(group_var)==subset_val1,mean(na.omit(get(analyze_var)))]
+  mean_two <- df[get(group_var)==subset_val2,mean(na.omit(get(analyze_var)))]
+  mean_three <- df[get(group_var)==subset_val3,mean(na.omit(get(analyze_var)))]
+  mean_four <- df[get(group_var)==subset_val4,mean(na.omit(get(analyze_var)))]
+  
+  Means = c(mean_one,mean_two,mean_three,mean_four)
+  Names = c(subset_val1,subset_val2,subset_val3,subset_val4)
+  lines_df = data.frame(Names,Means)   
+  
+  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) +geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
+  return(plot_this)
+}
+
+
+############ Define Groups and Variables
+
+# Missing A1 and A25 - add them for the next round
+flexlist <- c('A3','A6','A7','A11','A12','A14','A16','A17','A18','A19','A20','A21','A24','A25','A26','A28','A29') #Missing 'A1' Removed'A9','A22',
+treatment_group_list <- c('A1','A3','A6','A7','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
+control_group_list <- c(7,20,26,45,77,124,185,191,203,204,302,304,305,307,310,311)
+info_paying_houses <- c('A3','A6','A11','A12','A17','A18','A20','A21','A25','A26') #houses that are paying for information
+
+# Tariff Types
+Casa <- c("A1","A3","A6","A7","A9","A11","A12","A14","A16","A17","A18","A19","A20","A21","A22","A24","A25","A26","A28","A29")
+Tariff_Code <- c("T-0","T-J","T-1","T-0","T-0","T-1","T-1","T-0","T-0","T-1","T-J","T-1","T-0","T-1","T-0","T-0","T-0","T-1","T-1","T-1")
+Tariff_Code_Control <- c("T-1","T-1","T-0","T-0","T-1","T-0","T-1","T-1","T-0","T-1","T-0","T-0","T-0","T-0","T-0","T-0")
+casa_tariff_code <- data.frame(Casa,Tariff_Code)
+control_tariff_code <- data.frame(control_group_list,Tariff_Code_Control) %>% mutate(Casa=control_group_list,Tariff_Code=Tariff_Code_Control) %>% select(Casa,Tariff_Code)
+
+
+# House or Micro-Enterprise
+control_house_me_list <- c('pulperia','pulperia','pulperia','pulperia','pulperia','pulperia','pulperia','pulperia','pulperia','pulperia','casa','casa','casa','casa','casa','casa')
+treatment_house_me_list <- c('casa','pulperia','pulperia','pulperia','casa','pulperia','pulperia','pulperia','pulperia','pulperia','casa','pulperia','casa','pulperia','casa','casa','casa','pulperia','pulperia','pulperia')
+control_house_me_df <- data.frame(control_group_list,control_house_me_list) %>% mutate(Casa=control_group_list,Lugar=control_house_me_list) %>% select(Casa,Lugar)
+treatment_house_me_df <- data.frame(treatment_group_list,treatment_house_me_list) %>% mutate(Casa=treatment_group_list,Lugar=treatment_house_me_list) %>% select(Casa,Lugar)
+
+
+# Steps in the implementation
+dump <- 'DUMP13'
+
+# Houses that have too much variability: A29
+
+
+############
 ############ Reading Data
+############
+
+### Sever Connection
+
+#Set up connection to server 
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv = PostgreSQL(), user = "cosmos", dbname = "cosmos_ni", host = "cosmosdata.niuera.co",  password = "nosotrossomoscosmos",port = "5432")
+dbClearResult(dbListResults(con)[[1]]) # Close result set . Reset connection first 
+
+    #Retrieve Data
+    tariff_data <- dbSendQuery(con,statement=paste("SELECT * from user_prices_nio where datetime > '01-01-2013'"));
+    tariff_data.dt <- as.data.table(fetch(tariff_data,n=-1))
+    
+    tariff_data.dt$month <- month(tariff_data.dt$datetime)
+    tariff_data.dt$Ano <- year(tariff_data.dt$datetime)
+    tariff_data.dt$Mes <- ifelse(tariff_data.dt$month==1,"Enero",ifelse(tariff_data.dt$month==2,"Febrero",ifelse(tariff_data.dt$month==3,"Marzo",ifelse(tariff_data.dt$month==4,"Abril",ifelse(tariff_data.dt$month==5,"Mayo",ifelse(tariff_data.dt$month==6,"Junio",ifelse(tariff_data.dt$month==7,"Julio",ifelse(tariff_data.dt$month==8,"Agosto",ifelse(tariff_data.dt$month==9,"Septiembre",ifelse(tariff_data.dt$month==10,"Octubre",ifelse(tariff_data.dt$month==11,"Noviembre","Diciembre")))))))))))
+
+#Sensor Data
+data.list.houses <- read.house.fridge(dump,flexlist) # read.house.fridge or  read.data.all  or   read.data.all.parallel
+    cluster.house <- data.list.houses[[2]] %>% mutate(house_Energy=houseAll_Energy) %>% select(id,datetime,houseAll_Voltage,houseAll_Current,houseAll_Power,house_Energy,house.id)
+    cluster.fridge <- data.list.houses[[1]]
 
 
-survey.data.results <- read.survey.data(flexlist) # Survey Data 
-
-
+#Survey Data
+survey.data.results <- read.survey.data(Casa)
+energy.receipt.data <- read.survey.data(Casa)[[1]]
+energy.receipt.control <- read.survey.data(Casa)[[8]]
+e_i_treatment <- survey.data.results[[2]]
+e_i_control <- read.survey.data(Casa)[[3]]
+survey.data.responses <- survey.data.results[[4]]
 flexlistid_encuesta_id <- subset(survey.data.results[[6]],survey.data.results[[6]]$control_estudio=='estudio') %>% select(encuesta_id,flexbox_id)
 control_encuesta_id <- subset(survey.data.results[[6]],survey.data.results[[6]]$control_estudio=='control') %>% select(encuesta_id,flexbox_id)
 
- 
+#Creating groups with high willingness to pay, and high willingness to pay as a fraction of income
 
+valor_papelito <- survey.data.responses[c('flexbox_id','encuesta_id','bdm_valor_dinero','bdm_valor_informacion','valor_papelito')]
+
+      valor_papelito$bdm_valor_dinero[is.na(valor_papelito$bdm_valor_dinero)] <- 0
+      valor_papelito$bdm_valor_informacion[is.na(valor_papelito$bdm_valor_informacion)] <- 0
+      valor_papelito$valor_papelito[is.na(valor_papelito$valor_papelito)] <- 0
+      valor_papelito$bet <- valor_papelito$bdm_valor_dinero + valor_papelito$bdm_valor_informacion
+      wtp <- valor_papelito[c('flexbox_id','encuesta_id','valor_papelito','bet')]
+      wtp <- subset(wtp,wtp$bet !=0 & wtp$valor_papelito !=0)
+      
+      wtp_values <- c(100,70,80,200,50,100,150,200,200,100,100,100,80,100,125,20,200,0,0,0)
+      wtp_paper <- c(60,20,60,100,60,80,160,180,40,200,120,40,160,100,200,100,0,0,0,0)
+      Casa <- c('A25','A26','A12','A11','A9','A6','A7','A3','A17','A29','A28','A20','A19','A18','A14','A16','A21','A1','A22','A24')
+      
+      wtp_df <- data.frame(Casa,wtp_paper,wtp_values)
+      #Creating low, medium low, medium high, and high values
+      wtp_df$wtp_lw_md_h <- ifelse(wtp_df$wtp_values>=0 & wtp_df$wtp_values <= 50,'low',ifelse(wtp_df$wtp_values>50 & wtp_df$wtp_values<=100,'medium-low',ifelse(wtp_df$wtp_values>100 & wtp_df$wtp_values <= 150,'medium-high','high')))
+      #Calculating the mean value for each household 
+      e_i_treatment_sub <- subset(e_i_treatment,e_i_treatment$Ano==2016)
+      e_i_treatment_means <- aggregate(e_i_treatment_sub$importe,by=list(e_i_treatment_sub$Casa),FUN=mean,na.rm=TRUE) %>% mutate(Casa=Group.1,mean_cost=x) %>% select(Casa,mean_cost)
+
+      wtp_df <- merge(wtp_df,e_i_treatment_means,by=c('Casa'))
+      wtp_df$fraction_wtp <- wtp_df$wtp_values/wtp_df$mean_cost
+      wtp_df$fraction_lw_md_h <- ifelse(wtp_df$fraction_wtp>=0 & wtp_df$fraction_wtp <= 0.05,'low',ifelse(wtp_df$fraction_wtp>0.05 & wtp_df$fraction_wtp<0.1,'medium-low',ifelse(wtp_df$fraction_wtp>=0.1 & wtp_df$fraction_wtp <= 0.2,'medium-high','high')))
+      
+      
+        
 
 
 ############# Analysis
@@ -107,207 +300,163 @@ control_encuesta_id <- subset(survey.data.results[[6]],survey.data.results[[6]]$
 ####### NOTE1: Need to add a date (and a distribution) for when some of the households lost their energy reports! ##############
 ####### NOTE2: Need to add the time series with adjusted energy values for treatment and control. Once you've added the adjusted time series 
 ######  NOTE3: I suggest adding a 1 or a 0 to code whether or not the house was in treatment or in control
-
-
-
-energy.receipt.data <- survey.data.results[[1]]
-
+      
 time.series.receipt <- survey.data.results[[2]] %>% mutate(treatment="Treatment")
     time.series.receipt$Casa <- as.character(time.series.receipt$Casa)
     
-    #Dates of Report intervention
-    time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre",1,0 )
-    #Dates of SMS intervention
+    #Dates of Report intervention (all of them receving reports)
+    time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Febrero" | time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre",1,0 )
+    #Dates of SMS intervention (all of them receiving texts)
     time.series.receipt$intervention_group <- ifelse(time.series.receipt$fecha>="2016-06-01","Treatment Post-Intervention","Treatment Pre-Intervention")
-    time.series.receipt$sms_intervention_month <- ifelse(time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre",1,0 )
-    #Bind
+    time.series.receipt$sms_intervention_month <- ifelse(time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre", 1,0 )
+    time.series.receipt$sms_intervention_month_text <- ifelse(time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre", "Actively Receiving SMS","No SMS")
+    #Adding an ID for whether or not the group is keeping or isn't keeping the information
+    time.series.receipt$information_group <- ifelse(time.series.receipt$Casa == 'A3' | time.series.receipt$Casa == 'A6' | time.series.receipt$Casa == 'A11' | time.series.receipt$Casa == 'A12' | time.series.receipt$Casa == 'A17' | time.series.receipt$Casa == 'A18' | time.series.receipt$Casa == 'A20' | time.series.receipt$Casa == 'A21' | time.series.receipt$Casa == 'A25' | time.series.receipt$Casa == 'A26',"Won Willingness to Pay Information Bid","Lost Willingness to Pay Information Bid")
+    #Merge with WTP data from above
+    time.series.receipt <- merge(time.series.receipt,wtp_df,by=c('Casa'))
+    #Turn the importe to dollars
+    time.series.receipt$importe_dl <- time.series.receipt$importe/29
+    #Merge with house info
+    time.series.receipt <- merge(time.series.receipt,treatment_house_me_df,by=c('Casa'))
+    
+    # Calculating 'energia' values from historical 'importe' values
+    calculated_i_e_treatment <- get.tariff.data('treatment',e_i_treatment,casa_tariff_code,time.series.receipt,energy.receipt.data,tariff_data.dt) 
+    time.series.receipt <- merge(calculated_i_e_treatment,time.series.receipt,by=c('Casa','Mes','Ano'),all=T)
+    time.series.receipt$energia <- 'NA'
+    
+          for(i in 1:length(time.series.receipt$energia.y)) {
+            if(is.na(time.series.receipt$energia.y[i])==T){
+              time.series.receipt$energia[i] = time.series.receipt$energia.x[i]
+              time.series.receipt$energia_ajustada[i] = time.series.receipt$energia.x[i]
+            } else (time.series.receipt$energia[i] = time.series.receipt$energia.y[i])
+          }
+
+    time.series.receipt <- time.series.receipt[order(time.series.receipt$Casa,time.series.receipt$fecha),]
+    time.series.receipt$energia <- as.integer(time.series.receipt$energia)
+    time.series.receipt$energia_ajustada <- as.integer(time.series.receipt$energia_ajustada)
+    time.series.receipt$importe_dl <- as.integer(time.series.receipt$importe_dl)
+    
+    #Turn into data table
     time.series.receipt.dt <- as.data.table(time.series.receipt)
     
 time.series.receipt.control <-  survey.data.results[[3]] %>% mutate(treatment="Control")
-    time.series.receipt.control$Casa <- as.character(time.series.receipt.control$Casa)
+time.series.receipt.control$Casa <- as.character(time.series.receipt.control$Casa)
     
-    #Dates of Report intervention
-    time.series.receipt.control$report_intervention_month <- ifelse(time.series.receipt.control$Mes == "Marzo" | time.series.receipt.control$Mes == "Abril" | time.series.receipt.control$Mes == "Mayo" | time.series.receipt.control$Mes == "Junio" | time.series.receipt.control$Mes == "Julio" | time.series.receipt.control$Mes == "Agosto" | time.series.receipt.control$Mes == "Septiembre" | time.series.receipt.control$Mes == "Octubre",1,0 )
-    #Dates of SMS intervention
+    # Dates of Report intervention
+    time.series.receipt.control$report_intervention_month <- ifelse(time.series.receipt.control$Mes == "Marzo" | time.series.receipt.control$Mes == "Abril" | time.series.receipt.control$Mes == "Mayo" | time.series.receipt.control$Mes == "Junio" | time.series.receipt.control$Mes == "Julio" | time.series.receipt.control$Mes == "Agosto" | time.series.receipt.control$Mes == "Septiembre" | time.series.receipt.control$Mes == "Octubre" | time.series.receipt.control$Mes == "Noviembre",1,0 )
+    # Dates of SMS intervention
     time.series.receipt.control$intervention_group <- ifelse(time.series.receipt.control$fecha>="2016-06-01","Control Post-Intervention","Control Pre-Intervention")
-    time.series.receipt.control$sms_intervention_month <- ifelse(time.series.receipt.control$Mes == "Junio" | time.series.receipt.control$Mes == "Julio" | time.series.receipt.control$Mes == "Agosto" | time.series.receipt.control$Mes == "Septiembre" | time.series.receipt.control$Mes == "Octubre",1,0 )
+    time.series.receipt.control$sms_intervention_month <- ifelse(time.series.receipt.control$Mes == "Junio" | time.series.receipt.control$Mes == "Julio" | time.series.receipt.control$Mes == "Agosto" | time.series.receipt.control$Mes == "Septiembre" | time.series.receipt.control$Mes == "Octubre" | time.series.receipt.control$Mes == "Noviembre",1,0 )
+    time.series.receipt.control$sms_intervention_month_text <- ifelse(time.series.receipt.control$Mes == "Junio" | time.series.receipt.control$Mes == "Julio" | time.series.receipt.control$Mes == "Agosto" | time.series.receipt.control$Mes == "Septiembre" | time.series.receipt.control$Mes == "Octubre" | time.series.receipt.control$Mes == "Noviembre","Actively Receiving SMS","No SMS")
+    # Adding an ID for whether or not the group is keeping or isn't keeping the information
+    time.series.receipt.control$information_group <- 'Control'
+    #Turn the importe to dollars
+    time.series.receipt.control$importe_dl <- time.series.receipt.control$importe/29
+    # Adding NA variables so that we can do the merge
+    time.series.receipt.control$wtp_paper <- NA
+    time.series.receipt.control$wtp_values <- NA
+    time.series.receipt.control$wtp_lw_md_h <- NA
+    time.series.receipt.control$mean_cost <- NA
+    time.series.receipt.control$fraction_wtp <- NA
+    time.series.receipt.control$fraction_lw_md_h <- NA
+    # Merging with type of establishment
+    time.series.receipt.control <- merge(time.series.receipt.control,control_house_me_df,by=c('Casa'))
+    
+    # Calculating 'energia' values from historical 'importe' values
+    calculated_i_e_control <- get.tariff.data('control',e_i_control,control_tariff_code,time.series.receipt.control,energy.receipt.control,tariff_data.dt)
+    time.series.receipt.control <- merge(calculated_i_e_control,time.series.receipt.control,by=c('Casa','Mes','Ano'),all=T)
+    time.series.receipt.control$energia <- 'NA'
+    
+    for(i in 1:length(time.series.receipt.control$energia.y)) {
+      if(is.na(time.series.receipt.control$energia.y[i])==T){
+        time.series.receipt.control$energia[i] = time.series.receipt.control$energia.x[i]
+        time.series.receipt.control$energia_ajustada[i] = time.series.receipt.control$energia.x[i]
+      } else (time.series.receipt.control$energia[i] = time.series.receipt.control$energia.y[i])
+    }
+    
+    time.series.receipt.control <- time.series.receipt.control[order(time.series.receipt.control$Casa,time.series.receipt.control$fecha),]
+    time.series.receipt.control$energia <- as.integer(time.series.receipt.control$energia)
+    time.series.receipt.control$energia_ajustada <- as.integer(time.series.receipt.control$energia_ajustada)
+    time.series.receipt.control$importe_dl <- as.integer(time.series.receipt.control$importe_dl)
+    
+    
+    # Turn into data table
     time.series.receipt.control.dt <- as.data.table(time.series.receipt.control)
 
+    
+# Binding
 data_time_series <- rbind(time.series.receipt,time.series.receipt.control)
+data_time_series.dt <- rbind(time.series.receipt.dt,time.series.receipt.control.dt)
 
 
 
+##########################
+######### Changes to make before proceeding to analysis  
 
-#######  1. Timeseries Plots for Treatment and Control 
+# 1. Before moving forward you can decide whether or not you want to remove outliers and what 
+# that does to the analysis.
 
-# Timeseries Energy and Cost
+ggplot(time.series.receipt,aes(Casa,energia_ajustada)) + geom_point()
+ggplot(time.series.receipt.control,aes(Casa,energia_ajustada)) + geom_point()
 
-    ggplot(time.series.receipt,aes(fecha,energia,group=Casa,colour=Casa)) + geom_path(alpha=0.5) 
-    ggplot(time.series.receipt.control,aes(fecha,energia,group=Casa,colour=Casa)) + geom_path(alpha=0.5) 
-    
-    ggplot(time.series.receipt,aes(fecha,importe,group=Casa,colour=Casa)) + geom_path(alpha=0.5) 
-    ggplot(time.series.receipt.control,aes(fecha,importe,group=Casa,colour=Casa)) + geom_path(alpha=0.5) 
-
-# Densities Energy and Cost
-  
-      # All Data
-      ggplot(data_time_series, aes(energia, fill = treatment)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-      ggplot(data_time_series, aes(importe, fill = treatment)) + geom_density(alpha = 0.2) + xlab("Cordobas") + ylab("Density")
-    
-      # Pre & Post Implementation *** Energy Data is missing for Control Group ***
-      #*** There is something wrong with the plot immediately below - for now I have removed A24 because it's causing trouble add it in afterwards ***
+# 2. Remove outliers 
+      # 26 & 11 are outliers
+      # 29 had too many problems and no assertions could be made about the trendline
       
-      #All data for energy treatment and control
-      ggplot(time.series.receipt, aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-      ggplot(time.series.receipt.control, aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-          #Months with and without PAPER ENERGY REPORTS
-          ggplot(subset(time.series.receipt,time.series.receipt$report_intervention_month==1), aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-          ggplot(subset(time.series.receipt.control,time.series.receipt.control$report_intervention_month==1), aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-          #Months with and without SMS
-          ggplot(subset(time.series.receipt,time.series.receipt$sms_intervention_month==1), aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-          ggplot(subset(time.series.receipt.control,time.series.receipt.control$sms_intervention_month==1), aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-          
-  
-      ggplot(time.series.receipt, aes(importe, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-      ggplot(time.series.receipt.control, aes(importe, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density")
-          #Months with and without PAPER ENERGY REPORTS
-          ggplot(subset(time.series.receipt,time.series.receipt$report_intervention_month==1), aes(importe, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Cordobas") + ylab("Density")
-          ggplot(subset(time.series.receipt.control,time.series.receipt.control$report_intervention_month==1), aes(importe, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Cordobas") + ylab("Density")
-          #Months with and without SMS
-          ggplot(subset(time.series.receipt,time.series.receipt$sms_intervention_month==1), aes(importe, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Cordobas") + ylab("Density")
-          ggplot(subset(time.series.receipt.control,time.series.receipt.control$sms_intervention_month==1), aes(importe, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Cordobas") + ylab("Density")
-      
-      
-        # All densities for each unique house (you can plot energia or importe here)
-            for(i in 1:length(unique(data_time_series$Casa))){
-              subset_house_data <- subset(data_time_series,data_time_series$Casa == unique(data_time_series$Casa)[i])
-                mean_pre_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[1])$energia,na.rm=TRUE)
-                mean_post_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[2])$energia,na.rm=TRUE)
-              
-              density_plot <- ggplot(subset_house_data, aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density") + geom_vline(xintercept=mean_pre_intervention,colour="blue") + geom_vline(xintercept=mean_post_intervention,colour="red")  
-        
-              selected.house <- unique(data_time_series$Casa)[i] 
-              group_type <- unique(subset_house_data$treatment)
-              
-              plot.name = paste(selected.house,"_",group_type,sep="")
-              mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/densities",paste(plot.name,".jpg",sep=""))
-              
-              jpeg(file=mypath)
-              print(density_plot)
-              dev.off()
-            }
-    
-        # Comparing the energy report intervention and the SMS intervention
-        # NOTE CHANGE: report_intervention_month & sms_intervention_month
-          
-          for(i in 1:length(unique(data_time_series$Casa))){
-            subset_house_data <- subset(data_time_series,data_time_series$Casa == unique(data_time_series$Casa)[i])
-            subset_reports <- subset(subset_house_data,subset_house_data$sms_intervention_month ==1)
-              mean_pre_intervention = mean(subset(subset_reports,subset_reports$intervention_group == unique(subset_reports$intervention_group)[1])$energia,na.rm=TRUE)
-              mean_post_intervention = mean(subset(subset_reports,subset_reports$intervention_group == unique(subset_reports$intervention_group)[2])$energia,na.rm=TRUE)
-            
-            density_plot <- ggplot(subset_reports, aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density") + geom_vline(xintercept=mean_pre_intervention,colour="blue") + geom_vline(xintercept=mean_post_intervention,colour="red")  
-            
-            selected.house <- unique(data_time_series$Casa)[i] 
-            group_type <- unique(subset_reports$treatment)
-            
-            plot.name = paste(selected.house,"_",group_type,sep="")
-            mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/densities/sms_reports",paste(plot.name,".jpg",sep=""))
-            
-            jpeg(file=mypath)
-            print(density_plot)
-            dev.off()
-          }
-      
-      
-#  1.2. Month differences: Differences for each month one year afterwards (e.g June 2016 - June 2015)
-      
-    # NOTE: Plot this for the months in which they had information (June, July, August, September, October)
-    month_diffs <- function(group_data,variable) {
-      just_diffs <- group_data[, month_diff := diff(get(variable)), by = list(Casa, Mes)]
-      complete_diffs <- just_diffs[complete.cases(just_diffs),]
-      month_difference <- complete_diffs[Ano==2016] %>% select(Casa,month_diff,treatment)
-      return(month_difference)
-    }
+time.series.receipt.nooutliers <- subset(time.series.receipt, time.series.receipt$Casa!="A26" & time.series.receipt$Casa!="A11" & time.series.receipt$Casa!="A29")
+time.series.receipt.nooutliers.dt <- as.data.table(time.series.receipt.nooutliers)
 
-  # Energy - **** need to calculate energy data for the treatment group ****
-     month_difference <- month_diffs(time.series.receipt.dt,'energia') # Treatment
-     month_difference_control <- month_diffs(time.series.receipt.control.dt,'energia') # Control
-     distribution_differences <- rbind(month_difference,month_difference_control)
-     
-    ggplot(distribution_differences, aes(month_diff, fill = treatment)) + geom_density(alpha = 0.2) + xlab("Energy (kWh)") + ylab("Density")
+data_time_series_nooutliers <- subset(data_time_series, data_time_series$Casa!="A26" & data_time_series$Casa!="A11" & time.series.receipt$Casa!="A29")
+data_time_series_nooutliers.dt <- as.data.table(data_time_series_nooutliers)
+data_time_series_nooutliers.dt$energia <- as.numeric(data_time_series_nooutliers.dt$energia)
+data_time_series_nooutliers.dt$energia_ajustada <- as.numeric(data_time_series_nooutliers.dt$energia_ajustada)
 
-  # Cost
-    month_difference <- month_diffs(time.series.receipt.dt,'importe') # Treatment
-    month_difference_control <- month_diffs(time.series.receipt.control.dt,'importe') # Control
-    distribution_differences_money <- rbind(month_difference,month_difference_control)
-    
-    ggplot(distribution_differences_money, aes(month_diff, fill = treatment)) + geom_density(alpha = 0.2) + xlab("Cordobas") + ylab("Density")
-    
-    
-    
-    
-#  1.3. Month by month reductions: (e.g Feb2016 - Jan2016 )
-    
-    month_by_month <- function(group_data,variable){
-      group_data[, lag_variable:=c(NA, get(variable)[-.N]), by=Casa]
-      group_data$diff_variable <- group_data[,get(variable)] - group_data[,lag_variable]
-      return(group_data)
-    }
-    
+# Binding
+data_time_series_nooutliers <- rbind(time.series.receipt.nooutliers,time.series.receipt.control)
+data_time_series_nooutliers.dt <- rbind(time.series.receipt.nooutliers.dt,time.series.receipt.control.dt)
 
-  # Energy
-    mbm <- month_by_month(time.series.receipt.dt,'energia')
-    mbm_control <- month_by_month(time.series.receipt.control.dt,'energia')
-    mbm_bind <- rbind(mbm,mbm_control)
-    ggplot(mbm_bind, aes(diff_variable, fill = treatment)) + geom_density(alpha = 0.2) + xlab("Energy (kWh)") + ylab("Density")
 
-  # Cordobas
-    mbm <- month_by_month(time.series.receipt.dt,'importe')
-    mbm_control <- month_by_month(time.series.receipt.control.dt,'importe')
-    mbm_bind <- rbind(mbm,mbm_control)
-    ggplot(mbm_bind, aes(diff_variable, fill = treatment)) + geom_density(alpha = 0.2) + xlab("Cordobas") + ylab("Density")
-    
-          # All Houses Month by Month
-          for(i in 1:length(unique(mbm_bind$Casa))){
-            subset_house_data <- subset(mbm_bind,mbm_bind$Casa == unique(mbm_bind$Casa)[i])
-              mean_pre_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[1])$energia,na.rm=TRUE)
-              mean_post_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[2])$energia,na.rm=TRUE)
-            
-            density_plot <- ggplot(subset_house_data, aes(diff_variable, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density") + geom_vline(xintercept=mean_pre_intervention,colour="blue") + geom_vline(xintercept=mean_post_intervention,colour="red")
-            
-            selected.house <- unique(mbm_bind$Casa)[i] 
-            group_type <- unique(subset_house_data$treatment)
-            
-            plot.name = paste(selected.house,"_",group_type,sep="")
-            mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/month_by_month",paste(plot.name,".jpg",sep=""))
-            
-            jpeg(file=mypath)
-            print(density_plot)
-            dev.off()
-          }
-    
-          # Houses Month by Month only comparing the months with energy reports
-          for(i in 1:length(unique(data_time_series$Casa))){
-            subset_house_data <- subset(mbm_bind,mbm_bind$Casa == unique(mbm_bind$Casa)[i])
-              subset_reports <- subset(subset_house_data,subset_house_data$sms_intervention_month ==1)
-                mean_pre_intervention = mean(subset(subset_reports,subset_reports$intervention_group == unique(subset_reports$intervention_group)[1])$energia,na.rm=TRUE)
-                mean_post_intervention = mean(subset(subset_reports,subset_reports$intervention_group == unique(subset_reports$intervention_group)[2])$energia,na.rm=TRUE)
-            
-              density_plot <- ggplot(subset_reports, aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density") + geom_vline(xintercept=mean_pre_intervention,colour="blue") + geom_vline(xintercept=mean_post_intervention,colour="red")  
-            
-              selected.house <- unique(data_time_series$Casa)[i] 
-              group_type <- unique(subset_reports$treatment)
-              
-              plot.name = paste(selected.house,"_",group_type,sep="")
-              mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/month_by_month/month_by_month_sms_intervention",paste(plot.name,".jpg",sep=""))
-              
-              jpeg(file=mypath)
-              print(density_plot)
-              dev.off()
-          }
-    
-    
+
+#####
+#####
+##### 3. Making sure that the groups are balanced: see if the outcome variable is balanced before the intervention
+
+# All data from houses including the one previous calculated before the experiment began
+ggplot(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Consumption (kWh)') + ggtitle('Treatment: Energy Consumption pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+
+ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$importe_dl,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+
+# Same data but after removing outliers
+ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$energia,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+
+
+# T- test to make sure that energia and importe are balanced before the intervention
+t.test(time.series.receipt.nooutliers$importe_dl, time.series.receipt.control$importe_dl) #importe
+t.test(time.series.receipt.nooutliers$energia, time.series.receipt.control$energia) #energia
+
+
+houses_before_implementation <- as.data.table(rbind(time.series.receipt.nooutliers,time.series.receipt.control))
+
+call_plot_subset(houses_before_implementation,"treatment","Treatment","Control",'energia',"Monthly Energy Consumption (kWh)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
+
+
+
+
+#########
+#########
+#########  4. Timeseries Plots for Treatment and Control 
+
+plot_energy_cost_ft(time.series.receipt.dt,time.series.receipt.control.dt,data_time_series.dt,"energia","full_data","energia")
+plot_energy_cost_ft(time.series.receipt.dt,time.series.receipt.control.dt,data_time_series.dt,"energia_ajustada","full_data","energia_ajustada")
+
+plot_energy_cost_ft(time.series.receipt.nooutliers.dt,time.series.receipt.control.dt,data_time_series_nooutliers.dt,"energia","no_outliers","energia")
+plot_energy_cost_ft(time.series.receipt.nooutliers.dt,time.series.receipt.control.dt,data_time_series_nooutliers.dt,"energia_ajustada","no_outliers","energia_ajustada")
+
+
+
 
 ##########
 ##########   
@@ -320,6 +469,9 @@ data_time_series <- rbind(time.series.receipt,time.series.receipt.control)
     
     baseline_receipt_data_for_merge <- survey.data.results[[5]] #Baseline data
     implementation.baseline <- survey.data.results[[6]] #Baseline and implementation survey data
+          implementation.baseline$r_total <- as.numeric(as.character(implementation.baseline$r_total))
+          implementation.baseline$gasto_electrico <- as.numeric(as.character(implementation.baseline$gasto_electrico))
+          
     
     learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="encuesta_id",all=T)
           learning.data$gasto_electrico <- as.numeric(as.character(learning.data$gasto_electrico))
@@ -373,36 +525,107 @@ data_time_series <- rbind(time.series.receipt,time.series.receipt.control)
             dev.off()
           }
     
-     #1. Plotting the baseline, control, and treatment groups against each other
-     #   Need to get kwh estimates for the other groups from the mid baseline and 
-     #   Need to plot how far off people are in terms of kwh
+     #2.1.1 Plotting the baseline, control, and treatment groups against each other
+
       survey.data.plot <- survey.data.complete %>% mutate(data='treatment') %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
-      baseline_receipt_data_for_plot <- baseline_receipt_data_for_merge %>% mutate(data='baseline_pulperias',r_total_cordobas=baseline_monthly_cordobas,gasto_electrico_cordobas=baseline_gasto_electrico)  %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      baseline_receipt_data_for_plot <- baseline_receipt_data_for_merge %>% mutate(data='baseline',r_total_cordobas=baseline_monthly_cordobas,gasto_electrico_cordobas=baseline_gasto_electrico)  %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      baseline_households <- subset(implementation.baseline,implementation.baseline$control_estudio=='estudio' & implementation.baseline$tipo_establecimiento=='casa') %>% mutate(data='baseline',r_total_cordobas=r_total,gasto_electrico_cordobas=gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      baseline_current_plot <- rbind(baseline_receipt_data_for_plot,survey.data.plot,baseline_households) %>% mutate(total_cordobas_estimate_diff_pct=r_total_cordobas-gasto_electrico_cordobas)
       
-      # Plot the baseline for the treatment group once we have the data back from Odaly
-      baseline_households <- subset(implementation.baseline,implementation.baseline$control_estudio=='estudio' & baseline$tipo_establecimiento=='casa') %>% mutate(data='baseline_casas',r_total_cordobas=,gasto_electrico_cordobas=gasto_electrico)
       
       # Need to bind gh data from the treatment group here
-      baseline_current_plot <- rbind(baseline_receipt_data_for_plot,survey.data.plot)
-      
       ggplot(baseline_current_plot, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
       ggplot(subset(baseline_current_plot,baseline_current_plot$gasto_electrico_cordobas<30000), aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
+      
+      #   Need to get kwh estimates for the other groups from the mid baseline and 
+      #   Need to plot how far off people are in terms of kwh
+      #   Energy understanding (need to calculate)
       ggplot(baseline_current_plot, aes(gasto_electrico, r_monthly_kwh,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
       
+      #Tariff Understanding
+      ggplot(learning.data, aes(gasto_tarifa_electrica, (learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh))) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0) + xlim(0,10) +ylim(0,10)
+      
+
+
+      # 2.2 Treatment group at baseline, after 1st report, after beggining of text messages
+      
+      
+      # 2.4 How have perceptions of the usefulness of information from the utility been changing in time?
+      #Need to divide this by interview periods, need to divide this by date
+      #Plot 'survey.data$utility_info_score' by date and 'survey.data$project_info_score' by date
+      #How have the scores of these two variables been changing month by month?
 
             
-      #2. Treatment and control group
+###############
+###############    
+############### 3. Comparison of survey response vs. actual data
+
+#When is it that you consume the most energy?      
+ggplot(data.frame(survey.data.responses), aes(x=mas_gasta_tiempo)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+      
+
+      
+  
+      
+
+#What percentage do different appliances consume?
+      #Understand what percentage the refrigerator consumes most energy?
       
       
-      control_group_data <- baseline_current_plot[match(as.character(baseline_current_plot$encuesta_id),control_group_list),]
-      
-          
-      #3. Treatment group at baseline, after 1st report, after beggining of text messages
+#Does temperature affect your refrigerator?
+      #Check with houses that experience reduced efficiency 
       
       
+#How hard is it for you to pay your bills?
+      #Check in time if the costs of paying have been coming down and how they pair with people's responses
+
     
+#Has this project helped you better pay your bills?
+      #Check if people who say yes are actually seeing reductions in month by month consumption
+      #Check if they have actually reduced their consumption from a year ago
+      
+#How has the information in the project helped you?
+      # For the people who said that they had 'greater_energy_understanding', 'increased_control','energy_reports'
+      # did they increase the amount of knowledge about their electricity bill?
+      # How did energy changes happen between the people who said the informatino is very useful and those who don't say that the informaion is useful?
+      # Compare specifically the people who find it useful to keep control
+      
+#Do you use the information we give you to manage your consumption?
+      # Compare energy and yes-no between groups
+      # Compare between groups that actively manage their conusumption? Are there particular behaviors that were related to households and MEs that reduce consumption?
+      # Are there differences in energy consumption with what type of information people found to be most useful?
+      
+#For people who find the energy useful, are they doing better than people who don't find it useful?
+      # How useful are you finding the text messages?
+      #Why do you find the messages very useful?
+      #Why do you find the messages useful?
+      
+
+# Is there a difference in savings with the different kinds of information that people need?
+      # What is the thing that has allowed you to increse the understanding of your consumption?
+      
+  
+      
+# What has been more important to you throughout this project, information or money?
+      # Compare the answers for people who have said information, to how effective the information has been.
+      
+      
+# Compare the choice of information vs. money for how people have been affected by information and the project in general?
+      # If you had to choose between the information and the money, what woud you choose?
 
 
+# Compare groups of people who want to implement energy efficiency measures with the effects on energy consumption?
+      #Are you going to pursue the implementation of energy efficiency projects?
+      
 
-
+# Compare savings in energy vs. the willingness to pay
+      
+      
+###############
+###############    
+############### 5. Scarcity
+      
+      
+#How hard is it for you to pay your bills?
+      
 

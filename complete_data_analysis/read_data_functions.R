@@ -394,20 +394,21 @@ read.survey.data <- function(flexlist) {
   #NOTE2: This has the baseline survey data for the houses and the implementation survey data for the pulperias
   implementation.baseline.survey <- read.csv('Implementation Baseline/Cool Joule Project Management - Verificacion de Ubicacion y Enc.csv')
   
-  ################################################
+  ####### Reading data from the survey data
   
-  survey.data.complete <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly.csv')
-  survey.data <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly.csv') %>% select(flexbox_id,encuesta_id,start,end,today,r_total_cordobas,r_monthly_cordobas,r_publiclight,r_comercialization,r_subsidy_under150,r_subsidy_commercialization1,r_subsidylighting150,r_subsidy_elderly,r_rechargedelay,r_ineregulation,r_tax,r_subsidy,r_reconnection_charge,r_arreglo_deuda,r_cuota_deuda)
+  survey.data.complete <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly_for analysis.csv', na.strings=c(""," ","n/a"))
+  survey.data <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly_for analysis.csv', na.strings=c(""," ","n/a")) %>% select(flexbox_id,encuesta_id,start,end,today,r_total_cordobas,r_monthly_cordobas,r_publiclight,r_comercialization,r_subsidy_under150,r_subsidy_commercialization1,r_subsidylighting150,r_subsidy_elderly,r_rechargedelay,r_ineregulation,r_tax,r_subsidy,r_reconnection_charge,r_arreglo_deuda,r_cuota_deuda)
   
   importe.data <- read.csv('Survey Monthly Updates/Results/importes_odaly.csv') %>% select(Casa,Mes,Ano,tipo,importe)
   importe.data.subset <- subset(importe.data,importe.data$tipo == "Recibos de energia electrica")
-  energia.data <- read.csv('Survey Monthly Updates/Results/energia_odaly.csv') %>% mutate(Casa=FLEXBOX.ID) %>% select(Casa,Mes,Ano,Energia)
+  energia.data <- read.csv('Survey Monthly Updates/Results/energia_odaly.csv') %>% mutate(Casa=FLEXBOX.ID) %>% select(Casa,Mes,Ano,Energia,Energia_Ajustada)
   
   im_en <- merge(energia.data,importe.data.subset,by=c("Mes","Ano","Casa"),all=T)
   
   im_en$mes <- ifelse(im_en$Mes=="Enero",1,ifelse(im_en$Mes=="Febrero",2,ifelse(im_en$Mes=="Marzo",3,ifelse(im_en$Mes=="Abril",4,ifelse(im_en$Mes=="Mayo",5,ifelse(im_en$Mes=="Junio",6,ifelse(im_en$Mes=="Julio",7,ifelse(im_en$Mes=="Agosto",8,ifelse(im_en$Mes=="Septiembre",9,ifelse(im_en$Mes=="Octubre",10,ifelse(im_en$Mes=="Noviembre",11,12)))))))))))
   im_en$fecha <- as.Date(paste(paste(im_en$Ano,im_en$mes,sep="-"),"-01",sep=""))
   im_en$energia <- as.numeric(gsub("[[:punct:]]", " ", sub(".*=", "", im_en$Energia)))
+  im_en$energia_ajustada <- as.numeric(gsub("[[:punct:]]", " ", sub(".*=", "", im_en$Energia_Ajustada)))
   
   im_en_sorted <- im_en[order(im_en$Casa,im_en$fecha),]
   
@@ -416,15 +417,26 @@ read.survey.data <- function(flexlist) {
   
   importe.data.control <- read.csv('Survey Monthly Updates/Results/control_importe.csv') %>% mutate(Casa=Encuesta_Id) %>% select(Casa,Mes,Ano,tipo,importe)
   importe.data.subset.control <- subset(importe.data.control,importe.data.control$tipo == "Recibos de energia electrica")
-  energia.data.control <- read.csv('Survey Monthly Updates/Results/control_energia.csv') %>% mutate(Casa=Encuesta_Id) %>%select(Casa,Mes,Ano,Energia)
+  energia.data.control <- read.csv('Survey Monthly Updates/Results/control_energia.csv') %>% mutate(Casa=Encuesta_Id) %>%select(Casa,Mes,Ano,Energia,Energia_Ajustada)
   
   im_en_control <- merge(energia.data.control,importe.data.subset.control,by=c("Mes","Ano","Casa"),all=T)
   
   im_en_control$mes <- ifelse(im_en_control$Mes=="Enero",1,ifelse(im_en_control$Mes=="Febrero",2,ifelse(im_en_control$Mes=="Marzo",3,ifelse(im_en_control$Mes=="Abril",4,ifelse(im_en_control$Mes=="Mayo",5,ifelse(im_en_control$Mes=="Junio",6,ifelse(im_en_control$Mes=="Julio",7,ifelse(im_en_control$Mes=="Agosto",8,ifelse(im_en_control$Mes=="Septiembre",9,ifelse(im_en_control$Mes=="Octubre",10,ifelse(im_en_control$Mes=="Noviembre",11,12)))))))))))
   im_en_control$fecha <- as.Date(paste(paste(im_en_control$Ano,im_en_control$mes,sep="-"),"-01",sep=""))
   im_en_control$energia <- as.numeric(gsub("[[:punct:]]", " ", sub(".*=", "", im_en_control$Energia)))
+  im_en_control$energia_ajustada <- as.numeric(gsub("[[:punct:]]", " ", sub(".*=", "", im_en_control$Energia_Ajustada)))
+  
   
   im_en_sorted_control <- im_en_control[order(im_en_control$Casa,im_en_control$fecha),]
+  
+  # Porcentaje de la factura que esta dedicado a la energia
+  recibos_control <- read.csv('Survey Monthly Updates/Results/recibos_detalles_control.csv')
+  recibos_control$fraction_bill_energy <- recibos_control$Energia_Cordobas/recibos_control$Importe_Total
+  mean_energia_recibos_control <- aggregate(recibos_control$fraction_bill_energy,by=list(recibos_control$Encuesta_Id),FUN=mean,na.rm=TRUE) %>% mutate(house.id=Group.1,mean.val=x) %>% select(house.id,mean.val)
+  median_energia_recibos_control <- aggregate(recibos_control$fraction_bill_energy,by=list(recibos_control$Encuesta_Id),FUN=median,na.rm=TRUE) %>% mutate(house.id=Group.1,median.val=x) %>% select(house.id,median.val)
+  e_bill_fraction_control <- merge(mean_energia_recibos_control,median_energia_recibos_control,by=c('house.id'))
+  e_bill_fraction_control$type.val<- "Gasto Energía (kWh)"
+  e_bill_fraction_control$cost <- 1
   
   ###### Control group ends
   
@@ -461,6 +473,7 @@ read.survey.data <- function(flexlist) {
   list_true_vars <- c("pct_energia","pct_luz","pct_recargo","pct_comercializacion","pct_inereg","pct_tax","pct_reconnection","pct_arreglo_deuda","pct_cuota_deuda","pct_subsidy_under150","pct_subsidycommercialization1","pct_subsidylighting150","pct_subsidy_elderly")
   list_name_vars <- c("Gasto Energía (kWh)","Alumbrado Público","Cargo por Recargo","Comercialización","Regulación INE","IVA","Reconección","Arreglo Deuda","Cuota Deuda","S.Menos 150","S.Comercialización","S.Alumbrado","S.Jubilados")
   
+  # Calculates the percentage for each of the cost pieces 
   for (i in 1:length(flexlist)) {
     
     house.survey <- subset(survey.data.correct,survey.data.correct$flexbox_id == flexlist[i])
@@ -473,11 +486,13 @@ read.survey.data <- function(flexlist) {
       if (j == 1) {
       empty.energy.df$house.id <- flexlist[i]
       empty.energy.df$mean.val <- mean(house.survey[,list_true_vars[j]],na.rm=TRUE)
+      empty.energy.df$median.val <- median(house.survey[,list_true_vars[j]],na.rm=TRUE)
       empty.energy.df$type.val <- list_name_vars[j]
       } 
         else {
       other$house.id <- flexlist[i]
       other$mean.val <- mean(house.survey[,list_true_vars[j]],na.rm=TRUE)
+      other$median.val <- mean(house.survey[,list_true_vars[j]],na.rm=TRUE)
       other$type.val <- list_name_vars[j]
       
       empty.energy.df<- rbind(empty.energy.df,other)
@@ -493,7 +508,7 @@ read.survey.data <- function(flexlist) {
   
   houses.energy.df$cost <- ifelse(houses.energy.df$type.val == "S.Menos 150" | houses.energy.df$type.val == "S.Comercialización" | houses.energy.df$type.val == "S.Alumbrado" | houses.energy.df$type.val == "S.Jubilados",0,1)
   
-  return(list(houses.energy.df,im_en_sorted,im_en_sorted_control,survey.data.complete,baseline_receipt_data_for_merge,implementation.baseline.survey))
+  return(list(houses.energy.df,im_en_sorted,im_en_sorted_control,survey.data.complete,baseline_receipt_data_for_merge,implementation.baseline.survey,survey.data.correct,e_bill_fraction_control))
 }
 
 

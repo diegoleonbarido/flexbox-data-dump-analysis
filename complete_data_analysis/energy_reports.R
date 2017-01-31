@@ -44,9 +44,10 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 
 ###### Set list of houses and variables
 
+#Missing A1 and A25 - add them for the next round
 
-flexlist <- c('A1','A3','A6','A7','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
-dump <- 'DUMP11'
+flexlist <- c('A3','A6','A7','A11','A12','A14','A16','A17','A18','A19','A20','A21','A24','A25','A26','A28','A29')
+dump <- 'DUMP13'
 
 
 ############# Section 1: Grid Analysis
@@ -335,7 +336,7 @@ if (length(unique(house$house_Energy)) > 30) {
     count.plot.list[[count.plot]] = fridge_energy_pct
     count.plot.name[[count.plot]] = 'fridge_energy_pct'
     
-    text.list[[count.plot]] <- paste("En promedio su refrigerador consume el",round(mean(pct_aggregation$pct_energy,na.rm=TRUE))," porciento de la energia total de su hogar o micro-empresa. Usted puede observar que a las",which(pct_aggregation$pct_energy == max(pct_aggregation$pct_energy)),"horas del dia es cuando su refrigerador consume el porcentaje mas alto de la energia del hogar.")
+    text.list[[count.plot]] <- paste("En promedio su refrigerador consume el",round(mean(pct_aggregation$pct_energy,na.rm=TRUE))," porciento de la energia total de su hogar o micro-empresa. Usted puede observar que a las",pct_aggregation$hour[which(pct_aggregation$pct_energy == max(pct_aggregation$pct_energy))],"horas del dia es cuando su refrigerador consume el porcentaje mas alto de la energia del hogar.")
     
   } else {}
 

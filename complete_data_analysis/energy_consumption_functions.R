@@ -165,9 +165,6 @@ henergy.consumption.hour.house <- function(data_input) {
 
 
 
-
-
-
 ################# 3. FRIDGE ENERGY CONSUMPTION PER HOUR
 
 fenergy.consumption.hour <- function(data_input,dump) {
@@ -346,7 +343,93 @@ fenergy.consumption.hour <- function(data_input,dump) {
       index22 = which(iterate.df$diff_again == diff_values[10])
       twentysecond_subset <- iterate.df[(index14+1):index15-1,]
       twentysecond_subset$energy_sum3 <- twentysecond_subset$energy_sum3 + tail(twentyfirst_subset$energy_sum3,1)
-    } else {} 
+    } 
+    else if(i == 23 & length(diff_values) >= 23) {
+      index23 = which(iterate.df$diff_again == diff_values[10])
+      twentythird_subset <- iterate.df[(index14+1):index15-1,]
+      twentythird_subset$energy_sum3 <- twentythird_subset$energy_sum3 + tail(twentysecond_subset$energy_sum3,1)
+    } 
+    else if(i == 24 & length(diff_values) >= 24) {
+      index24 = which(iterate.df$diff_again == diff_values[10])
+      twentyfourth_subset <- iterate.df[(index14+1):index15-1,]
+      twentyfourth_subset$energy_sum3 <- twentyfourth_subset$energy_sum3 + tail(twentythird_subset$energy_sum3,1)
+    } 
+    else if(i == 25 & length(diff_values) >= 25) {
+      index25 = which(iterate.df$diff_again == diff_values[10])
+      twentyfifth_subset <- iterate.df[(index14+1):index15-1,]
+      twentyfifth_subset$energy_sum3 <- twentyfifth_subset$energy_sum3 + tail(twentyfourth_subset$energy_sum3,1)
+    } 
+    else if(i == 26 & length(diff_values) >= 26) {
+      index26 = which(iterate.df$diff_again == diff_values[10])
+      twentysixth_subset <- iterate.df[(index14+1):index15-1,]
+      twentysixth_subset$energy_sum3 <- twentysixth_subset$energy_sum3 + tail(twentyfifth_subset$energy_sum3,1)
+    } 
+    else if(i == 27 & length(diff_values) >= 27) {
+      index27 = which(iterate.df$diff_again == diff_values[10])
+      twentyseventh_subset <- iterate.df[(index14+1):index15-1,]
+      twentyseventh_subset$energy_sum3 <- twentyseventh_subset$energy_sum3 + tail(twentysixth_subset$energy_sum3,1)
+    } 
+    else if(i == 28 & length(diff_values) >= 28) {
+      index28 = which(iterate.df$diff_again == diff_values[10])
+      twentyeighth_subset <- iterate.df[(index14+1):index15-1,]
+      twentyeighth_subset$energy_sum3 <- twentyeighth_subset$energy_sum3 + tail(twentyseventh_subset$energy_sum3,1)
+    } 
+    else if(i == 29 & length(diff_values) >= 29) {
+      index29 = which(iterate.df$diff_again == diff_values[10])
+      twentyninth_subset <- iterate.df[(index14+1):index15-1,]
+      twentyninth_subset$energy_sum3 <- twentyninth_subset$energy_sum3 + tail(twentyeighth_subset$energy_sum3,1)
+    } 
+    else if(i == 30 & length(diff_values) >= 30) {
+      index30 = which(iterate.df$diff_again == diff_values[10])
+      thirtieth_subset <- iterate.df[(index14+1):index15-1,]
+      thirtieth_subset$energy_sum3 <- thirtieth_subset$energy_sum3 + tail(twentyninth_subset$energy_sum3,1)
+    } 
+    else if(i == 31 & length(diff_values) >= 31) {
+      index31 = which(iterate.df$diff_again == diff_values[10])
+      thirtyfirst_subset <- iterate.df[(index14+1):index15-1,]
+      thirtyfirst_subset$energy_sum3 <- thirtyfirst_subset$energy_sum3 + tail(thirtieth_subset$energy_sum3,1)
+    } 
+    else if(i == 32 & length(diff_values) >= 32) {
+      index32 = which(iterate.df$diff_again == diff_values[10])
+      thirtysecond_subset <- iterate.df[(index14+1):index15-1,]
+      thirtysecond_subset$energy_sum3 <- thirtysecond_subset$energy_sum3 + tail(thirtyfirst_subset$energy_sum3,1)
+    } 
+    else if(i == 33 & length(diff_values) >= 33) {
+      index33 = which(iterate.df$diff_again == diff_values[10])
+      thirtythird_subset <- iterate.df[(index14+1):index15-1,]
+      thirtythird_subset$energy_sum3 <- thirtythird_subset$energy_sum3 + tail(thirtysecond_subset$energy_sum3,1)
+    } 
+    else if(i == 34 & length(diff_values) >= 34) {
+      index34 = which(iterate.df$diff_again == diff_values[10])
+      thirtyfourth_subset <- iterate.df[(index14+1):index15-1,]
+      thirtyfourth_subset$energy_sum3 <- thirtyfourth_subset$energy_sum3 + tail(thirtythird_subset$energy_sum3,1)
+    } 
+    else if(i == 35 & length(diff_values) >= 35) {
+      index35 = which(iterate.df$diff_again == diff_values[10])
+      thirtyfifth_subset <- iterate.df[(index14+1):index15-1,]
+      thirtyfifth_subset$energy_sum3 <- thirtyfifth_subset$energy_sum3 + tail(thirtyfourth_subset$energy_sum3,1)
+    } 
+    else if(i == 36 & length(diff_values) >= 36) {
+      index36 = which(iterate.df$diff_again == diff_values[10])
+      thirtysixth_subset <- iterate.df[(index14+1):index15-1,]
+      thirtysixth_subset$energy_sum3 <- thirtysixth_subset$energy_sum3 + tail(thirtyfifth_subset$energy_sum3,1)
+    } 
+    else if(i == 37 & length(diff_values) >= 37) {
+      index37 = which(iterate.df$diff_again == diff_values[10])
+      thirtyseventh_subset <- iterate.df[(index14+1):index15-1,]
+      thirtyseventh_subset$energy_sum3 <- thirtyseventh_subset$energy_sum3 + tail(thirtysixth_subset$energy_sum3,1)
+    } 
+    else if(i == 38 & length(diff_values) >= 38) {
+      index38 = which(iterate.df$diff_again == diff_values[10])
+      thirtyeighth_subset <- iterate.df[(index14+1):index15-1,]
+      thirtyeighth_subset$energy_sum3 <- thirtyeighth_subset$energy_sum3 + tail(thirtyseventh_subset$energy_sum3,1)
+    } 
+    else if(i == 39 & length(diff_values) >= 39) {
+      index39 = which(iterate.df$diff_again == diff_values[10])
+      thirtyninth_subset <- iterate.df[(index14+1):index15-1,]
+      thirtyninth_subset$energy_sum3 <- thirtyninth_subset$energy_sum3 + tail(thirtyeighth_subset$energy_sum3,1)
+    } 
+    else {} 
   } 
     
   #Binding all the slices and or subsets together
@@ -395,9 +478,42 @@ fenergy.consumption.hour <- function(data_input,dump) {
       super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset)
     } else if (length(diff_values) == 22) {
       super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset)
+    } else if (length(diff_values) == 23) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset)
+    } else if (length(diff_values) == 24) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset)
+    } else if (length(diff_values) == 25) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset)
+    } else if (length(diff_values) == 26) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset)
+    } else if (length(diff_values) == 27) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset)
+    } else if (length(diff_values) == 28) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset)
+    } else if (length(diff_values) == 29) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset)
+    } else if (length(diff_values) == 30) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset, twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset)
+    } else if (length(diff_values) == 31) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset)
+    } else if (length(diff_values) == 32) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset)
+    } else if (length(diff_values) == 33) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset, thirtythird_subset)
+    } else if (length(diff_values) == 34) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset, thirtythird_subset, thirtyfourth_subset)
+    } else if (length(diff_values) == 35) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset, thirtythird_subset, thirtyfourth_subset, thirtyfifth_subset)
+    } else if (length(diff_values) == 36) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset, thirtythird_subset, thirtyfourth_subset, thirtyfifth_subset, thirtysixth_subset)
+    } else if (length(diff_values) == 37) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset, thirtythird_subset, thirtyfourth_subset, thirtyfifth_subset, thirtysixth_subset, thirtyseventh_subset)
+    } else if (length(diff_values) == 38) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset, thirtythird_subset, thirtyfourth_subset, thirtyfifth_subset, thirtysixth_subset, thirtyseventh_subset,thirtyeighth_subset)
+    } else if (length(diff_values) == 39) {
+      super <- rbind(first_subset,second_subset,third_subset,fourth_subset,fifth_subset,sixth_subset,seventh_subset,eighth_subset,ninth_subset,tenth_subset,eleventh_subset,twelfth_subset,thirteenth_subset,fourteenth_subset,fifeteenth_subset,sixteenth_subset, seventeenth_subset,eighteenth_subset,nineteenth_subset,twentieth_subset,twentyfirst_subset,twentysecond_subset,twentythird_subset, twentyfourth_subset, twentyfifth_subset, twentysixth_subset, twentyseventh_subset, twentyeighth_subset, twentyninth_subset, thirtieth_subset, thirtyfirst_subset, thirtysecond_subset, thirtythird_subset, thirtyfourth_subset, thirtyfifth_subset, thirtysixth_subset, thirtyseventh_subset,thirtyeighth_subset,thirtyninth_subset)
     }
     else {}
-    
     microid.data.input <- super
   } else {
     
@@ -647,7 +763,7 @@ neighbor.comparison <- function(data_input,dump){
   #Reincorporate this when we get data for A8
   #Reincorporate this wben we get data for A6 back
   #microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]],microids.df[[18]],microids.df[[19]],microids.df[[20]])
-  microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]],microids.df[[18]],microids.df[[19]])
+  microid.data.input <- rbind(microids.df[[1]],microids.df[[2]],microids.df[[3]],microids.df[[4]],microids.df[[5]],microids.df[[6]],microids.df[[7]],microids.df[[8]],microids.df[[9]],microids.df[[10]],microids.df[[11]],microids.df[[12]],microids.df[[13]],microids.df[[14]],microids.df[[15]],microids.df[[16]],microids.df[[17]])
   
   #Setting unique combinations of microids
   unique.microids <- unique(microid.data.input$house.id)
