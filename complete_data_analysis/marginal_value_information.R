@@ -156,22 +156,6 @@ month_diffs <- function(group_data,variable){
   
 }
 
-#month_diffs <- function(group_data,variable) {
-#  just_diffs <- group_data[, month_diff := diff(get(variable)), by = list(Casa, Mes)]
-#  if(group_data$treatment == 'Treatment'){
-#    complete_diffs <- just_diffs[complete.cases(just_diffs$month_diff),]
-#    month_difference <- complete_diffs[Ano==2016] %>% select(Casa,month_diff,treatment,Mes,intervention_group,report_intervention_month,information_group,sms_intervention_month,sms_intervention_month_text,wtp_lw_md_h,fraction_lw_md_h)
-#    return(month_difference)
-#  } else {
-#    complete_diffs <- just_diffs[complete.cases(just_diffs$month_diff),]
-#    month_difference <- complete_diffs[Ano==2016] %>% select(Casa,month_diff,treatment,Mes,intervention_group,report_intervention_month,information_group,sms_intervention_month,sms_intervention_month_text)
-#    month_difference$wtp_lw_md_h <- NA
-#    month_difference$fraction_lw_md_h <- NA
-#    return(month_difference)
-#  }
-#}
-
-
 # Plot with subset
 call_plot_subset <- function(df,group_var,subset_val1,subset_val2,analyze_var,xlab_,ylab_,title_plot) {
   
@@ -305,7 +289,9 @@ time.series.receipt <- survey.data.results[[2]] %>% mutate(treatment="Treatment"
     time.series.receipt$Casa <- as.character(time.series.receipt$Casa)
     
     #Dates of Report intervention (all of them receving reports)
-    time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Febrero" | time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre",1,0 )
+    #time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Febrero" | time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre",1,0 )
+    time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Febrero" | time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre" | time.series.receipt$Mes == "Noviembre" | time.series.receipt$Mes == "Diciembre",1,0 )
+    
     #Dates of SMS intervention (all of them receiving texts)
     time.series.receipt$intervention_group <- ifelse(time.series.receipt$fecha>="2016-06-01","Treatment Post-Intervention","Treatment Pre-Intervention")
     time.series.receipt$sms_intervention_month <- ifelse(time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre", 1,0 )
@@ -382,6 +368,7 @@ time.series.receipt.control$Casa <- as.character(time.series.receipt.control$Cas
     
     # Turn into data table
     time.series.receipt.control.dt <- as.data.table(time.series.receipt.control)
+    time.series.receipt.control.dt <- time.series.receipt.control.dt[,list(Casa,Mes,Ano,energia.x,Energia,Energia_Ajustada,tipo,importe,mes,fecha,energia.y,energia_ajustada,treatment,report_intervention_month,intervention_group,sms_intervention_month,sms_intervention_month_text,information_group,wtp_paper,wtp_values,wtp_lw_md_h,mean_cost,fraction_wtp,fraction_lw_md_h,importe_dl,Lugar,energia)]
 
     
 # Binding

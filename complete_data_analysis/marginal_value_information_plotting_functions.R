@@ -427,6 +427,11 @@ time_series_importe_control <-ggplot(control_time_series_data_table,aes(fecha,im
             count.plot.list[[count.plot]] = mbm_e_treatment_intervention
             count.plot.name[[count.plot]] = 'mbm_e_treatment_intervention' 
         
+        mbm_e_treatment_information_group <- call_plot_subset(mbm,'information_group','Lost Willingness to Pay Information Bid','Won Willingness to Pay Information Bid','diff_variable',"Same Month Annual Differences (kWh)","Density","Month by Month Differences (Treatment): - Won or Lost WTP")
+          count.plot <- count.plot + 1
+          count.plot.list[[count.plot]] = mbm_e_treatment_information_group
+          count.plot.name[[count.plot]] = 'mbm_e_treatment_information_group' 
+            
         mbm_e_treatment_wtp_intervention <- call_plot_subset_several(subset(mbm,mbm$intervention_group == 'Treatment Post-Intervention'),'wtp_lw_md_h','low','high','medium-low','medium-high','diff_variable',"Monthy by Month Differences (kWh)","Density","Month by Month Comparisons (Treatment - Willingness to Pay): Post Intervention")
             count.plot <- count.plot + 1
             count.plot.list[[count.plot]] = mbm_e_treatment_wtp_intervention
@@ -511,6 +516,11 @@ time_series_importe_control <-ggplot(control_time_series_data_table,aes(fecha,im
               count.plot <- count.plot + 1
               count.plot.list[[count.plot]] = mbm_c_treatment_intervention
               count.plot.name[[count.plot]] = 'mbm_c_treatment_intervention' 
+              
+          mbm_c_treatment_information_group <- call_plot_subset(mbm_c,'information_group','Lost Willingness to Pay Information Bid','Won Willingness to Pay Information Bid','diff_variable',"Monthy by Month Differences ($US)","Density","Same Month Annual Differences - Won or Lost WTP")
+              count.plot <- count.plot + 1
+              count.plot.list[[count.plot]] = mbm_c_treatment_information_group
+              count.plot.name[[count.plot]] = 'mbm_c_treatment_information_group' 
           
           mbm_c_treatment_wtp_intervention <- call_plot_subset_several(subset(mbm_c,mbm_c$intervention_group == 'Treatment Post-Intervention'),'wtp_lw_md_h','low','high','medium-low','medium-high','diff_variable',"Monthy by Month Differences ($US)","Density","Month by Month Comparisons (Treatment - Willingness to Pay): Post Intervention")
               count.plot <- count.plot + 1
