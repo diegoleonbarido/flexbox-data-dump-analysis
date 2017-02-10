@@ -399,8 +399,9 @@ read.survey.data <- function(flexlist) {
   survey.data.complete <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly_for analysis.csv', na.strings=c(""," ","n/a"))
   survey.data <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly_for analysis.csv', na.strings=c(""," ","n/a")) %>% select(flexbox_id,encuesta_id,start,end,today,r_total_cordobas,r_monthly_cordobas,r_publiclight,r_comercialization,r_subsidy_under150,r_subsidy_commercialization1,r_subsidylighting150,r_subsidy_elderly,r_rechargedelay,r_ineregulation,r_tax,r_subsidy,r_reconnection_charge,r_arreglo_deuda,r_cuota_deuda)
   
-  importe.data <- read.csv('Survey Monthly Updates/Results/importes_odaly.csv') %>% select(Casa,Mes,Ano,tipo,importe)
+  importe.data <- read.csv('Survey Monthly Updates/Results/importes_odaly.csv') %>% select(Casa,Mes,Ano,tipo,importe,cosa_revisado)
   importe.data.subset <- subset(importe.data,importe.data$tipo == "Recibos de energia electrica")
+  importe.data.subset <- subset(importe.data.subset,importe.data.subset$cosa_revisado == "Cobrado") %>% select(Casa,Mes,Ano,tipo,importe)
   energia.data <- read.csv('Survey Monthly Updates/Results/energia_odaly.csv') %>% mutate(Casa=FLEXBOX.ID) %>% select(Casa,Mes,Ano,Energia,Energia_Ajustada)
   
   im_en <- merge(energia.data,importe.data.subset,by=c("Mes","Ano","Casa"),all=T)
@@ -415,8 +416,9 @@ read.survey.data <- function(flexlist) {
   
   ###### Control group begins
   
-  importe.data.control <- read.csv('Survey Monthly Updates/Results/control_importe.csv') %>% mutate(Casa=Encuesta_Id) %>% select(Casa,Mes,Ano,tipo,importe)
+  importe.data.control <- read.csv('Survey Monthly Updates/Results/control_importe.csv') %>% mutate(Casa=Encuesta_Id) %>% select(Casa,Mes,Ano,tipo,importe,cosa_revisado)
   importe.data.subset.control <- subset(importe.data.control,importe.data.control$tipo == "Recibos de energia electrica")
+  importe.data.subset.control <- subset(importe.data.subset.control,importe.data.subset.control$cosa_revisado == "Cobrado") %>% select(Casa,Mes,Ano,tipo,importe)
   energia.data.control <- read.csv('Survey Monthly Updates/Results/control_energia.csv') %>% mutate(Casa=Encuesta_Id) %>%select(Casa,Mes,Ano,Energia,Energia_Ajustada)
   
   im_en_control <- merge(energia.data.control,importe.data.subset.control,by=c("Mes","Ano","Casa"),all=T)

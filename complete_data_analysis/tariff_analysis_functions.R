@@ -2,6 +2,7 @@
 # This function takes the historical importe data and calculates energy data from the importe values. The reason I built this
 # function was because I was mising energy data, but had more complete importe data.
 
+
 get.tariff.data <- function(group_analysis,e_i_group,group_tariff_code,time.series.receipt.group.dt,energy.receipt.data,tariff_data.dt){
   
 ####### 2. Analysis

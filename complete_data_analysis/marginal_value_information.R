@@ -110,7 +110,9 @@ month_by_month <- function(group_data,variable){
 
 
 #Differences for each month one year afterwards (e.g June 2016 - June 2015)
-
+group_data<- treatment_time_series_data_table
+variable <- 'energia_ajustada'
+  
 month_diffs <- function(group_data,variable){
   
   years_data <- c(2014,2015,2016)
@@ -127,7 +129,7 @@ month_diffs <- function(group_data,variable){
       
       keep_months_casa <- t_year1_year2[Mes %in% n_occur_freq2$Var1,]
       
-      just_diffs <- keep_months_casa[, month_diff := diff(get("energia_ajustada")), by = list(Mes)]
+      just_diffs <- keep_months_casa[, month_diff := diff(get(variable)), by = list(Mes)]
       keep_year <- just_diffs[Ano >= max(just_diffs$Ano)]
       
       if(j==1){
@@ -153,7 +155,6 @@ month_diffs <- function(group_data,variable){
     keep_house_large$fraction_lw_md_h <- NA
     return(keep_house_large)
   }
-  
 }
 
 # Plot with subset
@@ -165,7 +166,21 @@ call_plot_subset <- function(df,group_var,subset_val1,subset_val2,analyze_var,xl
   Names = c(subset_val1,subset_val2)
   lines_df = data.frame(Names,Means)   
   
-  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) +geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
+  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) + geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
+  return(plot_this)
+}
+
+# Three variables to subset
+call_plot_subset_three <- function(df,group_var,subset_val1,subset_val2,subset_val3,analyze_var,xlab_,ylab_,title_plot) {
+  mean_one <- df[get(group_var)==subset_val1,mean(na.omit(get(analyze_var)))]
+  mean_two <- df[get(group_var)==subset_val2,mean(na.omit(get(analyze_var)))]
+  mean_three <- df[get(group_var)==subset_val3,mean(na.omit(get(analyze_var)))]
+  
+  Means = c(mean_one,mean_two,mean_three)
+  Names = c(subset_val1,subset_val2,subset_val3)
+  lines_df = data.frame(Names,Means)   
+  
+  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) + geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
   return(plot_this)
 }
 
@@ -183,6 +198,25 @@ call_plot_subset_several <- function(df,group_var,subset_val1,subset_val2,subset
   plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) +geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
   return(plot_this)
 }
+
+
+# Five  variables to subset
+call_plot_subset_five <- function(df,group_var,subset_val1,subset_val2,subset_val3,subset_val4,subset_val5,analyze_var,xlab_,ylab_,title_plot) {
+  mean_one <- df[get(group_var)==subset_val1,mean(na.omit(get(analyze_var)))]
+  mean_two <- df[get(group_var)==subset_val2,mean(na.omit(get(analyze_var)))]
+  mean_three <- df[get(group_var)==subset_val3,mean(na.omit(get(analyze_var)))]
+  mean_four <- df[get(group_var)==subset_val4,mean(na.omit(get(analyze_var)))]
+  mean_five <- df[get(group_var)==subset_val5,mean(na.omit(get(analyze_var)))]
+  
+  Means = c(mean_one,mean_two,mean_three,mean_four,mean_five)
+  Names = c(subset_val1,subset_val2,subset_val3,subset_val4,subset_val5)
+  lines_df = data.frame(Names,Means)   
+  
+  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) + geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
+  return(plot_this)
+}
+
+#Treatment vs Control Group Post Implementation
 
 
 ############ Define Groups and Variables
@@ -289,9 +323,7 @@ time.series.receipt <- survey.data.results[[2]] %>% mutate(treatment="Treatment"
     time.series.receipt$Casa <- as.character(time.series.receipt$Casa)
     
     #Dates of Report intervention (all of them receving reports)
-    #time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Febrero" | time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre",1,0 )
-    time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Febrero" | time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre" | time.series.receipt$Mes == "Noviembre" | time.series.receipt$Mes == "Diciembre",1,0 )
-    
+    time.series.receipt$report_intervention_month <- ifelse(time.series.receipt$Mes == "Febrero" | time.series.receipt$Mes == "Marzo" | time.series.receipt$Mes == "Abril" | time.series.receipt$Mes == "Mayo" | time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre",1,0 )
     #Dates of SMS intervention (all of them receiving texts)
     time.series.receipt$intervention_group <- ifelse(time.series.receipt$fecha>="2016-06-01","Treatment Post-Intervention","Treatment Pre-Intervention")
     time.series.receipt$sms_intervention_month <- ifelse(time.series.receipt$Mes == "Junio" | time.series.receipt$Mes == "Julio" | time.series.receipt$Mes == "Agosto" | time.series.receipt$Mes == "Septiembre" | time.series.receipt$Mes == "Octubre", 1,0 )
@@ -310,13 +342,17 @@ time.series.receipt <- survey.data.results[[2]] %>% mutate(treatment="Treatment"
     time.series.receipt <- merge(calculated_i_e_treatment,time.series.receipt,by=c('Casa','Mes','Ano'),all=T)
     time.series.receipt$energia <- 'NA'
     
-          for(i in 1:length(time.series.receipt$energia.y)) {
-            if(is.na(time.series.receipt$energia.y[i])==T){
-              time.series.receipt$energia[i] = time.series.receipt$energia.x[i]
-              time.series.receipt$energia_ajustada[i] = time.series.receipt$energia.x[i]
-            } else (time.series.receipt$energia[i] = time.series.receipt$energia.y[i])
-          }
-
+    for(i in 1:length(time.series.receipt$energia.y)) {
+      if(is.na(time.series.receipt$energia.y[i])==T){
+        time.series.receipt$energia[i] = time.series.receipt$energia.x[i]
+        time.series.receipt$energia_ajustada[i] = time.series.receipt$energia.x[i]
+      } else {time.series.receipt$energia[i] = time.series.receipt$energia.y[i]
+      time.series.receipt$energia_ajustada[i] = gsub("[[:punct:]]", " ", sub(".*=", "", time.series.receipt$Energia_Ajustada[i]))
+      time.series.receipt$energia_ajustada[i] = gsub(" ",".",time.series.receipt$energia_ajustada[i])
+      time.series.receipt$energia_ajustada[i] = gsub("..","",time.series.receipt$energia_ajustada[i],fixed =TRUE)
+      }
+    }
+    
     time.series.receipt <- time.series.receipt[order(time.series.receipt$Casa,time.series.receipt$fecha),]
     time.series.receipt$energia <- as.integer(time.series.receipt$energia)
     time.series.receipt$energia_ajustada <- as.integer(time.series.receipt$energia_ajustada)
@@ -341,10 +377,10 @@ time.series.receipt.control$Casa <- as.character(time.series.receipt.control$Cas
     # Adding NA variables so that we can do the merge
     time.series.receipt.control$wtp_paper <- NA
     time.series.receipt.control$wtp_values <- NA
-    time.series.receipt.control$wtp_lw_md_h <- NA
+    time.series.receipt.control$wtp_lw_md_h <- 'Control'
     time.series.receipt.control$mean_cost <- NA
     time.series.receipt.control$fraction_wtp <- NA
-    time.series.receipt.control$fraction_lw_md_h <- NA
+    time.series.receipt.control$fraction_lw_md_h <- 'Control'
     # Merging with type of establishment
     time.series.receipt.control <- merge(time.series.receipt.control,control_house_me_df,by=c('Casa'))
     
@@ -357,9 +393,13 @@ time.series.receipt.control$Casa <- as.character(time.series.receipt.control$Cas
       if(is.na(time.series.receipt.control$energia.y[i])==T){
         time.series.receipt.control$energia[i] = time.series.receipt.control$energia.x[i]
         time.series.receipt.control$energia_ajustada[i] = time.series.receipt.control$energia.x[i]
-      } else (time.series.receipt.control$energia[i] = time.series.receipt.control$energia.y[i])
+      } else {time.series.receipt.control$energia[i] = time.series.receipt.control$energia.y[i]
+      time.series.receipt.control$energia_ajustada[i] = gsub("[[:punct:]]", " ", sub(".*=", "", time.series.receipt.control$Energia_Ajustada[i]))
+      time.series.receipt.control$energia_ajustada[i] = gsub(" ",".",time.series.receipt.control$energia_ajustada[i])
+      time.series.receipt.control$energia_ajustada[i] = gsub("..","",time.series.receipt.control$energia_ajustada[i],fixed =TRUE)
+      }
     }
-    
+ 
     time.series.receipt.control <- time.series.receipt.control[order(time.series.receipt.control$Casa,time.series.receipt.control$fecha),]
     time.series.receipt.control$energia <- as.integer(time.series.receipt.control$energia)
     time.series.receipt.control$energia_ajustada <- as.integer(time.series.receipt.control$energia_ajustada)
@@ -374,7 +414,6 @@ time.series.receipt.control$Casa <- as.character(time.series.receipt.control$Cas
 # Binding
 data_time_series <- rbind(time.series.receipt,time.series.receipt.control)
 data_time_series.dt <- rbind(time.series.receipt.dt,time.series.receipt.control.dt)
-
 
 
 ##########################
@@ -409,15 +448,15 @@ data_time_series_nooutliers.dt <- rbind(time.series.receipt.nooutliers.dt,time.s
 ##### 3. Making sure that the groups are balanced: see if the outcome variable is balanced before the intervention
 
 # All data from houses including the one previous calculated before the experiment began
-ggplot(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
-ggplot(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Consumption (kWh)') + ggtitle('Treatment: Energy Consumption pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt,time.series.receipt$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt,time.series.receipt$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Consumption (kWh)') + ggtitle('Treatment: Energy Consumption pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
 
-ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$importe_dl,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
-ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$importe_dl,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
 
 # Same data but after removing outliers
-ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
-ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$energia,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$energia,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
 
 
 # T- test to make sure that energia and importe are balanced before the intervention
@@ -428,13 +467,14 @@ t.test(time.series.receipt.nooutliers$energia, time.series.receipt.control$energ
 houses_before_implementation <- as.data.table(rbind(time.series.receipt.nooutliers,time.series.receipt.control))
 
 call_plot_subset(houses_before_implementation,"treatment","Treatment","Control",'energia',"Monthly Energy Consumption (kWh)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
+call_plot_subset(houses_before_implementation,"treatment","Treatment","Control",'importe',"Monthly Energy Expenditures ($US)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
 
 
 
 
 #########
 #########
-#########  4. Timeseries Plots for Treatment and Control 
+#########  4. Month to Month Annual Differences
 
 plot_energy_cost_ft(time.series.receipt.dt,time.series.receipt.control.dt,data_time_series.dt,"energia","full_data","energia")
 plot_energy_cost_ft(time.series.receipt.dt,time.series.receipt.control.dt,data_time_series.dt,"energia_ajustada","full_data","energia_ajustada")
@@ -442,6 +482,17 @@ plot_energy_cost_ft(time.series.receipt.dt,time.series.receipt.control.dt,data_t
 plot_energy_cost_ft(time.series.receipt.nooutliers.dt,time.series.receipt.control.dt,data_time_series_nooutliers.dt,"energia","no_outliers","energia")
 plot_energy_cost_ft(time.series.receipt.nooutliers.dt,time.series.receipt.control.dt,data_time_series_nooutliers.dt,"energia_ajustada","no_outliers","energia_ajustada")
 
+
+#########
+#########
+#########  5. Treatment vs. Control
+
+
+plot_tr_ctl(data_time_series.dt,'energia','full_data')
+plot_tr_ctl(data_time_series.dt,'energia_ajustada','full_data')
+
+plot_tr_ctl(data_time_series_nooutliers.dt,'energia','no_outliers')
+plot_tr_ctl(data_time_series_nooutliers.dt,'energia_ajustada','no_outliers')
 
 
 
