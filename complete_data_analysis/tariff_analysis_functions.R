@@ -35,13 +35,12 @@ analysis_subset <- merge(energy.receipt.data.energia,analysis_subset,by=c('Casa'
 #test$energia <- NA
 ################################################################################################################################################
 
-test <- time.series.receipt.group.dt[is.na(time.series.receipt.group.dt$energia),]
+test <- time.series.receipt.group.dt[is.na(as.numeric(time.series.receipt.group.dt$energia)),]
 test <- test[complete.cases(test$importe),] %>% select(Casa,importe,Mes,Ano)
 test$Casa <- if(group_analysis=='control'){as.numeric(test$Casa)} else{test$Casa} #Changing the typevar because it was a character for the treatment group and and
 test <- merge(test,energy.receipt.data.energia,by=c('Casa'))
 test <- merge(test,group_tariff_code,by=c('Casa'))
 unique_months <- subset(unique(as.data.frame(test)[c("Mes","Ano")],),unique(as.data.frame(test)[c("Mes","Ano")],)$Ano < 2016)
-
 
 # For looping to get the energia from importe
 
@@ -110,24 +109,29 @@ for(i in 1:length(unique_months$Ano)){
     }
     
     subset_test$energia[j] <- energia_tot
+    subset_test$Casa <- as.character(subset_test$Casa)
     
-    if(subset_test$Casa[j]=="A18" | subset_test$Casa[i]== "A3"){
-      subset_test$energia[j] <- energia_tot+energia_tot*0.05
-    } else if(subset_test$Casa[j]=="A29" | subset_test$Casa[i]=="A11"){
-      subset_test$energia[i] <- energia_tot-energia_tot*0.05
-    } else if(subset_test$Casa[j]=="A17"){
-      subset_test$energia[i] <- energia_tot-energia_tot*0.15
-    } else if(subset_test$Casa[j]=="A19"){
-      subset_test$energia[j] <- energia_tot-energia_tot*0.248
-    } else if(subset_test$Casa[j]=="A21"){
-      subset_test$energia[j] <- energia_tot-energia_tot*0.12
-    } else if(subset_test$Casa[j]=="A26"){
-      subset_test$energia[j] <- energia_tot-energia_tot*0.02
-    } else if(subset_test$Casa[j]=="A6"){
-      subset_test$energia[j] <- energia_tot-energia_tot*0.31
-    } else if(subset_test$Casa[j]=="A7"){
-      subset_test$energia[j] <- energia_tot-energia_tot*0.01
-    }
+    #if(subset_test$Casa[j] %in% c("A18","A3","A29","A11","A17","A19","A21","A26","A6","A7")){
+    
+        if(subset_test$Casa[j]=="A18" | subset_test$Casa[j]== "A3"){
+          subset_test$energia[j] <- energia_tot+energia_tot*0.05
+        } else if(subset_test$Casa[j]=="A29" | subset_test$Casa[j]=="A11"){
+          subset_test$energia[j] <- energia_tot-energia_tot*0.05
+        } else if(subset_test$Casa[j]=="A17"){
+          subset_test$energia[j] <- energia_tot-energia_tot*0.15
+        } else if(subset_test$Casa[j]=="A19"){
+          subset_test$energia[j] <- energia_tot-energia_tot*0.248
+        } else if(subset_test$Casa[j]=="A21"){
+          subset_test$energia[j] <- energia_tot-energia_tot*0.12
+        } else if(subset_test$Casa[j]=="A26"){
+          subset_test$energia[j] <- energia_tot-energia_tot*0.02
+        } else if(subset_test$Casa[j]=="A6"){
+          subset_test$energia[j] <- energia_tot-energia_tot*0.31
+        } else if(subset_test$Casa[j]=="A7"){
+          subset_test$energia[j] <- energia_tot-energia_tot*0.01
+        } 
+    #} else{}
+    
   }
   
   if(i==1){

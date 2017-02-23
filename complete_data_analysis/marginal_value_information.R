@@ -90,7 +90,7 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/energy_consumption_functions.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/scraping_scripts.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/tariff_analysis_functions.R')
-
+source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/marginal_value_information_plotting_functions.R')
 
 ############ Define Functions
 
@@ -110,9 +110,7 @@ month_by_month <- function(group_data,variable){
 
 
 #Differences for each month one year afterwards (e.g June 2016 - June 2015)
-group_data<- treatment_time_series_data_table
-variable <- 'energia_ajustada'
-  
+
 month_diffs <- function(group_data,variable){
   
   years_data <- c(2014,2015,2016)

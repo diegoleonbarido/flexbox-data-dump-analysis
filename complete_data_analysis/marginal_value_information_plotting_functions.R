@@ -592,13 +592,14 @@ time_series_importe_control <-ggplot(control_time_series_data_table,aes(fecha,im
           
 for (j in 1:count.plot) {
   plot.name = count.plot.name[[j]]
-  mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/energy_cost",energy_file,energia_text_var,paste(plot.name,".jpg",sep = ""))
+  mypath <- file.path("/Users/diego/Desktop/Projects/nicaragua_dr_ee_behavior/plots/energy_cost",energy_file,energia_text_var,paste(plot.name,".jpg",sep = ""))
   jpeg(file=mypath)
   print(count.plot.list[[j]])
   dev.off()
 }
   
 }
+
 
 
 #####################################################################################################################################################
@@ -611,6 +612,10 @@ for (j in 1:count.plot) {
 #####################################################################################################################################################
 #####################################################################################################################################################
 
+
+time_series_data_table <- data_time_series.dt
+energia_text_var<- 'energia'
+energy_file<- 'full_data'
 
 
 plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
@@ -928,7 +933,7 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
   
   for (j in 1:count.plot) {
     plot.name = count.plot.name[[j]]
-    mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/treatment_cost",energy_file,energia_text_var,paste(plot.name,".jpg",sep = ""))
+    mypath <- file.path("/Users/diego/Desktop/Projects/nicaragua_dr_ee_behavior/plots/treatment_control",energy_file,energia_text_var,paste(plot.name,".jpg",sep = ""))
     jpeg(file=mypath)
     print(count.plot.list[[j]])
     dev.off()
@@ -938,67 +943,5 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
 
 
 
-
-
-
-
-
-
-#####################################################################################################################################################
-#####################################################################################################################################################
-#####################################################################################################################################################
-
-# All densities for each unique house (you can plot energia or importe here)
-for(i in 1:length(unique(data_time_series$Casa))){
-  subset_house_data <- subset(data_time_series,data_time_series$Casa == unique(data_time_series$Casa)[i])
-  mean_pre_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[1])$energia,na.rm=TRUE)
-  mean_post_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[2])$energia,na.rm=TRUE)
-  
-  density_plot <- ggplot(subset_house_data, aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density") + geom_vline(xintercept=mean_pre_intervention,colour="blue") + geom_vline(xintercept=mean_post_intervention,colour="red")  
-  
-  selected.house <- unique(data_time_series$Casa)[i] 
-  group_type <- unique(subset_house_data$treatment)
-  
-
-}
-
-# All Houses Month by Month
-for(i in 1:length(unique(mbm_bind$Casa))){
-  subset_house_data <- subset(mbm_bind,mbm_bind$Casa == unique(mbm_bind$Casa)[i])
-  mean_pre_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[1])$energia,na.rm=TRUE)
-  mean_post_intervention = mean(subset(subset_house_data,subset_house_data$intervention_group == unique(subset_house_data$intervention_group)[2])$energia,na.rm=TRUE)
-  
-  density_plot <- ggplot(subset_house_data, aes(diff_variable, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density") + geom_vline(xintercept=mean_pre_intervention,colour="blue") + geom_vline(xintercept=mean_post_intervention,colour="red")
-  
-  selected.house <- unique(mbm_bind$Casa)[i] 
-  group_type <- unique(subset_house_data$treatment)
-  
-  plot.name = paste(selected.house,"_",group_type,sep="")
-  mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/month_by_month",paste(plot.name,".jpg",sep=""))
-  
-  jpeg(file=mypath)
-  print(density_plot)
-  dev.off()
-}
-
-# Houses Month by Month only comparing the months with energy reports
-for(i in 1:length(unique(data_time_series$Casa))){
-  subset_house_data <- subset(mbm_bind,mbm_bind$Casa == unique(mbm_bind$Casa)[i])
-  subset_reports <- subset(subset_house_data,subset_house_data$sms_intervention_month ==1)
-  mean_pre_intervention = mean(subset(subset_reports,subset_reports$intervention_group == unique(subset_reports$intervention_group)[1])$energia,na.rm=TRUE)
-  mean_post_intervention = mean(subset(subset_reports,subset_reports$intervention_group == unique(subset_reports$intervention_group)[2])$energia,na.rm=TRUE)
-  
-  density_plot <- ggplot(subset_reports, aes(energia, fill = intervention_group)) + geom_density(alpha = 0.2) + xlab("Energy (kWh") + ylab("Density") + geom_vline(xintercept=mean_pre_intervention,colour="blue") + geom_vline(xintercept=mean_post_intervention,colour="red")  
-  
-  selected.house <- unique(data_time_series$Casa)[i] 
-  group_type <- unique(subset_reports$treatment)
-  
-  plot.name = paste(selected.house,"_",group_type,sep="")
-  mypath <- file.path("/Users/Diego/Desktop/Projects/Exploring the Marginal Value of Information/plots/month_by_month/month_by_month_sms_intervention",paste(plot.name,".jpg",sep=""))
-  
-  jpeg(file=mypath)
-  print(density_plot)
-  dev.off()
-}
 
 

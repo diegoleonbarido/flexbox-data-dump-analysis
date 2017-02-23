@@ -379,7 +379,7 @@ read.house.fridge <- function(dump,flexboxlist) {
 read.survey.data <- function(flexlist) {
   
   
-  setwd('/Users/Diego/Desktop/Nicaragua/Surveys/')
+  setwd('/Users/diego/Desktop/Data/nicaragua_surveys')
   
   #######   NOTE: Initial Baseline Survey Data   #######
   
