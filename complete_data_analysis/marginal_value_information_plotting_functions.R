@@ -613,11 +613,6 @@ for (j in 1:count.plot) {
 #####################################################################################################################################################
 
 
-time_series_data_table <- data_time_series.dt
-energia_text_var<- 'energia'
-energy_file<- 'full_data'
-
-
 plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
   
   count.plot.list <- list()
@@ -655,7 +650,7 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
       count.plot.name[[count.plot]] = 'only_dr_sms_full_tr_cl' 
   
   # Three Variable PLots
-  only_paper_info <- call_plot_subset_three(only_paper,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Monthly Annual Differences (kWh)','Density',"only Paper Reports")
+  only_paper_info <- call_plot_subset_three(only_paper,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Monthly Annual Differences (kWh)','Density',"Only Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_paper_info
       count.plot.name[[count.plot]] = 'only_paper_info' 
@@ -671,7 +666,7 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
       count.plot.name[[count.plot]] = 'only_dr_sms_full_info' 
   
   # Five Variable PLots
-  only_paper_info_wtp <- call_plot_subset_five(only_paper,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP: only Paper Reports")
+  only_paper_info_wtp <- call_plot_subset_five(only_paper,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP: Only Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_paper_info_wtp
       count.plot.name[[count.plot]] = 'only_paper_info_wtp' 
@@ -686,17 +681,17 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
       count.plot.list[[count.plot]] = only_dr_sms_full_info_wtp
       count.plot.name[[count.plot]] = 'only_dr_sms_full_info_wtp' 
   
-  only_paper_info_wtp_fr <-call_plot_subset_five(only_paper,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP Fraction: only Paper Reports")
+  only_paper_info_wtp_fr <-call_plot_subset_five(only_paper,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP Fraction: Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_paper_info_wtp_fr
       count.plot.name[[count.plot]] = 'only_paper_info_wtp_fr' 
   
-  only_dr_sms_info_wtp_fr <- call_plot_subset_five(only_sms_dr,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP Fraction: only Paper Reports")
+  only_dr_sms_info_wtp_fr <- call_plot_subset_five(only_sms_dr,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP Fraction: Post DR + SMS Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_info_wtp_fr
       count.plot.name[[count.plot]] = 'only_dr_sms_info_wtp_fr' 
   
-  only_dr_sms_full_info_wtp_fr <-call_plot_subset_five(only_sms_dr_full,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP Fraction: only Paper Reports")
+  only_dr_sms_full_info_wtp_fr <-call_plot_subset_five(only_sms_dr_full,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Differences (kWh)","Density","WTP Fraction: Post DR + SMS Full Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_full_info_wtp_fr
       count.plot.name[[count.plot]] = 'only_dr_sms_full_info_wtp_fr' 
@@ -715,64 +710,64 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
       only_sms_dr_full_ct <- subset(month_diffs_cost_dt,month_diffs_cost_dt$all_months_intervention == "DR Intervetnion + SMS All")
   
   # Two Variable Plots
-  only_paper_tr_cl_ct <- call_plot_subset(only_paper,'treatment','Treatment','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","only Paper Reports")
+  only_paper_tr_cl_ct <- call_plot_subset(only_paper_ct,'treatment','Treatment','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","only Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_paper_tr_cl_ct
       count.plot.name[[count.plot]] = 'only_paper_tr_cl_ct' 
   
-  only_dr_sms_tr_cl_ct <- call_plot_subset(only_sms_dr,'treatment','Treatment','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","DR + SMS Implementation")
+  only_dr_sms_tr_cl_ct <- call_plot_subset(only_sms_dr_ct,'treatment','Treatment','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","DR + SMS Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_tr_cl_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_tr_cl_ct' 
   
-  only_dr_sms_full_tr_cl_ct <- call_plot_subset(only_sms_dr_full,'treatment','Treatment','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","DR + SMS Full Implementation")
+  only_dr_sms_full_tr_cl_ct <- call_plot_subset(only_sms_dr_full_ct,'treatment','Treatment','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","DR + SMS Full Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_full_tr_cl_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_full_tr_cl_ct' 
   
   # Three Variable PLots
-  only_paper_info_ct <- call_plot_subset_three(only_paper,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Same Month Annual Cost Differences ($US)','Density',"only Paper Reports")
+  only_paper_info_ct <- call_plot_subset_three(only_paper_ct,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Same Month Annual Cost Differences ($US)','Density',"only Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_paper_info_ct
       count.plot.name[[count.plot]] = 'only_paper_info_ct' 
   
-  only_dr_sms_info_ct <- call_plot_subset_three(only_sms_dr,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Same Month Annual Cost Differences ($US)','Density',"DR + SMS Implementation")
+  only_dr_sms_info_ct <- call_plot_subset_three(only_sms_dr_ct,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Same Month Annual Cost Differences ($US)','Density',"DR + SMS Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_info_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_info_ct' 
   
-  only_dr_sms_full_info_ct <- call_plot_subset_three(only_sms_dr_full,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Same Month Annual Cost Differences ($US)','Density','DR + SMS Full Implementation')
+  only_dr_sms_full_info_ct <- call_plot_subset_three(only_sms_dr_full_ct,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','month_diff','Same Month Annual Cost Differences ($US)','Density','DR + SMS Full Implementation')
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_full_info_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_full_info_ct' 
   
   # Five Variable PLots
-  only_paper_info_wtp_ct <- call_plot_subset_five(only_paper,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP: only Paper Reports")
+  only_paper_info_wtp_ct <- call_plot_subset_five(only_paper_ct,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP: only Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_paper_info_wtp_ct
       count.plot.name[[count.plot]] = 'only_paper_info_wtp_ct' 
   
-  only_dr_sms_info_wtp_ct <- call_plot_subset_five(only_sms_dr,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP: Post DR + SMS Implementation")
+  only_dr_sms_info_wtp_ct <- call_plot_subset_five(only_sms_dr_ct,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP: Post DR + SMS Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_info_wtp_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_info_wtp_ct' 
   
-  only_dr_sms_full_info_wtp_ct <- call_plot_subset_five(only_sms_dr_full,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP: Post DR + SMS Full Implementation")
+  only_dr_sms_full_info_wtp_ct <- call_plot_subset_five(only_sms_dr_full_ct,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP: Post DR + SMS Full Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_full_info_wtp_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_full_info_wtp_ct' 
   
-  only_paper_info_wtp_fr_ct <-call_plot_subset_five(only_paper,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP Fraction: only Paper Reports")
+  only_paper_info_wtp_fr_ct <-call_plot_subset_five(only_paper_ct,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP Fraction: only Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_paper_info_wtp_fr_ct
       count.plot.name[[count.plot]] = 'only_paper_info_wtp_fr_ct' 
   
-  only_dr_sms_info_wtp_fr_ct <- call_plot_subset_five(only_sms_dr,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP Fraction: only Paper Reports")
+  only_dr_sms_info_wtp_fr_ct <- call_plot_subset_five(only_sms_dr_ct,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP Fraction: Post DR + SMS Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_info_wtp_fr_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_info_wtp_fr_ct' 
   
-  only_dr_sms_full_info_wtp_fr_ct <-call_plot_subset_five(only_sms_dr_full,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP Fraction: only Paper Reports")
+  only_dr_sms_full_info_wtp_fr_ct <-call_plot_subset_five(only_sms_dr_full_ct,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','month_diff',"Same Month Annual Cost Differences ($US)","Density","WTP Fraction: Post DR + SMS Full Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = only_dr_sms_full_info_wtp_fr_ct
       count.plot.name[[count.plot]] = 'only_dr_sms_full_info_wtp_fr_ct' 
@@ -793,7 +788,7 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
   mbm_sms_dr_full <- subset(month_by_month_dt,month_by_month_dt$all_months_intervention == "DR Intervetnion + SMS All")
   
   # Two Variable Plots
-  mbm_paper_tr_cl <- call_plot_subset(mbm_paper,'treatment','Treatment','Control','diff_variable',"Month by Month Differences (kWh)","Density","mbm Paper Reports")
+  mbm_paper_tr_cl <- call_plot_subset(mbm_paper,'treatment','Treatment','Control','diff_variable',"Month by Month Differences (kWh)","Density","Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = mbm_paper_tr_cl
       count.plot.name[[count.plot]] = 'mbm_paper_tr_cl' 
@@ -809,7 +804,7 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
       count.plot.name[[count.plot]] = 'mbm_dr_sms_full_tr_cl' 
   
   # Three Variable PLots
-  mbm_paper_info <- call_plot_subset_three(mbm_paper,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','diff_variable','Month by Month Differences (kWh)','Density',"mbm Paper Reports")
+  mbm_paper_info <- call_plot_subset_three(mbm_paper,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','diff_variable','Month by Month Differences (kWh)','Density',"Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = mbm_paper_info
       count.plot.name[[count.plot]] = 'mbm_paper_info' 
@@ -825,7 +820,7 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
       count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info' 
   
   # Five Variable PLots
-  mbm_paper_info_wtp <- call_plot_subset_five(mbm_paper,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP: mbm Paper Reports")
+  mbm_paper_info_wtp <- call_plot_subset_five(mbm_paper,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP: Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = mbm_paper_info_wtp
       count.plot.name[[count.plot]] = 'mbm_paper_info_wtp' 
@@ -840,22 +835,23 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
       count.plot.list[[count.plot]] = mbm_dr_sms_full_info_wtp
       count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_wtp' 
   
-  mbm_paper_info_wtp_fr <-call_plot_subset_five(mbm_paper,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP Fraction: mbm Paper Reports")
+  mbm_paper_info_wtp_fr <-call_plot_subset_five(mbm_paper,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP Fraction:Paper Reports")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = mbm_paper_info_wtp_fr
       count.plot.name[[count.plot]] = 'mbm_paper_info_wtp_fr' 
   
-  mbm_dr_sms_info_wtp_fr <- call_plot_subset_five(mbm_sms_dr,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP Fraction: mbm Paper Reports")
+  mbm_dr_sms_info_wtp_fr <- call_plot_subset_five(mbm_sms_dr,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP Fraction: Post DR + SMS Implementation")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = mbm_dr_sms_info_wtp_fr
       count.plot.name[[count.plot]] = 'mbm_dr_sms_info_wtp_fr' 
   
-  mbm_dr_sms_full_info_wtp_fr <-call_plot_subset_five(mbm_sms_dr_full,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP Fraction: mbm Paper Reports")
+  mbm_dr_sms_full_info_wtp_fr <-call_plot_subset_five(mbm_sms_dr_full,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Differences (kWh)","Density","WTP Fraction: Post DR + SMS Full Implementatio")
       count.plot <- count.plot + 1
       count.plot.list[[count.plot]] = mbm_dr_sms_full_info_wtp_fr
       count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_wtp_fr' 
   
   ###### Month by Month Analysis Costo
+  time_series_data_table$importe_dl <- as.numeric(time_series_data_table$importe_dl)
   month_by_month_costo_dt <- month_by_month(time_series_data_table,'importe_dl')
   
   # Adding variables to the dt 
@@ -869,67 +865,67 @@ plot_tr_ctl <- function(time_series_data_table,energia_text_var,energy_file){
   mbm_sms_dr_full <- subset(month_by_month_costo_dt,month_by_month_costo_dt$all_months_intervention == "DR Intervetnion + SMS All")
   
   # Two Variable Plots
-  mbm_paper_tr_cl_ct <- call_plot_subset(mbm_paper,'treatment','Treatment','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","mbm Paper Reports")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_paper_tr_cl_ct
-  count.plot.name[[count.plot]] = 'mbm_paper_tr_cl_ct' 
+  mbm_paper_tr_cl_ct <- call_plot_subset(mbm_paper,'treatment','Treatment','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","Paper Reports")
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_paper_tr_cl_ct
+    count.plot.name[[count.plot]] = 'mbm_paper_tr_cl_ct' 
   
   mbm_dr_sms_tr_cl_ct <- call_plot_subset(mbm_sms_dr,'treatment','Treatment','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","DR + SMS Implementation")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_tr_cl_ct
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_tr_cl_ct' 
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_tr_cl_ct
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_tr_cl_ct' 
   
   mbm_dr_sms_full_tr_cl_ct <- call_plot_subset(mbm_sms_dr_full,'treatment','Treatment','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","DR + SMS Full Implementation")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_full_tr_cl_ct
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_full_tr_cl_ct' 
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_full_tr_cl_ct
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_full_tr_cl_ct' 
   
   # Three Variable PLots
-  mbm_paper_info_dt <- call_plot_subset_three(mbm_paper,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','diff_variable','Month by Month Cost Differences ($US)','Density',"mbm Paper Reports")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_paper_info_dt
-  count.plot.name[[count.plot]] = 'mbm_paper_info_dt' 
+  mbm_paper_info_dt <- call_plot_subset_three(mbm_paper,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','diff_variable','Month by Month Cost Differences ($US)','Density',"Paper Reports")
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_paper_info_dt
+    count.plot.name[[count.plot]] = 'mbm_paper_info_dt' 
   
   mbm_dr_sms_info_dt <- call_plot_subset_three(mbm_sms_dr,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','diff_variable','Month by Month Cost Differences ($US)','Density',"DR + SMS Implementation")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_info_dt
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_info_dt' 
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_info_dt
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_info_dt' 
   
   mbm_dr_sms_full_info_dt <- call_plot_subset_three(mbm_sms_dr_full,'treatment_v2','Treatment - Won Information','Treatment - Lost Information','Control','diff_variable','Month by Month Cost Differences ($US)','Density','DR + SMS Full Implementation')
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_full_info_dt
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_dt' 
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_full_info_dt
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_dt' 
   
   # Five Variable PLots
-  mbm_paper_info_wtp_dt <- call_plot_subset_five(mbm_paper,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP: mbm Paper Reports")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_paper_info_wtp_dt
-  count.plot.name[[count.plot]] = 'mbm_paper_info_wtp_dt' 
+  mbm_paper_info_wtp_dt <- call_plot_subset_five(mbm_paper,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP: Paper Reports")
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_paper_info_wtp_dt
+    count.plot.name[[count.plot]] = 'mbm_paper_info_wtp_dt' 
   
   mbm_dr_sms_info_wtp_dt <- call_plot_subset_five(mbm_sms_dr,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP: Post DR + SMS Implementation")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_info_wtp_dt
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_info_wtp_dt' 
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_info_wtp_dt
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_info_wtp_dt' 
   
   mbm_dr_sms_full_info_wtp_dt <- call_plot_subset_five(mbm_sms_dr_full,"wtp_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP: Post DR + SMS Full Implementation")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_full_info_wtp_dt
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_wtp_dt' 
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_full_info_wtp_dt
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_wtp_dt' 
   
-  mbm_paper_info_wtp_fr_dt <-call_plot_subset_five(mbm_paper,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP Fraction: mbm Paper Reports")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_paper_info_wtp_fr_dt
-  count.plot.name[[count.plot]] = 'mbm_paper_info_wtp_fr_dt' 
+  mbm_paper_info_wtp_fr_dt <-call_plot_subset_five(mbm_paper,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP Fraction:Paper Reports")
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_paper_info_wtp_fr_dt
+    count.plot.name[[count.plot]] = 'mbm_paper_info_wtp_fr_dt' 
   
-  mbm_dr_sms_info_wtp_fr_dt <- call_plot_subset_five(mbm_sms_dr,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP Fraction: mbm Paper Reports")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_info_wtp_fr_dt
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_info_wtp_fr_dt' 
+  mbm_dr_sms_info_wtp_fr_dt <- call_plot_subset_five(mbm_sms_dr,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP Fraction: Post DR + SMS Implementation")
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_info_wtp_fr_dt
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_info_wtp_fr_dt' 
   
-  mbm_dr_sms_full_info_wtp_fr_dt <-call_plot_subset_five(mbm_sms_dr_full,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP Fraction: mbm Paper Reports")
-  count.plot <- count.plot + 1
-  count.plot.list[[count.plot]] = mbm_dr_sms_full_info_wtp_fr_dt
-  count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_wtp_fr_dt' 
+  mbm_dr_sms_full_info_wtp_fr_dt <-call_plot_subset_five(mbm_sms_dr_full,"fraction_lw_md_h",'low','high','medium-low','medium-high','Control','diff_variable',"Month by Month Cost Differences ($US)","Density","WTP Fraction: Post DR + SMS Full Implementation")
+    count.plot <- count.plot + 1
+    count.plot.list[[count.plot]] = mbm_dr_sms_full_info_wtp_fr_dt
+    count.plot.name[[count.plot]] = 'mbm_dr_sms_full_info_wtp_fr_dt' 
   
   for (j in 1:count.plot) {
     plot.name = count.plot.name[[j]]

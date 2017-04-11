@@ -222,6 +222,7 @@ call_plot_subset_five <- function(df,group_var,subset_val1,subset_val2,subset_va
 # Missing A1 and A25 - add them for the next round
 flexlist <- c('A3','A6','A7','A11','A12','A14','A16','A17','A18','A19','A20','A21','A24','A25','A26','A28','A29') #Missing 'A1' Removed'A9','A22',
 treatment_group_list <- c('A1','A3','A6','A7','A9','A11','A12','A14','A16','A17','A18','A19','A20','A21','A22','A24','A25','A26','A28','A29')
+treatment_encuesta_id <- c('40','3','43','33','309','40','37','117','116','219','312','59','317','163','315','316','318','197','14','12')
 control_group_list <- c(7,20,26,45,77,124,185,191,203,204,302,304,305,307,310,311)
 info_paying_houses <- c('A3','A6','A11','A12','A17','A18','A20','A21','A25','A26') #houses that are paying for information
 
@@ -426,18 +427,26 @@ ggplot(time.series.receipt.control,aes(Casa,energia_ajustada)) + geom_point()
 # 2. Remove outliers 
       # 26 & 11 are outliers
       # 29 had too many problems and no assertions could be made about the trendline
-      
-time.series.receipt.nooutliers <- subset(time.series.receipt, time.series.receipt$Casa!="A26" & time.series.receipt$Casa!="A11" & time.series.receipt$Casa!="A29")
+      # For the control group, 45 and 191 we could not get data for 2015 so they were dropped from the post implementation analysis
+
+#Treatment      
+time.series.receipt.nooutliers <- subset(time.series.receipt, time.series.receipt$Casa!="A26" & time.series.receipt$Casa!="A11" & time.series.receipt$Casa!="A29" & time.series.receipt$Casa!="A24")
 time.series.receipt.nooutliers.dt <- as.data.table(time.series.receipt.nooutliers)
 
-data_time_series_nooutliers <- subset(data_time_series, data_time_series$Casa!="A26" & data_time_series$Casa!="A11" & time.series.receipt$Casa!="A29")
+#Control
+time.series.receipt.control.nooutliers <- subset(time.series.receipt.control, time.series.receipt.control$Casa!="45" & time.series.receipt.control$Casa!="191" )
+time.series.receipt.control.nooutliers.dt <- as.data.table(time.series.receipt.control.nooutliers)
+
+data_time_series_nooutliers <- subset(data_time_series, data_time_series$Casa!="A26" & data_time_series$Casa!="A11" & data_time_series$Casa!="A29" & time.series.receipt$Casa!="A24" & data_time_series$Casa!="191" & data_time_series$Casa!="45" )
 data_time_series_nooutliers.dt <- as.data.table(data_time_series_nooutliers)
 data_time_series_nooutliers.dt$energia <- as.numeric(data_time_series_nooutliers.dt$energia)
 data_time_series_nooutliers.dt$energia_ajustada <- as.numeric(data_time_series_nooutliers.dt$energia_ajustada)
 
+
+
 # Binding
-data_time_series_nooutliers <- rbind(time.series.receipt.nooutliers,time.series.receipt.control)
-data_time_series_nooutliers.dt <- rbind(time.series.receipt.nooutliers.dt,time.series.receipt.control.dt)
+#data_time_series_nooutliers <- rbind(time.series.receipt.nooutliers,time.series.receipt.control)
+#data_time_series_nooutliers.dt <- rbind(time.series.receipt.nooutliers.dt,time.series.receipt.control.dt)
 
 
 
@@ -458,16 +467,22 @@ ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fech
 
 
 # T- test to make sure that energia and importe are balanced before the intervention
-t.test(time.series.receipt.nooutliers$importe_dl, time.series.receipt.control$importe_dl) #importe
-t.test(time.series.receipt.nooutliers$energia, time.series.receipt.control$energia) #energia
+#All Data
+t.test(time.series.receipt$importe_dl, time.series.receipt.control$importe_dl) #importe
+t.test(time.series.receipt$energia, time.series.receipt.control$energia) #energia
 
+#No outliers
+t.test(time.series.receipt.nooutliers$importe_dl, time.series.receipt.control.nooutliers$importe_dl) #importe
+t.test(time.series.receipt.nooutliers$energia, time.series.receipt.control.nooutliers$energia) #energia
 
-houses_before_implementation <- as.data.table(rbind(time.series.receipt.nooutliers,time.series.receipt.control))
+houses_before_implementation <- as.data.table(rbind(time.series.receipt,time.series.receipt.control))
+houses_before_implementation_no_outliers <- as.data.table(rbind(time.series.receipt.nooutliers,time.series.receipt.control.nooutliers))
 
 call_plot_subset(houses_before_implementation,"treatment","Treatment","Control",'energia',"Monthly Energy Consumption (kWh)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
-call_plot_subset(houses_before_implementation,"treatment","Treatment","Control",'importe',"Monthly Energy Expenditures ($US)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
+call_plot_subset(houses_before_implementation_no_outliers,"treatment","Treatment","Control",'energia',"Monthly Energy Consumption (kWh)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
 
-
+call_plot_subset(houses_before_implementation_no_outliers,"treatment","Treatment","Control",'importe',"Monthly Energy Expenditures ($US)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
+call_plot_subset(houses_before_implementation_no_outliers,"treatment","Treatment","Control",'importe',"Monthly Energy Expenditures ($US)","Density","Before Implementation (kWH/Month): Treatment vs. Control")
 
 
 #########
@@ -497,44 +512,50 @@ plot_tr_ctl(data_time_series_nooutliers.dt,'energia_ajustada','no_outliers')
 ##########
 ##########   
 ########## 2 Learning
-    
-    survey.data.complete <- survey.data.results[[4]] #All answers in the survey data 
-        survey.data.complete$gasto_electrico <- as.numeric(as.character(survey.data.complete$gasto_electrico))
-        survey.data.complete$gasto_electrico_cordobas <- as.numeric(as.character(survey.data.complete$gasto_electrico_cordobas))
-        survey.data.complete$gasto_tarifa_electrica <- as.numeric(as.character(survey.data.complete$gasto_tarifa_electrica))
-    
-    baseline_receipt_data_for_merge <- survey.data.results[[5]] #Baseline data
-    implementation.baseline <- survey.data.results[[6]] #Baseline and implementation survey data
-          implementation.baseline$r_total <- as.numeric(as.character(implementation.baseline$r_total))
-          implementation.baseline$gasto_electrico <- as.numeric(as.character(implementation.baseline$gasto_electrico))
-          
-    
-    learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="encuesta_id",all=T)
-          learning.data$gasto_electrico <- as.numeric(as.character(learning.data$gasto_electrico))
-          learning.data$gasto_electrico_cordobas <- as.numeric(as.character(learning.data$gasto_electrico_cordobas))
-          learning.data$gasto_tarifa_electrica <- as.numeric(as.character(learning.data$gasto_tarifa_electrica))
-          learning.data$today <- as.character(learning.data$today)
-          learning.data$year <- as.numeric(substrRight(learning.data$today, 2))
-          learning.data$month <- as.numeric(gsub( "/.*$", "", learning.data$today))
-          day_list <- apply(learning.data[4],1,function(x) rm_between(x, "/", "/", extract=TRUE))
-          learning.data$day <- data.frame(matrix(unlist(day_list), nrow=length(learning.data$today), byrow=T),stringsAsFactors=FALSE)$matrix.unlist.day_list...nrow...length.learning.data.today...
-          learning.data$date <- paste(learning.data$month,learning.data$day,learning.data$year,sep = "/")
-          learning.data$date <- strptime(learning.data$date,"%m/%d/%y")
 
+
+baseline_receipt_data_for_merge <- survey.data.results[[5]] # Baseline data
+
+house_baseline <- survey.data.results[[10]] # House Baseline Data
+
+survey.data.complete <- survey.data.results[[4]] # Monthly Updates
+    survey.data.complete$gasto_electrico <- as.numeric(as.character(survey.data.complete$gasto_electrico))
+    survey.data.complete$gasto_electrico_cordobas <- as.numeric(as.character(survey.data.complete$gasto_electrico_cordobas))
+    survey.data.complete$gasto_tarifa_electrica <- as.numeric(as.character(survey.data.complete$gasto_tarifa_electrica))
+
+implementation.baseline <- survey.data.results[[6]] # Implementation Baseline
+      implementation.baseline$r_total <- as.numeric(as.character(implementation.baseline$r_total))
+      implementation.baseline$gasto_electrico <- as.numeric(as.character(implementation.baseline$gasto_electrico))
+      
+final.control.survey <- survey.data.results[[9]] # Final Control Survey
+
+control.survey.data <- survey.data.results[[11]] # Aggregate Survey Results
           
-          #Energy
-          learning.data$kwh_estimate_diff <- learning.data$r_monthly_kwh - learning.data$gasto_electrico
-          learning.data$kwh_estimate_diff_pct <- ((abs(learning.data$r_monthly_kwh - learning.data$gasto_electrico))/learning.data$r_monthly_kwh)*100
-          
-          #Cost
-          learning.data$cordobas_estimate_diff <- learning.data$r_monthly_cordobas - learning.data$gasto_electrico_cordobas
-          learning.data$cordobas_estimate_diff_pct <- ((abs(learning.data$r_monthly_cordobas - learning.data$gasto_electrico_cordobas))/learning.data$r_monthly_cordobas)*100
-          learning.data$total_cordobas_estimate_diff <- learning.data$r_total_cordobas - learning.data$gasto_electrico_cordobas
-          learning.data$total_cordobas_estimate_diff_pct <- ((abs(learning.data$r_total_cordobas - learning.data$gasto_electrico_cordobas))/learning.data$r_total_cordobas)*100
-          
-          #Tariff NOTE: need to add the kwh in step changes, not only the average value
-          learning.data$tariff_diff <-learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh - learning.data$gasto_tarifa_electrica
-          learning.data$tariff_diff_pct <-(abs(learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh - learning.data$gasto_tarifa_electrica)/(learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh))*100
+learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="encuesta_id",all=T)
+      learning.data$gasto_electrico <- as.numeric(as.character(learning.data$gasto_electrico))
+      learning.data$gasto_electrico_cordobas <- as.numeric(as.character(learning.data$gasto_electrico_cordobas))
+      learning.data$gasto_tarifa_electrica <- as.numeric(as.character(learning.data$gasto_tarifa_electrica))
+      learning.data$today <- as.character(learning.data$today)
+      learning.data$year <- as.numeric(substrRight(learning.data$today, 2))
+      learning.data$month <- as.numeric(gsub( "/.*$", "", learning.data$today))
+      day_list <- apply(learning.data[4],1,function(x) rm_between(x, "/", "/", extract=TRUE))
+      learning.data$day <- data.frame(matrix(unlist(day_list), nrow=length(learning.data$today), byrow=T),stringsAsFactors=FALSE)$matrix.unlist.day_list...nrow...length.learning.data.today...
+      learning.data$date <- paste(learning.data$month,learning.data$day,learning.data$year,sep = "/")
+      learning.data$date <- strptime(learning.data$date,"%m/%d/%y")
+
+      #Energy
+      learning.data$kwh_estimate_diff <- learning.data$r_monthly_kwh - learning.data$gasto_electrico
+      learning.data$kwh_estimate_diff_pct <- ((abs(learning.data$r_monthly_kwh - learning.data$gasto_electrico))/learning.data$r_monthly_kwh)*100
+      
+      #Cost
+      learning.data$cordobas_estimate_diff <- learning.data$r_monthly_cordobas - learning.data$gasto_electrico_cordobas
+      learning.data$cordobas_estimate_diff_pct <- ((abs(learning.data$r_monthly_cordobas - learning.data$gasto_electrico_cordobas))/learning.data$r_monthly_cordobas)*100
+      learning.data$total_cordobas_estimate_diff <- learning.data$r_total_cordobas - learning.data$gasto_electrico_cordobas
+      learning.data$total_cordobas_estimate_diff_pct <- ((abs(learning.data$r_total_cordobas - learning.data$gasto_electrico_cordobas))/learning.data$r_total_cordobas)*100
+      
+      #Tariff NOTE: need to add the kwh in step changes, not only the average value
+      learning.data$tariff_diff <-learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh - learning.data$gasto_tarifa_electrica
+      learning.data$tariff_diff_pct <-(abs(learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh - learning.data$gasto_tarifa_electrica)/(learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh))*100
           
     
     # 2.1 Accuracy of energy expenditures and energy costs
@@ -561,18 +582,70 @@ plot_tr_ctl(data_time_series_nooutliers.dt,'energia_ajustada','no_outliers')
             dev.off()
           }
     
+          
      #2.1.1 Plotting the baseline, control, and treatment groups against each other
 
       survey.data.plot <- survey.data.complete %>% mutate(data='treatment') %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
-      baseline_receipt_data_for_plot <- baseline_receipt_data_for_merge %>% mutate(data='baseline',r_total_cordobas=baseline_monthly_cordobas,gasto_electrico_cordobas=baseline_gasto_electrico)  %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
-      baseline_households <- subset(implementation.baseline,implementation.baseline$control_estudio=='estudio' & implementation.baseline$tipo_establecimiento=='casa') %>% mutate(data='baseline',r_total_cordobas=r_total,gasto_electrico_cordobas=gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      baseline_receipt_data_for_plot <- baseline_receipt_data_for_merge %>% mutate(data='Baseline',r_total_cordobas=baseline_monthly_cordobas,gasto_electrico_cordobas=baseline_gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      implementation_baseline <- implementation.baseline %>% mutate(data='Mid-Baseline',r_total_cordobas=r_total,gasto_electrico_cordobas=gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      baseline_study_households <- subset(implementation.baseline,implementation.baseline$control_estudio=='estudio' & implementation.baseline$tipo_establecimiento=='casa') %>% mutate(data='baseline',r_total_cordobas=r_total,gasto_electrico_cordobas=gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      baseline_all_households <- house_baseline %>% mutate(data='household baseline') %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      
       baseline_current_plot <- rbind(baseline_receipt_data_for_plot,survey.data.plot,baseline_households) %>% mutate(total_cordobas_estimate_diff_pct=r_total_cordobas-gasto_electrico_cordobas)
+
+      all_baseline_data <- rbind(baseline_receipt_data_for_plot,baseline_study_households,baseline_all_households)
+      all_baseline_data$gasto_electrico_cordobas <- as.numeric(all_baseline_data$gasto_electrico_cordobas)
+      
+      # All Baseline
+      ggplot(subset(all_baseline_data,all_baseline_data$gasto_electrico_cordobas<20000), aes(gasto_electrico_cordobas, r_total_cordobas)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") + ggtitle("Baseline Actual vs Perceived Costs")
+      
+      # Treatment
+      treatment_baseline <- subset(baseline_receipt_data_for_plot, as.character(baseline_receipt_data_for_plot$encuesta_id) %in% treatment_encuesta_id)
+      treatment_baseline_households <- subset(implementation_baseline, as.character(implementation_baseline$encuesta_id) %in% treatment_encuesta_id)
+      
+            #Adding a year 
+            survey.data.complete$year <- substrRight(as.character(survey.data.complete$today),2)
+            survey.data.complete$data <- ifelse(survey.data.complete$year=='17','Treatment End','Treatment Ongoing')
+            survey.data.plot.treatment <- survey.data.complete%>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      
+      treatment_group_all_data <- rbind(treatment_baseline,treatment_baseline_households,survey.data.plot.treatment)
+      write.csv(treatment_group_all_data,'pepino.csv')
+      
+      ggplot(treatment_group_all_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+        theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
+        theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
+
+      #Control
+      control_baseline <- subset(baseline_receipt_data_for_plot, as.character(baseline_receipt_data_for_plot$encuesta_id) %in% control_group_list) 
+      control_baseline_households <- subset(implementation_baseline, as.character(implementation_baseline$encuesta_id) %in% control_group_list)
+      final_control_survey <- final.control.survey %>% mutate(data='Control End')%>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+            final_control_survey$gasto_electrico_cordobas <- as.numeric(as.character(final_control_survey$gasto_electrico_cordobas))
+            final_control_survey <- na.omit(final_control_survey)
+            
+              #Evaluating Missing Data
+              merge_control_1 <- merge(control_baseline,control_baseline_households,by=c('encuesta_id'),all=TRUE)
+              merge_control_2 <- merge(merge_control_1,na.omit(final_control_survey),by=c('encuesta_id'),all=TRUE)
+              
+  
+      control_group_all_data <- rbind(control_baseline,control_baseline_households,final_control_survey)
+      control_group_all_data$gasto_electrico_cordobas <- as.numeric(control_group_all_data$gasto_electrico_cordobas)
+      # Merged Data
+      ggplot(control_group_all_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+        theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
+        theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
+      
+      # Aggregated Data from Surveys (Google Drive)
+      ggplot(control.survey.data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+        theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
+        theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
       
       
-      # Need to bind gh data from the treatment group here
+      
+      
       ggplot(baseline_current_plot, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
       ggplot(subset(baseline_current_plot,baseline_current_plot$gasto_electrico_cordobas<30000), aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
       
+
       #   Need to get kwh estimates for the other groups from the mid baseline and 
       #   Need to plot how far off people are in terms of kwh
       #   Energy understanding (need to calculate)

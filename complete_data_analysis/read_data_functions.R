@@ -394,6 +394,9 @@ read.survey.data <- function(flexlist) {
   #NOTE2: This has the baseline survey data for the houses and the implementation survey data for the pulperias
   implementation.baseline.survey <- read.csv('Implementation Baseline/Cool Joule Project Management - Verificacion de Ubicacion y Enc.csv')
   
+  #House Baseline Data
+  house.baseline.survey <- read.csv('/Users/diego/Desktop/Data/nicaragua_surveys/Houses Baseline/houses_baseline.csv')
+  
   ####### Reading data from the survey data
   
   survey.data.complete <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly_for analysis.csv', na.strings=c(""," ","n/a"))
@@ -428,8 +431,9 @@ read.survey.data <- function(flexlist) {
   im_en_control$energia <- as.numeric(gsub("[[:punct:]]", " ", sub(".*=", "", im_en_control$Energia)))
   im_en_control$energia_ajustada <- as.numeric(gsub("[[:punct:]]", " ", sub(".*=", "", im_en_control$Energia_Ajustada)))
   
-  
   im_en_sorted_control <- im_en_control[order(im_en_control$Casa,im_en_control$fecha),]
+  
+  agg_control_results <- read.csv('/Users/diego/Desktop/Data/nicaragua_surveys/Survey Monthly Updates/Results/final_survey_results_control.csv')
   
   # Porcentaje de la factura que esta dedicado a la energia
   recibos_control <- read.csv('Survey Monthly Updates/Results/recibos_detalles_control.csv')
@@ -439,6 +443,9 @@ read.survey.data <- function(flexlist) {
   e_bill_fraction_control <- merge(mean_energia_recibos_control,median_energia_recibos_control,by=c('house.id'))
   e_bill_fraction_control$type.val<- "Gasto Energía (kWh)"
   e_bill_fraction_control$cost <- 1
+  
+  #Final Control Survey
+  final.control.survey <- read.csv('/Users/diego/Desktop/Data/nicaragua_surveys/Survey Monthly Updates/Results/final_survey_control.csv')
   
   ###### Control group ends
   
@@ -510,7 +517,7 @@ read.survey.data <- function(flexlist) {
   
   houses.energy.df$cost <- ifelse(houses.energy.df$type.val == "S.Menos 150" | houses.energy.df$type.val == "S.Comercialización" | houses.energy.df$type.val == "S.Alumbrado" | houses.energy.df$type.val == "S.Jubilados",0,1)
   
-  return(list(houses.energy.df,im_en_sorted,im_en_sorted_control,survey.data.complete,baseline_receipt_data_for_merge,implementation.baseline.survey,survey.data.correct,e_bill_fraction_control))
+  return(list(houses.energy.df,im_en_sorted,im_en_sorted_control,survey.data.complete,baseline_receipt_data_for_merge,implementation.baseline.survey,survey.data.correct,e_bill_fraction_control,final.control.survey,house.baseline.survey,agg_control_results))
 }
 
 
