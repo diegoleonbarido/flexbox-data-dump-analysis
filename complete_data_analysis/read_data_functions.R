@@ -416,6 +416,8 @@ read.survey.data <- function(flexlist) {
   
   im_en_sorted <- im_en[order(im_en$Casa,im_en$fecha),]
   
+  all.treatment.check <- read.csv('Survey Monthly Updates/Results/all_data_treatment_check.csv')
+  
   
   ###### Control group begins
   
@@ -446,6 +448,8 @@ read.survey.data <- function(flexlist) {
   
   #Final Control Survey
   final.control.survey <- read.csv('/Users/diego/Desktop/Data/nicaragua_surveys/Survey Monthly Updates/Results/final_survey_control.csv')
+  all.control.check <- read.csv('Survey Monthly Updates/Results/all_data_control_check.csv')
+  
   
   ###### Control group ends
   
@@ -517,7 +521,7 @@ read.survey.data <- function(flexlist) {
   
   houses.energy.df$cost <- ifelse(houses.energy.df$type.val == "S.Menos 150" | houses.energy.df$type.val == "S.Comercialización" | houses.energy.df$type.val == "S.Alumbrado" | houses.energy.df$type.val == "S.Jubilados",0,1)
   
-  return(list(houses.energy.df,im_en_sorted,im_en_sorted_control,survey.data.complete,baseline_receipt_data_for_merge,implementation.baseline.survey,survey.data.correct,e_bill_fraction_control,final.control.survey,house.baseline.survey,agg_control_results))
+  return(list(houses.energy.df,im_en_sorted,im_en_sorted_control,survey.data.complete,baseline_receipt_data_for_merge,implementation.baseline.survey,survey.data.correct,e_bill_fraction_control,final.control.survey,house.baseline.survey,agg_control_results,all.treatment.check,all.control.check))
 }
 
 

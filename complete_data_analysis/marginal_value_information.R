@@ -7,10 +7,6 @@
   # 1.4 Coefficient of variability
   # 1.5 Who is saving energy? Those who like the information more, or the ones who like the report more? Is it those who like the texts the most? Is it those with the willingness to pay?
   # 1.6 Are the people who chose the information those who have the largest energy savings? Are the people with the highest willingness to pay saving energy with information?
-
-
-  # Need to Do: Propensity score matching, pairing groups, looking at trends month after month rather than month comparisons
-  # Make sure that for the houses that received the text message, you include the months when the texting began 
   # Things to control for: number of people living inside the house, number of appliances, business modifictions
 
 # 2. Learning
@@ -110,7 +106,6 @@ month_by_month <- function(group_data,variable){
 
 
 #Differences for each month one year afterwards (e.g June 2016 - June 2015)
-
 month_diffs <- function(group_data,variable){
   
   years_data <- c(2014,2015,2016)
@@ -156,17 +151,26 @@ month_diffs <- function(group_data,variable){
 }
 
 # Plot with subset
+
 call_plot_subset <- function(df,group_var,subset_val1,subset_val2,analyze_var,xlab_,ylab_,title_plot) {
   
   mean_one <- df[get(group_var)==subset_val1,mean(na.omit(get(analyze_var)))]
   mean_two <- df[get(group_var)==subset_val2,mean(na.omit(get(analyze_var)))]
   Means = c(mean_one,mean_two)
   Names = c(subset_val1,subset_val2)
-  lines_df = data.frame(Names,Means)   
+  lines_df = data.frame(Names,Means)
   
-  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) + geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) 
+  if(analyze_var=="month_diff"){
+  t_result = t.test(na.omit(df[get(group_var)==subset_val1] %>% select(month_diff)),na.omit(df[get(group_var)==subset_val2] %>% select(month_diff)))$p.value
+  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) + geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) + annotate("text",x=0,y=0.01,hjust=-0.8,label = paste("Tr:",toString(round(mean_one,0))," Cl:", toString(round(mean_two,0)),", p:",toString(round(t_result,3))))
+  } else {
+  t_result = t.test(na.omit(df[get(group_var)==subset_val1] %>% select(diff_variable)),na.omit(df[get(group_var)==subset_val2] %>% select(diff_variable)))$p.value
+  plot_this <- ggplot(df, aes(get(analyze_var), fill = get(group_var))) + geom_density(alpha = 0.2) + xlab(xlab_) + ylab(ylab_) + ggtitle(title_plot) + geom_vline(data=lines_df,aes(xintercept=Means,yintercept=0,linetype=Names,colour = Names), show_guide = TRUE) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) + annotate("text",x=0,y=0.01,hjust=-0.8,label = paste("Tr:",toString(round(mean_one,0))," Cl:", toString(round(mean_two,0)),", p:",toString(round(t_result,3))))
+    
+  }
   return(plot_this)
 }
+
 
 # Three variables to subset
 call_plot_subset_three <- function(df,group_var,subset_val1,subset_val2,subset_val3,analyze_var,xlab_,ylab_,title_plot) {
@@ -508,7 +512,7 @@ plot_tr_ctl(data_time_series_nooutliers.dt,'energia','no_outliers')
 plot_tr_ctl(data_time_series_nooutliers.dt,'energia_ajustada','no_outliers')
 
 
-
+########################################
 ##########
 ##########   
 ########## 2 Learning
@@ -522,14 +526,22 @@ survey.data.complete <- survey.data.results[[4]] # Monthly Updates
     survey.data.complete$gasto_electrico <- as.numeric(as.character(survey.data.complete$gasto_electrico))
     survey.data.complete$gasto_electrico_cordobas <- as.numeric(as.character(survey.data.complete$gasto_electrico_cordobas))
     survey.data.complete$gasto_tarifa_electrica <- as.numeric(as.character(survey.data.complete$gasto_tarifa_electrica))
-
+    survey.data.complete$agua_gasto <- as.numeric(survey.data.complete$agua_gasto)
+    survey.data.complete$agua_gasto_verdad <- as.numeric(survey.data.complete$agua_gasto_verdad)
+    
 implementation.baseline <- survey.data.results[[6]] # Implementation Baseline
       implementation.baseline$r_total <- as.numeric(as.character(implementation.baseline$r_total))
       implementation.baseline$gasto_electrico <- as.numeric(as.character(implementation.baseline$gasto_electrico))
       
+aggregate_tretment_data <- survey.data.results[[12]]
+      
 final.control.survey <- survey.data.results[[9]] # Final Control Survey
-
+    final.control.survey$agua_gasto <- as.numeric(as.character(final.control.survey$agua_gasto))
+    final.control.survey$agua_gasto_verdad <- as.numeric(as.character(final.control.survey$agua_gasto_verdad))
+    
 control.survey.data <- survey.data.results[[11]] # Aggregate Survey Results
+
+aggregate_control_data <- survey.data.results[[13]]
           
 learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="encuesta_id",all=T)
       learning.data$gasto_electrico <- as.numeric(as.character(learning.data$gasto_electrico))
@@ -600,18 +612,8 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
       ggplot(subset(all_baseline_data,all_baseline_data$gasto_electrico_cordobas<20000), aes(gasto_electrico_cordobas, r_total_cordobas)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") + ggtitle("Baseline Actual vs Perceived Costs")
       
       # Treatment
-      treatment_baseline <- subset(baseline_receipt_data_for_plot, as.character(baseline_receipt_data_for_plot$encuesta_id) %in% treatment_encuesta_id)
-      treatment_baseline_households <- subset(implementation_baseline, as.character(implementation_baseline$encuesta_id) %in% treatment_encuesta_id)
-      
-            #Adding a year 
-            survey.data.complete$year <- substrRight(as.character(survey.data.complete$today),2)
-            survey.data.complete$data <- ifelse(survey.data.complete$year=='17','Treatment End','Treatment Ongoing')
-            survey.data.plot.treatment <- survey.data.complete%>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
-      
-      treatment_group_all_data <- rbind(treatment_baseline,treatment_baseline_households,survey.data.plot.treatment)
-      write.csv(treatment_group_all_data,'pepino.csv')
-      
-      ggplot(treatment_group_all_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+
+      ggplot(aggregate_tretment_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
         theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
         theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
 
@@ -626,34 +628,87 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
               merge_control_1 <- merge(control_baseline,control_baseline_households,by=c('encuesta_id'),all=TRUE)
               merge_control_2 <- merge(merge_control_1,na.omit(final_control_survey),by=c('encuesta_id'),all=TRUE)
               
-  
       control_group_all_data <- rbind(control_baseline,control_baseline_households,final_control_survey)
       control_group_all_data$gasto_electrico_cordobas <- as.numeric(control_group_all_data$gasto_electrico_cordobas)
+      
       # Merged Data
-      ggplot(control_group_all_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
-        theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
-        theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
-      
-      # Aggregated Data from Surveys (Google Drive)
-      ggplot(control.survey.data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+      ggplot(aggregate_control_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
         theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
         theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
       
       
+#####################################################
+#####################################################
+# Getting estimates for understanding before and after
+#   Need to plot how far off people are in terms of kwh
+      aggregate_tretment_data$diff <- aggregate_tretment_data$gasto_electrico_cordobas - aggregate_tretment_data$r_total_cordobas
+      aggregate_control_data$diff <- aggregate_control_data$gasto_electrico_cordobas - aggregate_control_data$r_total_cordobas
+      
+      call_plot_subset_three(as.data.table(aggregate_tretment_data)[diff<5000 & diff>-5000],"data","Baseline","Mid-Baseline","Treatment Ongoing","diff","Diff","Coso","Peso")
+      call_plot_subset_three(as.data.table(aggregate_control_data)[diff>-2000],"data","Baseline","Mid-Baseline","Control End","diff","Diff","Coso","Peso")
+      
+      # Descriptive stats of learning
+      # Keeping variables that are between the 1st and 99th percentile
+      
+      #Treatment
+      baseline_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Baseline" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
+      mid_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Mid-Baseline" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
+      ongoing_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Treatment Ongoing" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
+      end_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Treatment End" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
+      
+      mean_list_treatment <- c(mean(subset(baseline_treatment_accuracy,baseline_treatment_accuracy$diff > quantile(baseline_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_treatment_accuracy$diff < quantile(baseline_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE),
+      mean(subset(mid_treatment_accuracy,baseline_treatment_accuracy$diff > quantile(mid_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & mid_treatment_accuracy$diff < quantile(mid_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE),
+      mean(subset(ongoing_treatment_accuracy,ongoing_treatment_accuracy$diff > quantile(ongoing_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & ongoing_treatment_accuracy$diff < quantile(ongoing_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE),
+      mean(subset(end_treatment_accuracy,end_treatment_accuracy$diff > quantile(end_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & end_treatment_accuracy$diff < quantile(end_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE))
+      
+      mean_list_types <- c("Baseline","Mid-Baseline","Ongoing","Endline")
+      treatment_means <- as.data.frame(mean_list_treatment,mean_list_types)
+      treatment_means$Group <- "Treatment"
       
       
-      ggplot(baseline_current_plot, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
-      ggplot(subset(baseline_current_plot,baseline_current_plot$gasto_electrico_cordobas<30000), aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
+      hist(subset(baseline_treatment_accuracy,baseline_treatment_accuracy$diff > quantile(baseline_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_treatment_accuracy$diff < quantile(baseline_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      hist(subset(mid_treatment_accuracy,baseline_treatment_accuracy$diff > quantile(mid_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & mid_treatment_accuracy$diff < quantile(mid_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      hist(subset(ongoing_treatment_accuracy,ongoing_treatment_accuracy$diff > quantile(ongoing_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & ongoing_treatment_accuracy$diff < quantile(ongoing_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      hist(subset(end_treatment_accuracy,end_treatment_accuracy$diff > quantile(end_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & end_treatment_accuracy$diff < quantile(end_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
       
-
-      #   Need to get kwh estimates for the other groups from the mid baseline and 
-      #   Need to plot how far off people are in terms of kwh
-      #   Energy understanding (need to calculate)
-      ggplot(baseline_current_plot, aes(gasto_electrico, r_monthly_kwh,group=data,colour=data)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0)
+      # Control 
+      baseline_control_accuracy <- subset(aggregate_control_data,aggregate_control_data$data == "Baseline" & aggregate_control_data$diff > quantile(aggregate_control_data$diff,c(0.01),na.rm=TRUE) & aggregate_control_data$diff < quantile(aggregate_control_data$diff,c(0.99),na.rm=TRUE))
+      mid_control_accuracy <- subset(aggregate_control_data,aggregate_control_data$data == "Mid-Baseline" & aggregate_control_data$diff > quantile(aggregate_control_data$diff,c(0.01),na.rm=TRUE) & aggregate_control_data$diff < quantile(aggregate_control_data$diff,c(0.99),na.rm=TRUE))
+      end_control_accuracy <- subset(aggregate_control_data,aggregate_control_data$data == "Control End" & aggregate_control_data$diff > quantile(aggregate_control_data$diff,c(0.01),na.rm=TRUE) & aggregate_control_data$diff < quantile(aggregate_control_data$diff,c(0.99),na.rm=TRUE))
       
-      #Tariff Understanding
-      ggplot(learning.data, aes(gasto_tarifa_electrica, (learning.data$r_monthly_cordobas/learning.data$r_monthly_kwh))) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0) + xlim(0,10) +ylim(0,10)
+      mean(subset(baseline_control_accuracy,baseline_control_accuracy$diff > quantile(baseline_control_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_control_accuracy$diff < quantile(baseline_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      mean(subset(mid_control_accuracy,mid_control_accuracy$diff > quantile(mid_control_accuracy$diff,c(0.01),na.rm=TRUE) & mid_control_accuracy$diff < quantile(mid_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      mean(subset(end_control_accuracy,end_control_accuracy$diff > quantile(end_control_accuracy$diff,c(0.01),na.rm=TRUE) & end_control_accuracy$diff < quantile(end_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
       
+      hist(subset(baseline_control_accuracy,baseline_control_accuracy$diff > quantile(baseline_control_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_control_accuracy$diff < quantile(baseline_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      hist(subset(mid_control_accuracy,mid_control_accuracy$diff > quantile(mid_control_accuracy$diff,c(0.01),na.rm=TRUE) & mid_control_accuracy$diff < quantile(mid_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      hist(subset(end_control_accuracy,end_control_accuracy$diff > quantile(end_control_accuracy$diff,c(0.01),na.rm=TRUE) & end_control_accuracy$diff < quantile(end_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
+      
+      
+      # Treatment vs. Control Learning Plot
+      
+    
+###################
+###################
+      # Get tariff accuracy
+      
+      
+      
+      # Get water accuracy
+      
+        #Treatment
+        treatment_water <- survey.data.complete[,c("agua_gasto",("agua_gasto_verdad"))] %>% mutate(Group="Treatment")
+        control_water <- final.control.survey[,c("agua_gasto",("agua_gasto_verdad"))] %>% mutate(Group="Control")
+        water_accuracy <- rbind(treatment_water,control_water)
+        water_accuracy$diff <- water_accuracy$agua_gasto_verdad - water_accuracy$agua_gasto
+        
+        mean(subset(water_accuracy,water_accuracy$Group=="Treatment")$diff,na.rm=TRUE)
+        mean(subset(water_accuracy,water_accuracy$Group=="Control")$diff,na.rm=TRUE)
+        
+        ggplot(water_accuracy,aes(agua_gasto,agua_gasto_verdad,group=Group,colour=Group)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) +
+          theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
+          theme(legend.position="bottom") + guides(fill=guide_legend(title="Timeline:")) + xlab("Perceived Water Expenditure") + ylab("Actual Water Expenditure") 
+        
 
 
       # 2.2 Treatment group at baseline, after 1st report, after beggining of text messages
@@ -673,8 +728,22 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
 ggplot(data.frame(survey.data.responses), aes(x=mas_gasta_tiempo)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, hjust = 1))
       
 
-      
-  
+# Peak consumption
+hora_pico_energia
+hora_pico_energia_code
+dia_pico_energia
+dia_pico_energia_code1
+dia_pico_energia_code2
+ano_pico_energia
+ano_pico_energia_code1
+
+#Appliance consumption
+consumo_abanico
+consumo_luces
+consumo_television
+consumo_celular
+consumo_radio
+consumo_refrigerador
       
 
 #What percentage do different appliances consume?
