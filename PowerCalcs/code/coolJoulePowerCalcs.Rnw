@@ -1,0 +1,528 @@
+\documentclass[10pt]{article}
+\usepackage{mathtools}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathpazo}
+\usepackage{float}
+\usepackage[headheight=16pt,margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage[shortlabels]{enumitem}
+\usepackage{cool}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{parskip}
+
+%%DEFINE NEW GLOBAL MATH COMMANDS
+\newcommand{\mat}{\ensuremath{\mathbf{}}}
+\newcommand{\vect}[1]{\ensuremath{\mathbf{#1}}}
+  \newcommand{\Ex}{\ensuremath{\mathbb{E}}}
+  \newcommand{\R}{\ensuremath{\mathbb{R}}}
+  \DeclareMathOperator{\Var}{Var}
+  
+  \newenvironment{solution}{
+    \  \newline \color{blue} \textbf{\textit{Solution:}}
+  }
+  
+  %
+  \begin{document}
+  \pagestyle{fancy}
+  \lhead{Derek Wolfson}
+  \chead{CoolJoule - Power Calculations}
+    \rhead{\today}
+    \addtocounter{section}{-1}
+    \section{Preamble}
+
+<<message=FALSE>>=
+###################################
+# SECTION 0 - PREAMBLE
+###################################
+# load packages
+library(dplyr)
+library(readr)
+library(lfe)
+library(lubridate)
+library(broom)
+library(purrr)
+library(ggplot2)
+
+myGGTheme <-
+  theme(panel.background = element_rect(fill = NA),
+  panel.border = element_rect(fill = NA, color = "black"),
+  panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(),
+  axis.ticks = element_line(color = "gray5"),
+  plot.title = element_text(
+   face="bold",
+   size=19),
+  axis.title = element_text(
+   color="black",
+   face="bold",
+   size=15),
+  axis.text = element_text(
+   color="black",
+   size=10)
+)
+
+# set directories
+OUT  <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Output")
+DATA <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Data")
+
+set.seed(4222017)
+###################################
+# END SECTION 0
+###################################
+@
+
+\section{Prepare Data for Power Calculations}
+<<>>=
+###################################
+# SECTION 1 - PREPARE FOR CALCS
+###################################
+# load data
+pilotData <- read.csv(file.path(DATA,"data_Derek.csv"))
+pilotData <- pilotData %>%
+  select(Casa, Mes, Ano, fecha, treatment, report_intervention_month,
+         intervention_group, sms_intervention_month, sms_intervention_month_text, 
+         Lugar, energia)
+pilotData <- pilotData %>% mutate(sampleMonth = as.factor(paste0(year(fecha),"-",month(fecha))))
+@
+Diego: Please verify that my definition for the treatment indicator is OK -- it is included in the chunk below.  I use \texttt{treatedSMS} throughout -- which is $=1$ in post-treatment period for treatment households only.
+<<>>=
+# create treatment indicators (Check with Diego on this...)
+pilotData <- pilotData %>% 
+  mutate(treatedSMS = 
+           ifelse(intervention_group == "Treatment Post-Intervention", 1, 0),
+         treatedSMS2 = 
+           ifelse(treatment == "Treatment" & 
+                  sms_intervention_month == 1 & 
+                  Ano > 2015, 1, 0),
+         treated    = ifelse(treatment == "Treatment", 1 , 0))
+@
+
+<<>>=
+# balance the data
+obsCount <- plyr::count(pilotData$Casa)
+pilotDataBalanced <- pilotData %>% filter(Ano > 2014)
+obsCount <- plyr::count(pilotDataBalanced$Casa)
+pilotDataBalanced <- merge(pilotDataBalanced, obsCount, by.x = "Casa", by.y = "x")
+pilotDataBlaanced <- pilotDataBalanced %>% filter(freq == 25)
+###################################
+# END SECTION 1
+###################################
+@
+
+\section{Conduct Preliminary Analysis on Pilot Data}
+
+<<tidy = TRUE>>=
+###################################
+# SECTION 2 - GET TREATMENT EFFECTS
+###################################
+# 2.1 -- treatment effect for SMS treatment in unbalanced sample
+smsEffectLevel <- felm(energia ~ treatedSMS | Casa + sampleMonth| 0 | Casa, data = pilotData)
+summary(smsEffectLevel)
+smsLevelEffect <- smsEffectLevel$beta[1]
+## get percent change
+ctrlMean <- pilotData %>% group_by(intervention_group) %>%
+  summarise(mean(energia))
+percentEffectPreTreatment  <- smsLevelEffect/ctrlMean$`mean(energia)`[2]
+percentEffectPostTreatment <- smsLevelEffect/ctrlMean$`mean(energia)`[1]
+
+## this is MDE 
+percentEffectPreTreatment # percent using pre-treatment control as comparison
+percentEffectPostTreatment # percent using post-treatment control as comparison
+
+## now use logs (which approximately percent change and controls for outliers)
+smsEffectLog <- felm(log(energia) ~ treatedSMS | Casa + sampleMonth| 0 | Casa, data = pilotData)
+summary(smsEffectLog)
+
+## this is MDE in percent from log equation
+percentEffectLog <- smsEffectLog$beta[1]
+percentEffectLog
+
+
+# 2.2 -- treatment effect for SMS treatment in balanced sample
+smsEffectLevelBalanced <- felm(energia ~ treatedSMS | Casa + sampleMonth| 0 | Casa, data = pilotDataBalanced)
+summary(smsEffectLevelBalanced)
+smsLevelEffectBalanced <- smsEffectLevelBalanced$beta[1]
+
+## get percent change
+ctrlMean <- pilotDataBalanced %>% group_by(intervention_group) %>%
+  summarise(mean(energia))
+percentEffectPreTreatmentBalanced  <- smsLevelEffectBalanced/ctrlMean$`mean(energia)`[2]
+percentEffectPostTreatmentBalanced <- smsLevelEffectBalanced/ctrlMean$`mean(energia)`[1]
+
+## these are MDEs based on 
+percentEffectPreTreatmentBalanced # percent using pre-treatment control as comparison
+percentEffectPostTreatmentBalanced # percent using post-treatment control as comparison
+
+## do it in logs too as before.
+smsEffectLogBalanced <- felm(log(energia) ~ treatedSMS | Casa + sampleMonth| 0 | Casa, data = pilotDataBalanced)
+summary(smsEffectLogBalanced)
+
+## this is MDE
+percentEffectLogBalanced <- smsEffectLogBalanced$beta[1]
+
+#notes as of 4/24/2017:
+# MDE - UNBALANCED SAMPLE
+## PRE-TREATMENT CONTROL GROUP AS COMPARISON
+percentEffectPreTreatment
+## POST-TREATMENT CONTROL GROUP AS COMPARISON
+percentEffectPostTreatment
+## LOG SPECIFICATION
+percentEffectLog
+
+# MDE - BALANCED SAMPLE
+## PRE-TREATMENT CONTROL GROUP AS COMPARISON
+percentEffectPreTreatmentBalanced
+## POST-TREATMENT CONTROL GROUP AS COMPARISON
+percentEffectPostTreatmentBalanced
+## LOG SPECIFICATION
+percentEffectLogBalanced
+
+## overall range
+range(c(percentEffectPreTreatment, percentEffectPostTreatment,smsEffectLog$beta[1],
+        percentEffectPreTreatmentBalanced,percentEffectPostTreatmentBalanced,smsEffectLogBalanced$beta[1]))
+###################################
+# END SECTION 2
+###################################
+@
+
+\section{Run Power Calculations - Simulation \#1}
+This procedure does the following:
+
+\begin{enumerate}
+\item Set $N = N_0$ 
+\item Sample (with replacement) $N$ households from the treatment group and $N$ households from the control groupo (total sample size $=2N$).
+\item Run a regression of energy on the treatment indicator and \texttt{Casa} and \texttt{sampleMonth} fixed effects (preferred specification is in logs with Casa clustering)
+\item Repeat (2)-(3) 500 times and count the number of times the treatment effect is significant at $p = 0.05$
+\item Record percent of significant coefficients
+\item Increase $N$ by 25
+\item If percent $\ge 80\%$, run steps (2)-(5) 20 more times and then conclude.
+\item If percent is $\le 80\%$ restart at step (2).
+\end{enumerate}
+
+The percent of significant coefficients is the "power" of the test.  The plots show power versus sample size.  The perferred specification is in logs with household level clustering.
+<<>>=
+###################################
+# SECTION 3 - POWER CALCS SIM 1
+###################################
+# SIMULATE POWER CALCS BY SAMPLING
+# WITH REPLACEMENT N HOUSEHOLDS 
+# FROM BOTH TREATMENT/CONTROL GROUP
+# RUN K REGRESSIONS AND COUNT HOW 
+# MANY TIMES WE GET A SIGNF. P-VALUE
+
+
+# Create sampling function with regression inner loop
+nFinder <- function(N, cluster, logs, levels){
+  # grab list of hhid ids
+  controlHHs <- pilotDataBalanced %>% 
+    filter(treatment == "Control") %>% distinct(Casa)
+  treatmentHHs <-pilotDataBalanced %>% 
+    filter(treatment == "Treatment") %>% distinct(Casa)
+  # sample N observations with replacement
+  bootSampleControl   <- sample_n(controlHHs, size = N, replace = TRUE)
+  bootSampleTreatment <- sample_n(treatmentHHs, size = N, replace = TRUE)
+  bootSample <- rbind(bootSampleControl,bootSampleTreatment)
+  bootSample <- bootSample %>% mutate(bootID = row_number())
+  
+  # create dataset based on sampled casas 
+  # Create dataset based on sampled hhids + 
+  bootData <- filter(pilotDataBalanced, Casa %in% bootSample$Casa) %>%
+    merge(bootSample, by = "Casa")
+
+  # run a regression of kwh on treatment indicator to test for significance of 
+  # estimated treated effect coefficient
+  if(cluster == FALSE & levels == TRUE){
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == FALSE & logs == TRUE){
+   nReg <- felm(log(energia) ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == TRUE & levels == TRUE){
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  if(cluster == TRUE & logs == TRUE){
+   nReg <- felm(log(energia) ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  # boolean to check if p-value of treatment effect coef. est. is <0.05
+  tidy(nReg)$p.value < .05 %>%
+    return()
+}
+@
+
+<<>>=
+powerCalcSim <- function(nOrig, stepSize, simIterations, 
+                         clusterSwitch, levelSwitch, logSwitch){
+  # create empty powerDB
+  powerDB <- data.frame(sampleSize = integer(), power = double())
+  
+  # set N to nOrig 
+  N <- nOrig
+  
+  # loop over power until >=.8
+  power <- 0 
+  while(power < 0.8){
+  #print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder, 
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N*2, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize  
+  }
+  for(i in 1:20){
+  #print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder, 
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N*2, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize 
+  }
+  return(powerDB)
+}
+@
+
+<<cache= TRUE>>=
+n0 <- 25
+step <- 25
+iterations <- 500
+
+pwr1 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = FALSE, levelSwitch = TRUE,  logSwitch = FALSE)
+pwr2 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = TRUE,  levelSwitch = TRUE,  logSwitch = FALSE)
+pwr3 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = FALSE, levelSwitch = FALSE, logSwitch = TRUE)
+pwr4 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = TRUE,  levelSwitch = FALSE, logSwitch = TRUE)
+@
+
+<<>>=
+# export the results
+write_excel_csv(pwr1, file.path(OUT,"SET1-noClusterLevels.csv"))
+write_excel_csv(pwr2, file.path(OUT,"SET1-clusterLevels.csv"))
+write_excel_csv(pwr3, file.path(OUT,"SET1-noClusterLogs.csv"))
+write_excel_csv(pwr4, file.path(OUT,"SET1-clusterLogs.csv"))
+@
+
+<<>>=
+#plot some results
+plot1 <- ggplot(data = pwr1, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr1$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot2 <- ggplot(data = pwr2, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr2$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot3 <- ggplot(data = pwr3, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr3$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot4 <- ggplot(data = pwr4, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr4$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+ 
+plot2 
+plot4
+@
+
+\section{Run Power Calculations - Simulation \#2}
+This procedure does the following:
+
+\begin{enumerate}
+\item Set $N = N_0$ 
+\item Sample (with replacement) $N$ households from the control group
+\item Randomly assign half of the households to the treatment group and apply the relevant treatment effect (as estimated from the preliminary data) to the treated household
+\item Run a regression of energy on the treatment indicator and \texttt{Casa} and \texttt{sampleMonth} fixed effects (preferred specification is in logs with Casa clustering)
+\item Repeat (2)-(3) 500 times and count the number of times the treatment effect is significant at $p = 0.05$
+\item Record percent of significant coefficients
+\item Increase $N$ by 50
+\item If percent $\ge 80\%$, run steps (2)-(5) 20 more times and then conclude.
+\item If percent is $\le 80\%$ restart at step (2).
+\end{enumerate}
+
+The percent of significant coefficients is the "power" of the test.  The plots show power versus sample size.  The perferred specification is in logs with household level clustering.
+<<>>=
+# now run them with a fixed MDE and sample the control households
+# Create sampling function with regression inner loop
+nFinder2 <- function(N, MDE, cluster, logs, levels){
+  # grab list of control hhid ids
+  controlHHs <- pilotDataBalanced %>% 
+    filter(treatment == "Control") %>% distinct(Casa)
+  
+  # sample N observations from control HHs with replacement
+  bootSample <- sample_n(controlHHs, size = N, replace = TRUE) %>%
+    mutate(bootID = row_number(),
+           inTreatment = sample(0:1, N, replace = TRUE))
+  
+  # create dataset based on sampled casas 
+  bootData <- filter(pilotDataBalanced, Casa %in% bootSample$Casa) %>%
+    merge(bootSample, by = "Casa") %>%
+    mutate(
+      treatedSMS = 
+        as.numeric(inTreatment == 1 & intervention_group == "Control Post-Intervention"))
+
+  # run a regression of kwh on treatment indicator to test for significance of 
+  # estimated treated effect coefficient
+  if(cluster == FALSE & levels == TRUE){
+   bootData <- bootData %>% 
+     mutate(energia = energia + MDE*treatedSMS)
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == FALSE & logs == TRUE){
+    bootData <- bootData %>% 
+      mutate(logEnergia = log(energia) + MDE*treatedSMS)
+   nReg <- felm(logEnergia ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == TRUE & levels == TRUE){
+    bootData <- bootData %>% 
+     mutate(energia = energia + MDE*treatedSMS)
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  if(cluster == TRUE & logs == TRUE){
+    bootData <- bootData %>% 
+      mutate(logEnergia = log(energia) + MDE*treatedSMS)
+   nReg <- felm(logEnergia ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  # boolean to check if p-value of treatment effect coef. est. is <0.05
+  tidy(nReg)$p.value < .05 %>%
+    return()
+}
+@
+
+<<>>=
+powerCalcSim2 <- function(nOrig, stepSize, simIterations, MDESet,
+                         clusterSwitch, levelSwitch, logSwitch){
+  # create empty powerDB
+  powerDB <- data.frame(sampleSize = integer(), power = double())
+  
+  # set N to nOrig 
+  N <- nOrig
+  
+  # loop over power until >=.8
+  power <- 0 
+  while(power < 0.8){
+  #print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder2, MDE = MDESet,
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize  
+  }
+  for(i in 1:20){
+  #print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder2, MDE = MDESet,
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize 
+  }
+  return(powerDB)
+}
+@
+
+<<cache = TRUE>>=
+n0 <- 50
+step <- 50
+iterations <- 500
+
+pwr5 <- powerCalcSim2(n0,step,iterations, smsLevelEffectBalanced, 
+                       clusterSwitch = FALSE, levelSwitch = TRUE,  logSwitch = FALSE)
+pwr6 <- powerCalcSim2(n0,step,iterations, smsLevelEffectBalanced, 
+                       clusterSwitch = TRUE,  levelSwitch = TRUE,  logSwitch = FALSE)
+pwr7 <- powerCalcSim2(n0,step,iterations, percentEffectLogBalanced,
+                       clusterSwitch = FALSE, levelSwitch = FALSE, logSwitch = TRUE)
+pwr8 <- powerCalcSim2(n0,step,iterations,percentEffectLogBalanced,
+                       clusterSwitch = TRUE,  levelSwitch = FALSE, logSwitch = TRUE)
+@
+
+<<>>=
+# export the results
+write_excel_csv(pwr5, file.path(OUT,"SET2-noClusterLevels.csv"))
+write_excel_csv(pwr6, file.path(OUT,"SET2-clusterLevels.csv"))
+write_excel_csv(pwr7, file.path(OUT,"SET2-noClusterLogs.csv"))
+write_excel_csv(pwr8, file.path(OUT,"SET2-clusterLogs.csv"))
+@
+
+<<>>=
+#plot some results
+plot5 <- ggplot(data = pwr5, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr5$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot6 <- ggplot(data = pwr6, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr6$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot7 <- ggplot(data = pwr7, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr7$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot8 <- ggplot(data = pwr8, aes(sampleSize, Power)) + 
+          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr8$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+ 
+plot6 
+plot8
+@
+
+\section{Final Thoughts}
+First and foremost, these calculations assume 100\% take-up -- i.e. anyone we assign to treatment takes up the treatment.  If we do this on a set of households that are interested in adopting the technology -- I think we'll be pretty close to 100\% take-up.  Let's definitely discuss the trade-offs in terms of design/sample size requirements when we meet next. 
+
+Now, if only 33\% of people offered the treatment take-up the treatment the number of households required increases by a factor of $\frac{1}{.33}^2 = 9$.  I can go into the details of this calculation -- but in essence, if we do some sort of encouragement design and it is not very effective the sample size can increase very rapidly as the percent of take-up decreases. 
+
+I'll just discuss the two preferred specification [logs and household clustering of errors] -- it seems that using simulation \#1, where I sample treatment households from the treatment sample and control households from the control sample,  the required number of household to have 80\% power to measure an effect on energy use we'll need about 1400 households (split 50/50 in control).  Now in simulation \#2, where I sample only from control households and then apply the estimated treatment effect from the pilot data to half of these households, this number drops to about 700.  The reason for this discrepancy is that the second simulation allows for no heterogeneity in the effect of the treatment, whereas the first simulation allows for heterogeneity (since we are sampling with replacement, treatment households from those treated in the pilot).
+
+Now, power calculations are hardly a science, so I don't think we need to abide by either of these numbers persay -- but I'd argue that if we could have as sample size in the final RCT of around 1200 to 1400 households that would be ideal for measuring energy effects.  These numbers would certainly be suitable (and probably overkill) for measuring the non-energy related effects, which I also think would be interesting.  However, it's probably best to prepare for the best-case scenario -- which would be to go for ~1200-1400 households. 
+
+Again -- these are just a jumping off point and if my definition of the treatment variable is not correct, let me know so I can re-run these calculations.  However, these do go to show that we need a fairly large number of households in an RCT to get a nice measure of energy savings from the appliance you guys are manufacturing.  
+
+Let's schedule a time to discuss this moving forward.  I apologize for not making this document more clear -- but I think some face-to-face time with this in hand will help us tremendously (a phone call would work too).
+
+\end{document}
