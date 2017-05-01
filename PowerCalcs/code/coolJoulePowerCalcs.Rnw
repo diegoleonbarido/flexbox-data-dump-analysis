@@ -64,9 +64,13 @@ myGGTheme <-
    size=10)
 )
 
-# set directories
+# set directories Derek
 OUT  <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Output")
 DATA <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Data")
+
+# set directories Diego
+#OUT  <- file.path("/Users/diego/Desktop/Projects_Code/","flexbox-data-dump-analysis","PowerCalcs","Output")
+#DATA <- file.path("/Users/diego/Desktop/Projects_Code/","flexbox-data-dump-analysis","PowerCalcs","Data")
 
 set.seed(4222017)
 ###################################
@@ -99,17 +103,27 @@ pilotData <- pilotData %>%
                   Ano > 2015, 1, 0),
          treated    = ifelse(treatment == "Treatment", 1 , 0))
 
-# drop 2014 or before (per Diego)
-pilotData <- pilotData %>% filter(Ano > 2014)
+# Diego: I think this looks Ok. The only thing I would remove would be January 2017, as we removed all our equipment # # before the end of the month and thus the users did not continue receiving any information or anything. Below I'm also 
+# making sure that we're only using 2015 and 2016 as we don't know anything about the houses prior to 2014.
+# DereK: Removing 2017 data
+pilotData <- pilotData %>% filter(Ano > 2014 & Ano < 2017)
+
+# DEREK: Doesn't look like this code does anything... but keeping it here since
+# Diego added on 4/30/17
+pilotData <- subset(pilotData,
+                    pilotData$Casa!= "A26" | 
+                    pilotData$Casa!= "A11" | 
+                    pilotData$Casa!= "A29" | 
+                    pilotData$Casa!= "45" | 
+                    pilotData$Casa!= "191" )
+
 @
 
 <<>>=
 # balance the data
-obsCount <- plyr::count(pilotData$Casa)
-pilotDataBalanced <- pilotData %>% filter(Ano > 2014)
 obsCount <- plyr::count(pilotDataBalanced$Casa)
-pilotDataBalanced <- merge(pilotDataBalanced, obsCount, by.x = "Casa", by.y = "x")
-pilotDataBalanced <- pilotDataBalanced %>% filter(freq == 25)
+pilotDataBalanced <- merge(pilotData, obsCount, by.x = "Casa", by.y = "x") %>%
+  filter(freq == 24)
 ###################################
 # END SECTION 1
 ###################################
@@ -125,15 +139,19 @@ pilotDataBalanced <- pilotDataBalanced %>% filter(freq == 25)
 smsEffectLevel <- felm(energia ~ treatedSMS | Casa + sampleMonth| 0 | Casa, data = pilotData)
 summary(smsEffectLevel)
 smsLevelEffect <- smsEffectLevel$beta[1]
+
 ## get percent change
 ctrlMean <- pilotData %>% group_by(intervention_group) %>%
   summarise(mean(energia))
 percentEffectPreTreatment  <- smsLevelEffect/ctrlMean$`mean(energia)`[2]
 percentEffectPostTreatment <- smsLevelEffect/ctrlMean$`mean(energia)`[1]
+#Diego: Don't really get this one. Why assign treatment the mean of the control group?
+#Derek 5/1: Getting the percent change in energy use w.r.t. the control group.  I do this since this the effect in levels isn't that easy to understand.
+
 
 ## this is MDE 
-percentEffectPreTreatment # percent using pre-treatment control as comparison
-percentEffectPostTreatment # percent using post-treatment control as comparison
+percentEffectPreTreatment # percent change relative to pre-treatment control as comparison
+percentEffectPostTreatment # percent change relative to post-treatment control as comparison
 
 ## now use logs (which approximately percent change and controls for outliers)
 smsEffectLog <- felm(log(energia) ~ treatedSMS | Casa + sampleMonth| 0 | Casa, data = pilotData)
