@@ -104,7 +104,6 @@ month_by_month <- function(group_data,variable){
   return(group_data)
 }
 
-
 #Differences for each month one year afterwards (e.g June 2016 - June 2015)
 month_diffs <- function(group_data,variable){
   

@@ -64,9 +64,13 @@ myGGTheme <-
    size=10)
 )
 
-# set directories
-OUT  <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Output")
-DATA <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Data")
+# set directories Dereck
+#OUT  <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Output")
+#DATA <- file.path("G:","flexbox-data-dump-analysis","PowerCalcs","Data")
+
+# set directories Diego
+OUT  <- file.path("/Users/diego/Desktop/Projects_Code/","flexbox-data-dump-analysis","PowerCalcs","Output")
+DATA <- file.path("/Users/diego/Desktop/Projects_Code/","flexbox-data-dump-analysis","PowerCalcs","Data")
 
 set.seed(4222017)
 ###################################
@@ -98,6 +102,12 @@ pilotData <- pilotData %>%
                   sms_intervention_month == 1 & 
                   Ano > 2015, 1, 0),
          treated    = ifelse(treatment == "Treatment", 1 , 0))
+# Diego: I think this looks Ok. The only thing I would remove would be January 2017, as we removed all our equipment # # before the end of the month and thus the users did not continue receiving any information or anything. Below I'm also 
+# making sure that we're only using 2015 and 2016 as we don't know anything about the houses prior to 2014.
+
+pilotData <- subset(pilotData,pilotData$Ano>2014)
+pilotData <- subset(pilotData,pilotData$Casa!="A26" | pilotData$Casa!="A11" | pilotData$Casa!= "A29" | pilotData$Casa!= "45" |  pilotData$Casa!="191" )
+#
 @
 
 <<>>=
@@ -107,6 +117,7 @@ pilotDataBalanced <- pilotData %>% filter(Ano > 2014)
 obsCount <- plyr::count(pilotDataBalanced$Casa)
 pilotDataBalanced <- merge(pilotDataBalanced, obsCount, by.x = "Casa", by.y = "x")
 pilotDataBlaanced <- pilotDataBalanced %>% filter(freq == 25)
+
 ###################################
 # END SECTION 1
 ###################################
@@ -122,11 +133,13 @@ pilotDataBlaanced <- pilotDataBalanced %>% filter(freq == 25)
 smsEffectLevel <- felm(energia ~ treatedSMS | Casa + sampleMonth| 0 | Casa, data = pilotData)
 summary(smsEffectLevel)
 smsLevelEffect <- smsEffectLevel$beta[1]
+
 ## get percent change
 ctrlMean <- pilotData %>% group_by(intervention_group) %>%
   summarise(mean(energia))
 percentEffectPreTreatment  <- smsLevelEffect/ctrlMean$`mean(energia)`[2]
 percentEffectPostTreatment <- smsLevelEffect/ctrlMean$`mean(energia)`[1]
+#Diego: Don't really get this one. Why assign treatment the mean of the control group?
 
 ## this is MDE 
 percentEffectPreTreatment # percent using pre-treatment control as comparison
