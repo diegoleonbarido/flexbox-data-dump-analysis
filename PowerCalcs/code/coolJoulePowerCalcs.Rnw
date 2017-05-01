@@ -121,7 +121,7 @@ pilotData <- subset(pilotData,
 
 <<>>=
 # balance the data
-obsCount <- plyr::count(pilotDataBalanced$Casa)
+obsCount <- plyr::count(pilotData$Casa)
 pilotDataBalanced <- merge(pilotData, obsCount, by.x = "Casa", by.y = "x") %>%
   filter(freq == 24)
 ###################################
