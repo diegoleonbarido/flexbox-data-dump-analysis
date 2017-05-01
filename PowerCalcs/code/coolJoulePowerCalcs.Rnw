@@ -12,6 +12,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{parskip}
+\usepackage{comment}
 
 %%DEFINE NEW GLOBAL MATH COMMANDS
 \newcommand{\mat}{\ensuremath{\mathbf{}}}
@@ -131,7 +132,7 @@ pilotDataBalanced <- merge(pilotData, obsCount, by.x = "Casa", by.y = "x") %>%
 
 \section{Conduct Preliminary Analysis on Pilot Data}
 
-<<tidy = TRUE>>=
+<<>>=
 ###################################
 # SECTION 2 - GET TREATMENT EFFECTS
 ###################################
@@ -533,6 +534,8 @@ plot6
 plot8
 @
 
+
+\begin{comment}
 \section{Final Thoughts}
 First and foremost, these calculations assume 100\% take-up -- i.e. anyone we assign to treatment takes up the treatment.  If we do this on a set of households that are interested in adopting the technology -- I think we'll be pretty close to 100\% take-up.  Let's definitely discuss the trade-offs in terms of design/sample size requirements when we meet next. 
 
@@ -545,5 +548,5 @@ Now, power calculations are hardly a science, so I don't think we need to abide 
 Again -- these are just a jumping off point and if my definition of the treatment variable is not correct, let me know so I can re-run these calculations.  However, these do go to show that we need a fairly large number of households in an RCT to get a nice measure of energy savings from the appliance you guys are manufacturing.  
 
 Let's schedule a time to discuss this moving forward.  I apologize for not making this document more clear -- but I think some face-to-face time with this in hand will help us tremendously (a phone call would work too).
-
+\end{comment}
 \end{document}
