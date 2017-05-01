@@ -98,6 +98,9 @@ pilotData <- pilotData %>%
                   sms_intervention_month == 1 & 
                   Ano > 2015, 1, 0),
          treated    = ifelse(treatment == "Treatment", 1 , 0))
+
+# drop 2014 or before (per Diego)
+pilotData <- pilotData %>% filter(Ano > 2014)
 @
 
 <<>>=
@@ -106,7 +109,7 @@ obsCount <- plyr::count(pilotData$Casa)
 pilotDataBalanced <- pilotData %>% filter(Ano > 2014)
 obsCount <- plyr::count(pilotDataBalanced$Casa)
 pilotDataBalanced <- merge(pilotDataBalanced, obsCount, by.x = "Casa", by.y = "x")
-pilotDataBlaanced <- pilotDataBalanced %>% filter(freq == 25)
+pilotDataBalanced <- pilotDataBalanced %>% filter(freq == 25)
 ###################################
 # END SECTION 1
 ###################################
