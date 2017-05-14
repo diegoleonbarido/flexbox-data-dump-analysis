@@ -333,7 +333,7 @@ write_excel_csv(pwr4, file.path(OUT,"SET1-clusterLogs.csv"))
 <<>>=
 #plot some results
 plot1 <- ggplot(data = pwr1, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("No Clustering - Levels") + 
           xlab("Sample Size") + 
@@ -342,7 +342,7 @@ plot1 <- ggplot(data = pwr1, aes(sampleSize, Power)) +
           scale_y_continuous(breaks = seq(0,1,.1))
 
 plot2 <- ggplot(data = pwr2, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("Casa Clustering - Levels") + 
           xlab("Sample Size") + 
@@ -351,7 +351,7 @@ plot2 <- ggplot(data = pwr2, aes(sampleSize, Power)) +
           scale_y_continuous(breaks = seq(0,1,.1))
 
 plot3 <- ggplot(data = pwr3, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("No Clustering - Logs") + 
           xlab("Sample Size") + 
@@ -360,7 +360,7 @@ plot3 <- ggplot(data = pwr3, aes(sampleSize, Power)) +
           scale_y_continuous(breaks = seq(0,1,.1))
 
 plot4 <- ggplot(data = pwr4, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("Casa Clustering - Logs") + 
           xlab("Sample Size") + 
@@ -495,7 +495,7 @@ write_excel_csv(pwr8, file.path(OUT,"SET2-clusterLogs.csv"))
 <<>>=
 #plot some results
 plot5 <- ggplot(data = pwr5, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("No Clustering - Levels") + 
           xlab("Sample Size") + 
@@ -504,7 +504,7 @@ plot5 <- ggplot(data = pwr5, aes(sampleSize, Power)) +
           scale_y_continuous(breaks = seq(0,1,.1))
 
 plot6 <- ggplot(data = pwr6, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("Casa Clustering - Levels") + 
           xlab("Sample Size") + 
@@ -513,7 +513,7 @@ plot6 <- ggplot(data = pwr6, aes(sampleSize, Power)) +
           scale_y_continuous(breaks = seq(0,1,.1))
 
 plot7 <- ggplot(data = pwr7, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("No Clustering - Logs") + 
           xlab("Sample Size") + 
@@ -522,16 +522,309 @@ plot7 <- ggplot(data = pwr7, aes(sampleSize, Power)) +
           scale_y_continuous(breaks = seq(0,1,.1))
 
 plot8 <- ggplot(data = pwr8, aes(sampleSize, Power)) + 
-          geom_smooth() + geom_point() + geom_hline(yintercept=.8) +
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
           myGGTheme +
           ggtitle("Casa Clustering - Logs") + 
           xlab("Sample Size") + 
           scale_x_continuous(breaks = seq(0,range(pwr8$sampleSize)[2],200)) + 
           ylab("Power") +
           scale_y_continuous(breaks = seq(0,1,.1))
- 
+  
 plot6 
 plot8
+@
+
+\section{Power Calculations 3}
+Fix Flexbox at $N = 100$ and then make control group larger
+<<>>=
+###################################
+# SECTION 3 - POWER CALCS SIM 3
+###################################
+
+# Create sampling function with regression inner loop
+nFinder <- function(N, cluster, logs, levels){
+  # grab list of hhid ids
+  controlHHs <- pilotDataBalanced %>% 
+    filter(treatment == "Control") %>% distinct(Casa)
+  treatmentHHs <-pilotDataBalanced %>% 
+    filter(treatment == "Treatment") %>% distinct(Casa)
+  # sample N observations with replacement
+  bootSampleControl   <- sample_n(controlHHs, size = N, replace = TRUE)
+  bootSampleTreatment <- sample_n(treatmentHHs, size = 100, replace = TRUE)
+  bootSample <- rbind(bootSampleControl,bootSampleTreatment)
+  bootSample <- bootSample %>% mutate(bootID = row_number())
+  
+  # create dataset based on sampled casas 
+  # Create dataset based on sampled hhids + 
+  bootData <- filter(pilotDataBalanced, Casa %in% bootSample$Casa) %>%
+    merge(bootSample, by = "Casa")
+
+  # run a regression of kwh on treatment indicator to test for significance of 
+  # estimated treated effect coefficient
+  if(cluster == FALSE & levels == TRUE){
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == FALSE & logs == TRUE){
+   nReg <- felm(log(energia) ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == TRUE & levels == TRUE){
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  if(cluster == TRUE & logs == TRUE){
+   nReg <- felm(log(energia) ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  # boolean to check if p-value of treatment effect coef. est. is <0.05
+  #print(tidy(nReg)$p.value < .05)
+  tidy(nReg)$p.value < .05 %>%
+    return()
+}
+@
+
+<<>>=
+powerCalcSim <- function(nOrig, stepSize, simIterations, 
+                         clusterSwitch, levelSwitch, logSwitch){
+  # create empty powerDB
+  powerDB <- data.frame(sampleSize = integer(), power = double())
+  
+  # set N to nOrig 
+  N <- nOrig
+  
+  # loop over power until >=.8
+  power <- 0 
+  while(power < 0.8 & N < 2000){
+  print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder, 
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N + 100, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize  
+  }
+  print("DOING EXTRA ONES NOW")
+  for(i in 1:5){
+  print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder, 
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N+100, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize 
+  }
+  return(powerDB)
+}
+@
+
+<<cache= TRUE, results = 'hide'>>=
+iterations <- 500
+n0 <- 100 
+step <- 25
+pwr9 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = FALSE, levelSwitch = TRUE,  logSwitch = FALSE)
+pwr10 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = TRUE,  levelSwitch = TRUE,  logSwitch = FALSE)
+pwr11 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = FALSE, levelSwitch = FALSE, logSwitch = TRUE)
+pwr12 <- powerCalcSim(n0,step,iterations, 
+                       clusterSwitch = TRUE,  levelSwitch = FALSE, logSwitch = TRUE)
+@
+
+<<>>=
+# export the results
+write_excel_csv(pwr9, file.path(OUT,"SET3-noClusterLevels.csv"))
+write_excel_csv(pwr10, file.path(OUT,"SET3-clusterLevels.csv"))
+write_excel_csv(pwr11, file.path(OUT,"SET3-noClusterLogs.csv"))
+write_excel_csv(pwr12, file.path(OUT,"SET3-clusterLogs.csv"))
+@
+
+<<>>=
+#plot some results
+plot9 <- ggplot(data = pwr9, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr9$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot10 <- ggplot(data = pwr10, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr10$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot11 <- ggplot(data = pwr11, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr11$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot12 <- ggplot(data = pwr12, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr12$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+ 
+plot10
+plot12
+@
+
+
+\section{Simulation \#4}
+<<>>=
+# now run them with a fixed MDE and sample the control households
+# Create sampling function with regression inner loop
+nFinder2 <- function(N, MDE, cluster, logs, levels){
+  # grab list of control hhid ids
+  controlHHs <- pilotDataBalanced %>% 
+    filter(treatment == "Control") %>% distinct(Casa)
+  
+  # sample N observations from control HHs with replacement
+  bootSample <- sample_n(controlHHs, size = N, replace = TRUE) %>%
+    mutate(bootID = row_number(),
+           inTreatment = ifelse(bootID <= 100, 1,0))
+  
+  # create dataset based on sampled casas 
+  bootData <- filter(pilotDataBalanced, Casa %in% bootSample$Casa) %>%
+    merge(bootSample, by = "Casa") %>%
+    mutate(
+      treatedSMS = 
+        as.numeric(inTreatment == 1 & intervention_group == "Control Post-Intervention"))
+
+  # run a regression of kwh on treatment indicator to test for significance of 
+  # estimated treated effect coefficient
+  if(cluster == FALSE & levels == TRUE){
+   bootData <- bootData %>% 
+     mutate(energia = energia + MDE*treatedSMS)
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == FALSE & logs == TRUE){
+    bootData <- bootData %>% 
+      mutate(logEnergia = log(energia) + MDE*treatedSMS)
+   nReg <- felm(logEnergia ~ treatedSMS | bootID + sampleMonth| 0 | 0, data = bootData)
+  }
+  if(cluster == TRUE & levels == TRUE){
+    bootData <- bootData %>% 
+     mutate(energia = energia + MDE*treatedSMS)
+   nReg <- felm(energia ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  if(cluster == TRUE & logs == TRUE){
+    bootData <- bootData %>% 
+      mutate(logEnergia = log(energia) + MDE*treatedSMS)
+   nReg <- felm(logEnergia ~ treatedSMS | bootID + sampleMonth| 0 | bootID, data = bootData)
+  }
+  # boolean to check if p-value of treatment effect coef. est. is <0.05
+  tidy(nReg)$p.value < .05 %>%
+    return()
+}
+@
+
+<<>>=
+powerCalcSim2 <- function(nOrig, stepSize, simIterations, MDESet,
+                         clusterSwitch, levelSwitch, logSwitch){
+  # create empty powerDB
+  powerDB <- data.frame(sampleSize = integer(), power = double())
+  
+  # set N to nOrig 
+  N <- nOrig
+  
+  # loop over power until >=.8
+  power <- 0 
+  while(power < 0.8 & N < 2000){
+  print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder2, MDE = MDESet,
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize  
+  }
+  print("now the extras")
+  for(i in 1:5){
+  print(N)
+  power <- mean(map_lgl(rep(N,simIterations),nFinder2, MDE = MDESet,
+                        cluster = clusterSwitch, levels = levelSwitch, logs = logSwitch))
+  #print(power)
+  temp <- data.frame(sampleSize = N, Power = power)
+  powerDB <- rbind(powerDB, temp)
+  N <- N + stepSize 
+  }
+  return(powerDB)
+}
+@
+
+<<cache = TRUE, results = 'hide'>>=
+n0 <- 200
+step <- 25
+iterations <- 200
+
+pwr13 <- powerCalcSim2(n0,step,iterations, smsLevelEffectBalanced, 
+                       clusterSwitch = FALSE, levelSwitch = TRUE,  logSwitch = FALSE)
+pwr14 <- powerCalcSim2(n0,step,iterations, smsLevelEffectBalanced, 
+                       clusterSwitch = TRUE,  levelSwitch = TRUE,  logSwitch = FALSE)
+pwr15 <- powerCalcSim2(n0,step,iterations, percentEffectLogBalanced,
+                       clusterSwitch = FALSE, levelSwitch = FALSE, logSwitch = TRUE)
+pwr16 <- powerCalcSim2(n0,step,iterations,percentEffectLogBalanced,
+                       clusterSwitch = TRUE,  levelSwitch = FALSE, logSwitch = TRUE)
+@
+
+<<>>=
+# export the results
+write_excel_csv(pwr13, file.path(OUT,"SET4-noClusterLevels.csv"))
+write_excel_csv(pwr14, file.path(OUT,"SET4-clusterLevels.csv"))
+write_excel_csv(pwr15, file.path(OUT,"SET4-noClusterLogs.csv"))
+write_excel_csv(pwr16, file.path(OUT,"SET4-clusterLogs.csv"))
+@
+
+<<>>=
+#plot some results
+plot13 <- ggplot(data = pwr13, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr13$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot14 <- ggplot(data = pwr14, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Levels") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr14$sampleSize)[2],100)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot15 <- ggplot(data = pwr15, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("No Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr15$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+
+plot16 <- ggplot(data = pwr16, aes(sampleSize, Power)) + 
+          geom_smooth(fill = NA) + geom_point() + geom_hline(yintercept=.8) +
+          myGGTheme +
+          ggtitle("Casa Clustering - Logs") + 
+          xlab("Sample Size") + 
+          scale_x_continuous(breaks = seq(0,range(pwr16$sampleSize)[2],200)) + 
+          ylab("Power") +
+          scale_y_continuous(breaks = seq(0,1,.1))
+ 
+plot14
+plot16
 @
 
 
