@@ -641,7 +641,9 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
 # Getting estimates for understanding before and after
 #   Need to plot how far off people are in terms of kwh
       aggregate_tretment_data$diff <- aggregate_tretment_data$gasto_electrico_cordobas - aggregate_tretment_data$r_total_cordobas
+      aggregate_tretment_data$diff_pct <- ((aggregate_tretment_data$gasto_electrico_cordobas - aggregate_tretment_data$r_total_cordobas)/aggregate_tretment_data$gasto_electrico_cordobas)*100
       aggregate_control_data$diff <- aggregate_control_data$gasto_electrico_cordobas - aggregate_control_data$r_total_cordobas
+      aggregate_control_data$diff_pct <- ((aggregate_control_data$gasto_electrico_cordobas - aggregate_control_data$r_total_cordobas)/aggregate_control_data$gasto_electrico_cordobas)*100
       
       call_plot_subset_three(as.data.table(aggregate_tretment_data)[diff<5000 & diff>-5000],"data","Baseline","Mid-Baseline","Treatment Ongoing","diff","Diff","Coso","Peso")
       call_plot_subset_three(as.data.table(aggregate_control_data)[diff>-2000],"data","Baseline","Mid-Baseline","Control End","diff","Diff","Coso","Peso")
@@ -650,7 +652,7 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
       # Keeping variables that are between the 1st and 99th percentile
       
       #Treatment
-      baseline_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Baseline" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
+      baseline_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Baseline" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < 1000,na.rm=TRUE)
       mid_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Mid-Baseline" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
       ongoing_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Treatment Ongoing" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
       end_treatment_accuracy <- subset(aggregate_tretment_data,aggregate_tretment_data$data == "Treatment End" & aggregate_tretment_data$diff > quantile(aggregate_tretment_data$diff,c(0.01),na.rm=TRUE) & aggregate_tretment_data$diff < quantile(aggregate_tretment_data$diff,c(0.99),na.rm=TRUE))
@@ -660,9 +662,13 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
       mean(subset(ongoing_treatment_accuracy,ongoing_treatment_accuracy$diff > quantile(ongoing_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & ongoing_treatment_accuracy$diff < quantile(ongoing_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE),
       mean(subset(end_treatment_accuracy,end_treatment_accuracy$diff > quantile(end_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & end_treatment_accuracy$diff < quantile(end_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE))
       
-      mean_list_types <- c("Baseline","Mid-Baseline","Ongoing","Endline")
+      mean_list_types <- c("A. Baseline","B. Mid-Baseline","C. Ongoing","D. Endline")
       treatment_means <- as.data.frame(mean_list_treatment,mean_list_types)
+      treatment_means$implementation<-rownames(treatment_means)
       treatment_means$Group <- "Treatment"
+      rownames(treatment_means) <- c()
+      names(treatment_means)[1] <- "Val"
+      
       
       
       hist(subset(baseline_treatment_accuracy,baseline_treatment_accuracy$diff > quantile(baseline_treatment_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_treatment_accuracy$diff < quantile(baseline_treatment_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
@@ -675,16 +681,28 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
       mid_control_accuracy <- subset(aggregate_control_data,aggregate_control_data$data == "Mid-Baseline" & aggregate_control_data$diff > quantile(aggregate_control_data$diff,c(0.01),na.rm=TRUE) & aggregate_control_data$diff < quantile(aggregate_control_data$diff,c(0.99),na.rm=TRUE))
       end_control_accuracy <- subset(aggregate_control_data,aggregate_control_data$data == "Control End" & aggregate_control_data$diff > quantile(aggregate_control_data$diff,c(0.01),na.rm=TRUE) & aggregate_control_data$diff < quantile(aggregate_control_data$diff,c(0.99),na.rm=TRUE))
       
-      mean(subset(baseline_control_accuracy,baseline_control_accuracy$diff > quantile(baseline_control_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_control_accuracy$diff < quantile(baseline_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
-      mean(subset(mid_control_accuracy,mid_control_accuracy$diff > quantile(mid_control_accuracy$diff,c(0.01),na.rm=TRUE) & mid_control_accuracy$diff < quantile(mid_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
-      mean(subset(end_control_accuracy,end_control_accuracy$diff > quantile(end_control_accuracy$diff,c(0.01),na.rm=TRUE) & end_control_accuracy$diff < quantile(end_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
-      
       hist(subset(baseline_control_accuracy,baseline_control_accuracy$diff > quantile(baseline_control_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_control_accuracy$diff < quantile(baseline_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
       hist(subset(mid_control_accuracy,mid_control_accuracy$diff > quantile(mid_control_accuracy$diff,c(0.01),na.rm=TRUE) & mid_control_accuracy$diff < quantile(mid_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
       hist(subset(end_control_accuracy,end_control_accuracy$diff > quantile(end_control_accuracy$diff,c(0.01),na.rm=TRUE) & end_control_accuracy$diff < quantile(end_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE)
       
+      mean_list_control <-  c(mean(subset(baseline_control_accuracy,baseline_control_accuracy$diff > quantile(baseline_control_accuracy$diff,c(0.01),na.rm=TRUE) & baseline_control_accuracy$diff < quantile(baseline_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE), 0, mean(subset(mid_control_accuracy,mid_control_accuracy$diff > quantile(mid_control_accuracy$diff,c(0.01),na.rm=TRUE) & mid_control_accuracy$diff < quantile(mid_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE), mean(subset(end_control_accuracy,end_control_accuracy$diff > quantile(end_control_accuracy$diff,c(0.01),na.rm=TRUE) & end_control_accuracy$diff < quantile(end_control_accuracy$diff,c(0.99),na.rm=TRUE))$diff,na.rm=TRUE))
+      mean_list_types_control <- c("A. Baseline","B. Mid-Baseline","C. Ongoing","D. Endline")
+      control_means <- as.data.frame(mean_list_control,mean_list_types_control)
+      control_means$implementation<-rownames(control_means)
+      control_means$Group <- "Control"
+      rownames(control_means) <- c()
+      names(control_means)[1] <- "Val"
       
       # Treatment vs. Control Learning Plot
+      
+      treatment_control_learning <- rbind(control_means,treatment_means)
+      
+      
+      ggplot(treatment_control_learning, aes(x = interaction(implementation), y = abs(Val), fill = factor(Group))) +
+        geom_bar(stat = "identity", position = position_dodge()) +  theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
+        theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
+      
+
       
     
 ###################
