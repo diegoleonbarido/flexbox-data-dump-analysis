@@ -1,7 +1,11 @@
 
 
-setwd('/Users/Diego/Desktop/Nicaragua/Surveys/Survey Monthly Updates/Results')
-survey.data <- read.csv('all_monthly_updates_odaly_for analysis.csv')
+setwd('/Users/diego/Desktop/Data/nicaragua_surveys/Final_Analysis/')
+
+survey.data <- read.csv('Resultados_Encuestas_Odaly_for_Analysis.csv')
+initial.baseline.survey <- read.csv('All_Surveys_With_Pics_Reviewed_Final.csv')
+house.baseline.survey <- read.csv('houses_2017.csv')
+
 
 #### 1. Cleaning Variables
 #### 2. Initial Transcribing Survyes
@@ -17,7 +21,6 @@ survey.data$molesta_instrumentacion <- as.character(survey.data$molesta_instrume
 ####### 2. Initial Transcribing Survyes
 
 #######   Initial Baseline Survey Data   #######
-initial.baseline.survey <- read.csv('/Users/Diego/Desktop/Nicaragua/Surveys/Survey I Winter 2014/Results/All_Surveys_With_Pics_Reviewed_Final.csv')
 initial.baseline.data <-subset(initial.baseline.survey,initial.baseline.survey$error == 0)
 baseline_receipt_data <- subset(initial.baseline.data, initial.baseline.data$foto_gasto_electrico == 'si') %>% mutate(encuesta_id=survey_id,baseline_gasto_electrico=gasto_electrico,baseline_monthly_cordobas=r_monthly_cordobas) %>% select(encuesta_id,baseline_gasto_electrico,baseline_monthly_cordobas,gasto_electrico,r_monthly_cordobas)
 

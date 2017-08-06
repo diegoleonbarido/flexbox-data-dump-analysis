@@ -62,6 +62,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{parskip}
+\usepackage{comment}
 
 %%DEFINE NEW GLOBAL MATH COMMANDS
 \newcommand{\mat}{\ensuremath{\mathbf{}}}
@@ -117,9 +118,13 @@
    \hlkwc{size}\hlstd{=}\hlnum{10}\hlstd{)}
 \hlstd{)}
 
-\hlcom{# set directories}
-\hlstd{OUT}  \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"H:"}\hlstd{,}\hlstr{"CoolJoule"}\hlstd{,}\hlstr{"00-Admin"}\hlstd{,}\hlstr{"Design"}\hlstd{,}\hlstr{"PowerCalcs"}\hlstd{,}\hlstr{"Output"}\hlstd{)}
-\hlstd{DATA} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"H:"}\hlstd{,}\hlstr{"CoolJoule"}\hlstd{,}\hlstr{"00-Admin"}\hlstd{,}\hlstr{"Design"}\hlstd{,}\hlstr{"PowerCalcs"}\hlstd{,}\hlstr{"Data"}\hlstd{)}
+\hlcom{# set directories Derek}
+\hlstd{OUT}  \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"G:"}\hlstd{,}\hlstr{"flexbox-data-dump-analysis"}\hlstd{,}\hlstr{"PowerCalcs"}\hlstd{,}\hlstr{"Output"}\hlstd{)}
+\hlstd{DATA} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"G:"}\hlstd{,}\hlstr{"flexbox-data-dump-analysis"}\hlstd{,}\hlstr{"PowerCalcs"}\hlstd{,}\hlstr{"Data"}\hlstd{)}
+
+\hlcom{# set directories Diego}
+\hlcom{#OUT  <- file.path("/Users/diego/Desktop/Projects_Code/","flexbox-data-dump-analysis","PowerCalcs","Output")}
+\hlcom{#DATA <- file.path("/Users/diego/Desktop/Projects_Code/","flexbox-data-dump-analysis","PowerCalcs","Data")}
 
 \hlkwd{set.seed}\hlstd{(}\hlnum{4222017}\hlstd{)}
 \hlcom{###################################}
@@ -159,6 +164,20 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
                   \hlstd{sms_intervention_month} \hlopt{==} \hlnum{1} \hlopt{&}
                   \hlstd{Ano} \hlopt{>} \hlnum{2015}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{),}
          \hlkwc{treated}    \hlstd{=} \hlkwd{ifelse}\hlstd{(treatment} \hlopt{==} \hlstr{"Treatment"}\hlstd{,} \hlnum{1} \hlstd{,} \hlnum{0}\hlstd{))}
+
+\hlcom{# Diego: I think this looks Ok. The only thing I would remove would be January 2017, as we removed all our equipment # # before the end of the month and thus the users did not continue receiving any information or anything. Below I'm also }
+\hlcom{# making sure that we're only using 2015 and 2016 as we don't know anything about the houses prior to 2014.}
+\hlcom{# DereK: Removing 2017 data}
+\hlstd{pilotData} \hlkwb{<-} \hlstd{pilotData} \hlopt{%>%} \hlkwd{filter}\hlstd{(Ano} \hlopt{>} \hlnum{2014} \hlopt{&} \hlstd{Ano} \hlopt{<} \hlnum{2017}\hlstd{)}
+
+\hlcom{# DEREK: Doesn't look like this code does anything... but keeping it here since}
+\hlcom{# Diego added on 4/30/17}
+\hlstd{pilotData} \hlkwb{<-} \hlkwd{subset}\hlstd{(pilotData,}
+                    \hlstd{pilotData}\hlopt{$}\hlstd{Casa}\hlopt{!=} \hlstr{"A26"} \hlopt{|}
+                    \hlstd{pilotData}\hlopt{$}\hlstd{Casa}\hlopt{!=} \hlstr{"A11"} \hlopt{|}
+                    \hlstd{pilotData}\hlopt{$}\hlstd{Casa}\hlopt{!=} \hlstr{"A29"} \hlopt{|}
+                    \hlstd{pilotData}\hlopt{$}\hlstd{Casa}\hlopt{!=} \hlstr{"45"} \hlopt{|}
+                    \hlstd{pilotData}\hlopt{$}\hlstd{Casa}\hlopt{!=} \hlstr{"191"} \hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -168,10 +187,8 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 \begin{alltt}
 \hlcom{# balance the data}
 \hlstd{obsCount} \hlkwb{<-} \hlstd{plyr}\hlopt{::}\hlkwd{count}\hlstd{(pilotData}\hlopt{$}\hlstd{Casa)}
-\hlstd{pilotDataBalanced} \hlkwb{<-} \hlstd{pilotData} \hlopt{%>%} \hlkwd{filter}\hlstd{(Ano} \hlopt{>} \hlnum{2014}\hlstd{)}
-\hlstd{obsCount} \hlkwb{<-} \hlstd{plyr}\hlopt{::}\hlkwd{count}\hlstd{(pilotDataBalanced}\hlopt{$}\hlstd{Casa)}
-\hlstd{pilotDataBalanced} \hlkwb{<-} \hlkwd{merge}\hlstd{(pilotDataBalanced, obsCount,} \hlkwc{by.x} \hlstd{=} \hlstr{"Casa"}\hlstd{,} \hlkwc{by.y} \hlstd{=} \hlstr{"x"}\hlstd{)}
-\hlstd{pilotDataBlaanced} \hlkwb{<-} \hlstd{pilotDataBalanced} \hlopt{%>%} \hlkwd{filter}\hlstd{(freq} \hlopt{==} \hlnum{25}\hlstd{)}
+\hlstd{pilotDataBalanced} \hlkwb{<-} \hlkwd{merge}\hlstd{(pilotData, obsCount,} \hlkwc{by.x} \hlstd{=} \hlstr{"Casa"}\hlstd{,} \hlkwc{by.y} \hlstd{=} \hlstr{"x"}\hlstd{)} \hlopt{%>%}
+  \hlkwd{filter}\hlstd{(freq} \hlopt{==} \hlnum{24}\hlstd{)}
 \hlcom{###################################}
 \hlcom{# END SECTION 1}
 \hlcom{###################################}
@@ -198,37 +215,41 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -254.801  -18.499    2.094   18.786  140.761 
+## -252.209  -16.682    2.697   18.295  141.576 
 ## 
 ## Coefficients:
 ##            Estimate Cluster s.e. t value Pr(>|t|)
-## treatedSMS   -14.00        17.27  -0.811    0.418
+## treatedSMS   -16.75        16.89  -0.991    0.322
 ## 
-## Residual standard error: 42.03 on 713 degrees of freedom
-## Multiple R-squared(full model): 0.8379   Adjusted R-squared: 0.8245 
-## Multiple R-squared(proj model): 0.006028   Adjusted R-squared: -0.07622 
-## F-statistic(full model, *iid*):62.48 on 59 and 713 DF, p-value: < 2.2e-16 
-## F-statistic(proj model): 0.6574 on 1 and 29 DF, p-value: 0.4241
+## Residual standard error: 39.83 on 642 degrees of freedom
+## Multiple R-squared(full model): 0.8525   Adjusted R-squared: 0.8404 
+## Multiple R-squared(proj model): 0.009633   Adjusted R-squared: -0.07213 
+## F-statistic(full model, *iid*):70.04 on 53 and 642 DF, p-value: < 2.2e-16 
+## F-statistic(proj model): 0.9829 on 1 and 29 DF, p-value: 0.3297
 \end{verbatim}
 \begin{alltt}
 \hlstd{smsLevelEffect} \hlkwb{<-} \hlstd{smsEffectLevel}\hlopt{$}\hlstd{beta[}\hlnum{1}\hlstd{]}
+
 \hlcom{## get percent change}
 \hlstd{ctrlMean} \hlkwb{<-} \hlstd{pilotData} \hlopt{%>%} \hlkwd{group_by}\hlstd{(intervention_group)} \hlopt{%>%}
   \hlkwd{summarise}\hlstd{(}\hlkwd{mean}\hlstd{(energia))}
 \hlstd{percentEffectPreTreatment}  \hlkwb{<-} \hlstd{smsLevelEffect}\hlopt{/}\hlstd{ctrlMean}\hlopt{$}\hlstd{`mean(energia)`[}\hlnum{2}\hlstd{]}
 \hlstd{percentEffectPostTreatment} \hlkwb{<-} \hlstd{smsLevelEffect}\hlopt{/}\hlstd{ctrlMean}\hlopt{$}\hlstd{`mean(energia)`[}\hlnum{1}\hlstd{]}
+\hlcom{#Diego: Don't really get this one. Why assign treatment the mean of the control group?}
+\hlcom{#Derek 5/1: Getting the percent change in energy use w.r.t. the control group.  I do this since this the effect in levels isn't that easy to understand.}
+
 
 \hlcom{## this is MDE }
-\hlstd{percentEffectPreTreatment} \hlcom{# percent using pre-treatment control as comparison}
+\hlstd{percentEffectPreTreatment} \hlcom{# percent change relative to pre-treatment control as comparison}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06817607
+## [1] -0.08090233
 \end{verbatim}
 \begin{alltt}
-\hlstd{percentEffectPostTreatment} \hlcom{# percent using post-treatment control as comparison}
+\hlstd{percentEffectPostTreatment} \hlcom{# percent change relative to post-treatment control as comparison}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06377832
+## [1] -0.07540445
 \end{verbatim}
 \begin{alltt}
 \hlcom{## now use logs (which approximately percent change and controls for outliers)}
@@ -242,17 +263,17 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -1.45588 -0.08746  0.01010  0.11454  0.68425 
+## -1.58912 -0.07734  0.01283  0.11192  0.62948 
 ## 
 ## Coefficients:
 ##            Estimate Cluster s.e. t value Pr(>|t|)
-## treatedSMS -0.03367      0.09597  -0.351    0.726
+## treatedSMS -0.04870      0.09341  -0.521    0.602
 ## 
-## Residual standard error: 0.2683 on 713 degrees of freedom
-## Multiple R-squared(full model): 0.7464   Adjusted R-squared: 0.7254 
-## Multiple R-squared(proj model): 0.0008601   Adjusted R-squared: -0.08182 
-## F-statistic(full model, *iid*):35.57 on 59 and 713 DF, p-value: < 2.2e-16 
-## F-statistic(proj model): 0.1231 on 1 and 29 DF, p-value: 0.7283
+## Residual standard error: 0.2489 on 642 degrees of freedom
+## Multiple R-squared(full model): 0.769   Adjusted R-squared: 0.7499 
+## Multiple R-squared(proj model): 0.002102   Adjusted R-squared: -0.08028 
+## F-statistic(full model, *iid*):40.32 on 53 and 642 DF, p-value: < 2.2e-16 
+## F-statistic(proj model): 0.2718 on 1 and 29 DF, p-value: 0.6061
 \end{verbatim}
 \begin{alltt}
 \hlcom{## this is MDE in percent from log equation}
@@ -260,7 +281,7 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 \hlstd{percentEffectLog}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.03366871
+## [1] -0.04869675
 \end{verbatim}
 \begin{alltt}
 \hlcom{# 2.2 -- treatment effect for SMS treatment in balanced sample}
@@ -274,17 +295,17 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -254.722  -17.518    2.146   18.275  140.593 
+## -254.003  -17.248    3.184   18.948  125.338 
 ## 
 ## Coefficients:
 ##            Estimate Cluster s.e. t value Pr(>|t|)
-## treatedSMS   -14.45        17.05  -0.848    0.397
+## treatedSMS   -13.83        17.63  -0.785    0.433
 ## 
-## Residual standard error: 40.08 on 670 degrees of freedom
-## Multiple R-squared(full model): 0.8501   Adjusted R-squared: 0.838 
-## Multiple R-squared(proj model): 0.007461   Adjusted R-squared: -0.07253 
-## F-statistic(full model, *iid*):70.37 on 54 and 670 DF, p-value: < 2.2e-16 
-## F-statistic(proj model): 0.7185 on 1 and 29 DF, p-value: 0.4036
+## Residual standard error: 39 on 597 degrees of freedom
+## Multiple R-squared(full model): 0.8632   Adjusted R-squared: 0.8518 
+## Multiple R-squared(proj model): 0.006759   Adjusted R-squared: -0.07643 
+## F-statistic(full model, *iid*):75.36 on 50 and 597 DF, p-value: < 2.2e-16 
+## F-statistic(proj model): 0.6155 on 1 and 26 DF, p-value: 0.4398
 \end{verbatim}
 \begin{alltt}
 \hlstd{smsLevelEffectBalanced} \hlkwb{<-} \hlstd{smsEffectLevelBalanced}\hlopt{$}\hlstd{beta[}\hlnum{1}\hlstd{]}
@@ -299,13 +320,13 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 \hlstd{percentEffectPreTreatmentBalanced} \hlcom{# percent using pre-treatment control as comparison}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06981994
+## [1] -0.06660483
 \end{verbatim}
 \begin{alltt}
 \hlstd{percentEffectPostTreatmentBalanced} \hlcom{# percent using post-treatment control as comparison}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06584819
+## [1] -0.06272937
 \end{verbatim}
 \begin{alltt}
 \hlcom{## do it in logs too as before.}
@@ -319,17 +340,17 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -1.60738 -0.08049  0.01255  0.11213  0.65140 
+## -1.60079 -0.08156  0.01456  0.11570  0.63804 
 ## 
 ## Coefficients:
 ##            Estimate Cluster s.e. t value Pr(>|t|)
-## treatedSMS -0.03829      0.09344   -0.41    0.682
+## treatedSMS -0.03461      0.09737  -0.355    0.722
 ## 
-## Residual standard error: 0.2479 on 670 degrees of freedom
-## Multiple R-squared(full model): 0.7699   Adjusted R-squared: 0.7514 
-## Multiple R-squared(proj model): 0.001377   Adjusted R-squared: -0.07911 
-## F-statistic(full model, *iid*):41.52 on 54 and 670 DF, p-value: < 2.2e-16 
-## F-statistic(proj model): 0.1679 on 1 and 29 DF, p-value: 0.685
+## Residual standard error: 0.2516 on 597 degrees of freedom
+## Multiple R-squared(full model): 0.7735   Adjusted R-squared: 0.7545 
+## Multiple R-squared(proj model): 0.001023   Adjusted R-squared: -0.08264 
+## F-statistic(full model, *iid*):40.78 on 50 and 597 DF, p-value: < 2.2e-16 
+## F-statistic(proj model): 0.1264 on 1 and 26 DF, p-value: 0.7251
 \end{verbatim}
 \begin{alltt}
 \hlcom{## this is MDE}
@@ -341,21 +362,21 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 \hlstd{percentEffectPreTreatment}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06817607
+## [1] -0.08090233
 \end{verbatim}
 \begin{alltt}
 \hlcom{## POST-TREATMENT CONTROL GROUP AS COMPARISON}
 \hlstd{percentEffectPostTreatment}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06377832
+## [1] -0.07540445
 \end{verbatim}
 \begin{alltt}
 \hlcom{## LOG SPECIFICATION}
 \hlstd{percentEffectLog}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.03366871
+## [1] -0.04869675
 \end{verbatim}
 \begin{alltt}
 \hlcom{# MDE - BALANCED SAMPLE}
@@ -363,21 +384,21 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
 \hlstd{percentEffectPreTreatmentBalanced}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06981994
+## [1] -0.06660483
 \end{verbatim}
 \begin{alltt}
 \hlcom{## POST-TREATMENT CONTROL GROUP AS COMPARISON}
 \hlstd{percentEffectPostTreatmentBalanced}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06584819
+## [1] -0.06272937
 \end{verbatim}
 \begin{alltt}
 \hlcom{## LOG SPECIFICATION}
 \hlstd{percentEffectLogBalanced}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.03828541
+## [1] -0.03461387
 \end{verbatim}
 \begin{alltt}
 \hlcom{## overall range}
@@ -385,7 +406,7 @@ Diego: Please verify that my definition for the treatment indicator is OK -- it 
         \hlstd{percentEffectPreTreatmentBalanced,percentEffectPostTreatmentBalanced,smsEffectLogBalanced}\hlopt{$}\hlstd{beta[}\hlnum{1}\hlstd{]))}
 \end{alltt}
 \begin{verbatim}
-## [1] -0.06981994 -0.03366871
+## [1] -0.08090233 -0.03461387
 \end{verbatim}
 \begin{alltt}
 \hlcom{###################################}
@@ -536,7 +557,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
 \begin{alltt}
 \hlcom{#plot some results}
 \hlstd{plot1} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr1,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Levels"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -545,7 +566,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
           \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
 
 \hlstd{plot2} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr2,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Levels"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -554,7 +575,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
           \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
 
 \hlstd{plot3} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr3,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Logs"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -563,7 +584,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
           \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
 
 \hlstd{plot4} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr4,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Logs"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -724,7 +745,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
 \begin{alltt}
 \hlcom{#plot some results}
 \hlstd{plot5} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr5,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Levels"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -733,7 +754,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
           \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
 
 \hlstd{plot6} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr6,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Levels"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -742,7 +763,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
           \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
 
 \hlstd{plot7} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr7,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Logs"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -751,7 +772,7 @@ The percent of significant coefficients is the "power" of the test.  The plots s
           \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
 
 \hlstd{plot8} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr8,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
-          \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
           \hlstd{myGGTheme} \hlopt{+}
           \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Logs"}\hlstd{)} \hlopt{+}
           \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
@@ -771,6 +792,361 @@ The percent of significant coefficients is the "power" of the test.  The plots s
 
 \end{knitrout}
 
+\section{Power Calculations 3}
+Fix Flexbox at $N = 100$ and then make control group larger
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{###################################}
+\hlcom{# SECTION 3 - POWER CALCS SIM 3}
+\hlcom{###################################}
+
+\hlcom{# Create sampling function with regression inner loop}
+\hlstd{nFinder} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{N}\hlstd{,} \hlkwc{cluster}\hlstd{,} \hlkwc{logs}\hlstd{,} \hlkwc{levels}\hlstd{)\{}
+  \hlcom{# grab list of hhid ids}
+  \hlstd{controlHHs} \hlkwb{<-} \hlstd{pilotDataBalanced} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(treatment} \hlopt{==} \hlstr{"Control"}\hlstd{)} \hlopt{%>%} \hlkwd{distinct}\hlstd{(Casa)}
+  \hlstd{treatmentHHs} \hlkwb{<-}\hlstd{pilotDataBalanced} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(treatment} \hlopt{==} \hlstr{"Treatment"}\hlstd{)} \hlopt{%>%} \hlkwd{distinct}\hlstd{(Casa)}
+  \hlcom{# sample N observations with replacement}
+  \hlstd{bootSampleControl}   \hlkwb{<-} \hlkwd{sample_n}\hlstd{(controlHHs,} \hlkwc{size} \hlstd{= N,} \hlkwc{replace} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+  \hlstd{bootSampleTreatment} \hlkwb{<-} \hlkwd{sample_n}\hlstd{(treatmentHHs,} \hlkwc{size} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{replace} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+  \hlstd{bootSample} \hlkwb{<-} \hlkwd{rbind}\hlstd{(bootSampleControl,bootSampleTreatment)}
+  \hlstd{bootSample} \hlkwb{<-} \hlstd{bootSample} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{bootID} \hlstd{=} \hlkwd{row_number}\hlstd{())}
+
+  \hlcom{# create dataset based on sampled casas }
+  \hlcom{# Create dataset based on sampled hhids + }
+  \hlstd{bootData} \hlkwb{<-} \hlkwd{filter}\hlstd{(pilotDataBalanced, Casa} \hlopt{%in%} \hlstd{bootSample}\hlopt{$}\hlstd{Casa)} \hlopt{%>%}
+    \hlkwd{merge}\hlstd{(bootSample,} \hlkwc{by} \hlstd{=} \hlstr{"Casa"}\hlstd{)}
+
+  \hlcom{# run a regression of kwh on treatment indicator to test for significance of }
+  \hlcom{# estimated treated effect coefficient}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{FALSE} \hlopt{&} \hlstd{levels} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(energia} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlnum{0}\hlstd{,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{FALSE} \hlopt{&} \hlstd{logs} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(}\hlkwd{log}\hlstd{(energia)} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlnum{0}\hlstd{,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{TRUE} \hlopt{&} \hlstd{levels} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(energia} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlstd{bootID,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{TRUE} \hlopt{&} \hlstd{logs} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(}\hlkwd{log}\hlstd{(energia)} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlstd{bootID,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlcom{# boolean to check if p-value of treatment effect coef. est. is <0.05}
+  \hlcom{#print(tidy(nReg)$p.value < .05)}
+  \hlkwd{tidy}\hlstd{(nReg)}\hlopt{$}\hlstd{p.value} \hlopt{<} \hlnum{.05} \hlopt{%>%}
+    \hlkwd{return}\hlstd{()}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{powerCalcSim} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{nOrig}\hlstd{,} \hlkwc{stepSize}\hlstd{,} \hlkwc{simIterations}\hlstd{,}
+                         \hlkwc{clusterSwitch}\hlstd{,} \hlkwc{levelSwitch}\hlstd{,} \hlkwc{logSwitch}\hlstd{)\{}
+  \hlcom{# create empty powerDB}
+  \hlstd{powerDB} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{sampleSize} \hlstd{=} \hlkwd{integer}\hlstd{(),} \hlkwc{power} \hlstd{=} \hlkwd{double}\hlstd{())}
+
+  \hlcom{# set N to nOrig }
+  \hlstd{N} \hlkwb{<-} \hlstd{nOrig}
+
+  \hlcom{# loop over power until >=.8}
+  \hlstd{power} \hlkwb{<-} \hlnum{0}
+  \hlkwa{while}\hlstd{(power} \hlopt{<} \hlnum{0.8} \hlopt{&} \hlstd{N} \hlopt{<} \hlnum{2000}\hlstd{)\{}
+  \hlkwd{print}\hlstd{(N)}
+  \hlstd{power} \hlkwb{<-} \hlkwd{mean}\hlstd{(}\hlkwd{map_lgl}\hlstd{(}\hlkwd{rep}\hlstd{(N,simIterations),nFinder,}
+                        \hlkwc{cluster} \hlstd{= clusterSwitch,} \hlkwc{levels} \hlstd{= levelSwitch,} \hlkwc{logs} \hlstd{= logSwitch))}
+  \hlcom{#print(power)}
+  \hlstd{temp} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{sampleSize} \hlstd{= N} \hlopt{+} \hlnum{100}\hlstd{,} \hlkwc{Power} \hlstd{= power)}
+  \hlstd{powerDB} \hlkwb{<-} \hlkwd{rbind}\hlstd{(powerDB, temp)}
+  \hlstd{N} \hlkwb{<-} \hlstd{N} \hlopt{+} \hlstd{stepSize}
+  \hlstd{\}}
+  \hlkwd{print}\hlstd{(}\hlstr{"DOING EXTRA ONES NOW"}\hlstd{)}
+  \hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)\{}
+  \hlkwd{print}\hlstd{(N)}
+  \hlstd{power} \hlkwb{<-} \hlkwd{mean}\hlstd{(}\hlkwd{map_lgl}\hlstd{(}\hlkwd{rep}\hlstd{(N,simIterations),nFinder,}
+                        \hlkwc{cluster} \hlstd{= clusterSwitch,} \hlkwc{levels} \hlstd{= levelSwitch,} \hlkwc{logs} \hlstd{= logSwitch))}
+  \hlcom{#print(power)}
+  \hlstd{temp} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{sampleSize} \hlstd{= N}\hlopt{+}\hlnum{100}\hlstd{,} \hlkwc{Power} \hlstd{= power)}
+  \hlstd{powerDB} \hlkwb{<-} \hlkwd{rbind}\hlstd{(powerDB, temp)}
+  \hlstd{N} \hlkwb{<-} \hlstd{N} \hlopt{+} \hlstd{stepSize}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(powerDB)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{iterations} \hlkwb{<-} \hlnum{500}
+\hlstd{n0} \hlkwb{<-} \hlnum{100}
+\hlstd{step} \hlkwb{<-} \hlnum{25}
+\hlstd{pwr9} \hlkwb{<-} \hlkwd{powerCalcSim}\hlstd{(n0,step,iterations,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{levelSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{logSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{pwr10} \hlkwb{<-} \hlkwd{powerCalcSim}\hlstd{(n0,step,iterations,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{levelSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{logSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{pwr11} \hlkwb{<-} \hlkwd{powerCalcSim}\hlstd{(n0,step,iterations,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{levelSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{logSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{pwr12} \hlkwb{<-} \hlkwd{powerCalcSim}\hlstd{(n0,step,iterations,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{levelSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{logSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# export the results}
+\hlkwd{write_excel_csv}\hlstd{(pwr9,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET3-noClusterLevels.csv"}\hlstd{))}
+\hlkwd{write_excel_csv}\hlstd{(pwr10,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET3-clusterLevels.csv"}\hlstd{))}
+\hlkwd{write_excel_csv}\hlstd{(pwr11,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET3-noClusterLogs.csv"}\hlstd{))}
+\hlkwd{write_excel_csv}\hlstd{(pwr12,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET3-clusterLogs.csv"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#plot some results}
+\hlstd{plot9} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr9,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Levels"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr9}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{100}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot10} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr10,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Levels"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr10}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{100}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot11} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr11,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Logs"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr11}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{200}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot12} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr12,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Logs"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr12}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{200}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot10}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-1} 
+\begin{kframe}\begin{alltt}
+\hlstd{plot12}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-2} 
+
+\end{knitrout}
+
+
+\section{Simulation \#4}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# now run them with a fixed MDE and sample the control households}
+\hlcom{# Create sampling function with regression inner loop}
+\hlstd{nFinder2} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{N}\hlstd{,} \hlkwc{MDE}\hlstd{,} \hlkwc{cluster}\hlstd{,} \hlkwc{logs}\hlstd{,} \hlkwc{levels}\hlstd{)\{}
+  \hlcom{# grab list of control hhid ids}
+  \hlstd{controlHHs} \hlkwb{<-} \hlstd{pilotDataBalanced} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(treatment} \hlopt{==} \hlstr{"Control"}\hlstd{)} \hlopt{%>%} \hlkwd{distinct}\hlstd{(Casa)}
+
+  \hlcom{# sample N observations from control HHs with replacement}
+  \hlstd{bootSample} \hlkwb{<-} \hlkwd{sample_n}\hlstd{(controlHHs,} \hlkwc{size} \hlstd{= N,} \hlkwc{replace} \hlstd{=} \hlnum{TRUE}\hlstd{)} \hlopt{%>%}
+    \hlkwd{mutate}\hlstd{(}\hlkwc{bootID} \hlstd{=} \hlkwd{row_number}\hlstd{(),}
+           \hlkwc{inTreatment} \hlstd{=} \hlkwd{ifelse}\hlstd{(bootID} \hlopt{<=} \hlnum{100}\hlstd{,} \hlnum{1}\hlstd{,}\hlnum{0}\hlstd{))}
+
+  \hlcom{# create dataset based on sampled casas }
+  \hlstd{bootData} \hlkwb{<-} \hlkwd{filter}\hlstd{(pilotDataBalanced, Casa} \hlopt{%in%} \hlstd{bootSample}\hlopt{$}\hlstd{Casa)} \hlopt{%>%}
+    \hlkwd{merge}\hlstd{(bootSample,} \hlkwc{by} \hlstd{=} \hlstr{"Casa"}\hlstd{)} \hlopt{%>%}
+    \hlkwd{mutate}\hlstd{(}
+      \hlkwc{treatedSMS} \hlstd{=}
+        \hlkwd{as.numeric}\hlstd{(inTreatment} \hlopt{==} \hlnum{1} \hlopt{&} \hlstd{intervention_group} \hlopt{==} \hlstr{"Control Post-Intervention"}\hlstd{))}
+
+  \hlcom{# run a regression of kwh on treatment indicator to test for significance of }
+  \hlcom{# estimated treated effect coefficient}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{FALSE} \hlopt{&} \hlstd{levels} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+   \hlstd{bootData} \hlkwb{<-} \hlstd{bootData} \hlopt{%>%}
+     \hlkwd{mutate}\hlstd{(}\hlkwc{energia} \hlstd{= energia} \hlopt{+} \hlstd{MDE}\hlopt{*}\hlstd{treatedSMS)}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(energia} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlnum{0}\hlstd{,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{FALSE} \hlopt{&} \hlstd{logs} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+    \hlstd{bootData} \hlkwb{<-} \hlstd{bootData} \hlopt{%>%}
+      \hlkwd{mutate}\hlstd{(}\hlkwc{logEnergia} \hlstd{=} \hlkwd{log}\hlstd{(energia)} \hlopt{+} \hlstd{MDE}\hlopt{*}\hlstd{treatedSMS)}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(logEnergia} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlnum{0}\hlstd{,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{TRUE} \hlopt{&} \hlstd{levels} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+    \hlstd{bootData} \hlkwb{<-} \hlstd{bootData} \hlopt{%>%}
+     \hlkwd{mutate}\hlstd{(}\hlkwc{energia} \hlstd{= energia} \hlopt{+} \hlstd{MDE}\hlopt{*}\hlstd{treatedSMS)}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(energia} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlstd{bootID,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlkwa{if}\hlstd{(cluster} \hlopt{==} \hlnum{TRUE} \hlopt{&} \hlstd{logs} \hlopt{==} \hlnum{TRUE}\hlstd{)\{}
+    \hlstd{bootData} \hlkwb{<-} \hlstd{bootData} \hlopt{%>%}
+      \hlkwd{mutate}\hlstd{(}\hlkwc{logEnergia} \hlstd{=} \hlkwd{log}\hlstd{(energia)} \hlopt{+} \hlstd{MDE}\hlopt{*}\hlstd{treatedSMS)}
+   \hlstd{nReg} \hlkwb{<-} \hlkwd{felm}\hlstd{(logEnergia} \hlopt{~} \hlstd{treatedSMS} \hlopt{|} \hlstd{bootID} \hlopt{+} \hlstd{sampleMonth}\hlopt{|} \hlnum{0} \hlopt{|} \hlstd{bootID,} \hlkwc{data} \hlstd{= bootData)}
+  \hlstd{\}}
+  \hlcom{# boolean to check if p-value of treatment effect coef. est. is <0.05}
+  \hlkwd{tidy}\hlstd{(nReg)}\hlopt{$}\hlstd{p.value} \hlopt{<} \hlnum{.05} \hlopt{%>%}
+    \hlkwd{return}\hlstd{()}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{powerCalcSim2} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{nOrig}\hlstd{,} \hlkwc{stepSize}\hlstd{,} \hlkwc{simIterations}\hlstd{,} \hlkwc{MDESet}\hlstd{,}
+                         \hlkwc{clusterSwitch}\hlstd{,} \hlkwc{levelSwitch}\hlstd{,} \hlkwc{logSwitch}\hlstd{)\{}
+  \hlcom{# create empty powerDB}
+  \hlstd{powerDB} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{sampleSize} \hlstd{=} \hlkwd{integer}\hlstd{(),} \hlkwc{power} \hlstd{=} \hlkwd{double}\hlstd{())}
+
+  \hlcom{# set N to nOrig }
+  \hlstd{N} \hlkwb{<-} \hlstd{nOrig}
+
+  \hlcom{# loop over power until >=.8}
+  \hlstd{power} \hlkwb{<-} \hlnum{0}
+  \hlkwa{while}\hlstd{(power} \hlopt{<} \hlnum{0.8} \hlopt{&} \hlstd{N} \hlopt{<} \hlnum{2000}\hlstd{)\{}
+  \hlkwd{print}\hlstd{(N)}
+  \hlstd{power} \hlkwb{<-} \hlkwd{mean}\hlstd{(}\hlkwd{map_lgl}\hlstd{(}\hlkwd{rep}\hlstd{(N,simIterations),nFinder2,} \hlkwc{MDE} \hlstd{= MDESet,}
+                        \hlkwc{cluster} \hlstd{= clusterSwitch,} \hlkwc{levels} \hlstd{= levelSwitch,} \hlkwc{logs} \hlstd{= logSwitch))}
+  \hlcom{#print(power)}
+  \hlstd{temp} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{sampleSize} \hlstd{= N,} \hlkwc{Power} \hlstd{= power)}
+  \hlstd{powerDB} \hlkwb{<-} \hlkwd{rbind}\hlstd{(powerDB, temp)}
+  \hlstd{N} \hlkwb{<-} \hlstd{N} \hlopt{+} \hlstd{stepSize}
+  \hlstd{\}}
+  \hlkwd{print}\hlstd{(}\hlstr{"now the extras"}\hlstd{)}
+  \hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)\{}
+  \hlkwd{print}\hlstd{(N)}
+  \hlstd{power} \hlkwb{<-} \hlkwd{mean}\hlstd{(}\hlkwd{map_lgl}\hlstd{(}\hlkwd{rep}\hlstd{(N,simIterations),nFinder2,} \hlkwc{MDE} \hlstd{= MDESet,}
+                        \hlkwc{cluster} \hlstd{= clusterSwitch,} \hlkwc{levels} \hlstd{= levelSwitch,} \hlkwc{logs} \hlstd{= logSwitch))}
+  \hlcom{#print(power)}
+  \hlstd{temp} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{sampleSize} \hlstd{= N,} \hlkwc{Power} \hlstd{= power)}
+  \hlstd{powerDB} \hlkwb{<-} \hlkwd{rbind}\hlstd{(powerDB, temp)}
+  \hlstd{N} \hlkwb{<-} \hlstd{N} \hlopt{+} \hlstd{stepSize}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(powerDB)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n0} \hlkwb{<-} \hlnum{200}
+\hlstd{step} \hlkwb{<-} \hlnum{25}
+\hlstd{iterations} \hlkwb{<-} \hlnum{200}
+
+\hlstd{pwr13} \hlkwb{<-} \hlkwd{powerCalcSim2}\hlstd{(n0,step,iterations, smsLevelEffectBalanced,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{levelSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{logSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{pwr14} \hlkwb{<-} \hlkwd{powerCalcSim2}\hlstd{(n0,step,iterations, smsLevelEffectBalanced,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{levelSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{logSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{pwr15} \hlkwb{<-} \hlkwd{powerCalcSim2}\hlstd{(n0,step,iterations, percentEffectLogBalanced,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{levelSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{logSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{pwr16} \hlkwb{<-} \hlkwd{powerCalcSim2}\hlstd{(n0,step,iterations,percentEffectLogBalanced,}
+                       \hlkwc{clusterSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{,}  \hlkwc{levelSwitch} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{logSwitch} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# export the results}
+\hlkwd{write_excel_csv}\hlstd{(pwr13,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET4-noClusterLevels.csv"}\hlstd{))}
+\hlkwd{write_excel_csv}\hlstd{(pwr14,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET4-clusterLevels.csv"}\hlstd{))}
+\hlkwd{write_excel_csv}\hlstd{(pwr15,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET4-noClusterLogs.csv"}\hlstd{))}
+\hlkwd{write_excel_csv}\hlstd{(pwr16,} \hlkwd{file.path}\hlstd{(OUT,}\hlstr{"SET4-clusterLogs.csv"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#plot some results}
+\hlstd{plot13} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr13,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Levels"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr13}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{100}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot14} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr14,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Levels"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr14}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{100}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot15} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr15,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"No Clustering - Logs"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr15}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{200}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot16} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= pwr16,} \hlkwd{aes}\hlstd{(sampleSize, Power))} \hlopt{+}
+          \hlkwd{geom_smooth}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlnum{NA}\hlstd{)} \hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_hline}\hlstd{(}\hlkwc{yintercept}\hlstd{=}\hlnum{.8}\hlstd{)} \hlopt{+}
+          \hlstd{myGGTheme} \hlopt{+}
+          \hlkwd{ggtitle}\hlstd{(}\hlstr{"Casa Clustering - Logs"}\hlstd{)} \hlopt{+}
+          \hlkwd{xlab}\hlstd{(}\hlstr{"Sample Size"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_x_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{range}\hlstd{(pwr16}\hlopt{$}\hlstd{sampleSize)[}\hlnum{2}\hlstd{],}\hlnum{200}\hlstd{))} \hlopt{+}
+          \hlkwd{ylab}\hlstd{(}\hlstr{"Power"}\hlstd{)} \hlopt{+}
+          \hlkwd{scale_y_continuous}\hlstd{(}\hlkwc{breaks} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{.1}\hlstd{))}
+
+\hlstd{plot14}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : Chernobyl! trL>n 6}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : Chernobyl! trL>n 6}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in sqrt(sum.squares/one.delta): NaNs produced}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in stats::qt(level/2 + 0.5, pred\$df): NaNs produced}}\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
+\begin{kframe}\begin{alltt}
+\hlstd{plot16}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-2} 
+
+\end{knitrout}
+
+
+\begin{comment}
 \section{Final Thoughts}
 First and foremost, these calculations assume 100\% take-up -- i.e. anyone we assign to treatment takes up the treatment.  If we do this on a set of households that are interested in adopting the technology -- I think we'll be pretty close to 100\% take-up.  Let's definitely discuss the trade-offs in terms of design/sample size requirements when we meet next. 
 
@@ -783,5 +1159,5 @@ Now, power calculations are hardly a science, so I don't think we need to abide 
 Again -- these are just a jumping off point and if my definition of the treatment variable is not correct, let me know so I can re-run these calculations.  However, these do go to show that we need a fairly large number of households in an RCT to get a nice measure of energy savings from the appliance you guys are manufacturing.  
 
 Let's schedule a time to discuss this moving forward.  I apologize for not making this document more clear -- but I think some face-to-face time with this in hand will help us tremendously (a phone call would work too).
-
+\end{comment}
 \end{document}
