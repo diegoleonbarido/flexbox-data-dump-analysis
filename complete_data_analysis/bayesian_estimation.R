@@ -47,12 +47,8 @@ time_series_data_table <- data_time_series_nooutliers.dt
 energia_text_var <-'energia'
 energy_file <- 'no_outliers'
 
+pre_intervention_df <- subset(data_time_series_nooutliers.dt,data_time_series_nooutliers.dt$intervention_group=="Treatment Pre-Intervention" | data_time_series_nooutliers.dt$intervention_group== "Control Pre-Intervention" )
 
-count.plot.list <- list()
-count.plot.name <- list()
-text.list <- list()
-count.plot <- 0
-options(warn=-1)
 
 ###### Monthly Differences one Year Afterwards Energia   
 month_diffs_dt <- month_diffs(time_series_data_table,energia_text_var)

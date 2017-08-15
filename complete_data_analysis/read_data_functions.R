@@ -384,23 +384,23 @@ read.survey.data <- function(flexlist) {
   #######   NOTE: Initial Baseline Survey Data   #######
   
   #NOTE1: This has the baseline data for all the pulperias
-  initial.baseline.survey <- read.csv('Survey I Winter 2014/Results/All_Surveys_With_Pics_Reviewed_Final.csv')
+  initial.baseline.survey <- read.csv('Final_Analysis/All_Surveys_With_Pics_Reviewed_Final.csv')
   initial.baseline.data <-subset(initial.baseline.survey,initial.baseline.survey$error == 0)
-  baseline_receipt_data <- subset(initial.baseline.data, initial.baseline.data$foto_gasto_electrico == 'si') %>% mutate(encuesta_id=survey_id,baseline_gasto_electrico=gasto_electrico,baseline_monthly_cordobas=r_monthly_cordobas) %>% select(encuesta_id,baseline_gasto_electrico,baseline_monthly_cordobas,gasto_electrico,r_monthly_cordobas)
+  baseline_receipt_data <- subset(initial.baseline.data, initial.baseline.data$foto_gasto_electrico == 'si') %>% mutate(encuesta_id=survey_id,baseline_gasto_electrico=gasto_electrico,baseline_monthly_cordobas=r_monthly_cordobas,baseline_total_cordobas=r_total_cordobas) %>% select(encuesta_id,baseline_gasto_electrico,baseline_monthly_cordobas,baseline_total_cordobas,gasto_electrico,r_monthly_cordobas,r_total_cordobas)
   
-  baseline_receipt_data_for_merge <- baseline_receipt_data %>% select(encuesta_id,baseline_gasto_electrico,baseline_monthly_cordobas)
-  baseline_receipt_data_for_plot <- baseline_receipt_data %>% mutate(data='baseline') %>% select(encuesta_id,gasto_electrico,r_monthly_cordobas,data)
+  baseline_receipt_data_for_merge <- baseline_receipt_data %>% select(encuesta_id,baseline_gasto_electrico,baseline_monthly_cordobas,baseline_total_cordobas)
+  baseline_receipt_data_for_plot <- baseline_receipt_data %>% mutate(data='baseline') %>% select(encuesta_id,gasto_electrico,r_monthly_cordobas,r_total_cordobas,data)
   
   #NOTE2: This has the baseline survey data for the houses and the implementation survey data for the pulperias
   implementation.baseline.survey <- read.csv('Implementation Baseline/Cool Joule Project Management - Verificacion de Ubicacion y Enc.csv')
   
   #House Baseline Data
-  house.baseline.survey <- read.csv('/Users/diego/Desktop/Data/nicaragua_surveys/Houses Baseline/houses_baseline.csv')
+  house.baseline.survey <- read.csv('Final_Analysis//houses_2017.csv')
   
   ####### Reading data from the survey data
   
-  survey.data.complete <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly_for analysis.csv', na.strings=c(""," ","n/a"))
-  survey.data <- read.csv('Survey Monthly Updates/Results/all_monthly_updates_odaly_for analysis.csv', na.strings=c(""," ","n/a")) %>% select(flexbox_id,encuesta_id,start,end,today,r_total_cordobas,r_monthly_cordobas,r_publiclight,r_comercialization,r_subsidy_under150,r_subsidy_commercialization1,r_subsidylighting150,r_subsidy_elderly,r_rechargedelay,r_ineregulation,r_tax,r_subsidy,r_reconnection_charge,r_arreglo_deuda,r_cuota_deuda)
+  survey.data.complete <- read.csv('Final_Analysis/Resultados_Encuestas_Odaly_for_Analysis.csv', na.strings=c(""," ","n/a"))
+  survey.data <- read.csv('Final_Analysis/Resultados_Encuestas_Odaly_for_Analysis.csv', na.strings=c(""," ","n/a")) %>% select(flexbox_id,encuesta_id,start,end,today,r_total_cordobas,r_monthly_cordobas,r_publiclight,r_comercialization,r_subsidy_under150,r_subsidy_commercialization1,r_subsidylighting150,r_subsidy_elderly,r_rechargedelay,r_ineregulation,r_tax,r_subsidy,r_reconnection_charge,r_arreglo_deuda,r_cuota_deuda)
   
   importe.data <- read.csv('Survey Monthly Updates/Results/importes_odaly.csv') %>% select(Casa,Mes,Ano,tipo,importe,cosa_revisado)
   importe.data.subset <- subset(importe.data,importe.data$tipo == "Recibos de energia electrica")
@@ -576,6 +576,59 @@ read.server.data <- function(date1,date2,date3,flexboxid) {
   
   return(list(house.subset,energy_week1,energy_week2,clean_week1,clean_week2,temp_week1,temp_week2))
 
+}
+
+
+########
+
+all.survey.analysis.data <- function() {
+  setwd('/Users/diego/Desktop/Data/nicaragua_surveys/Final_Analysis')
+  
+  #Pulperias
+  baseline_survey_pulperias <- read.csv('All_Surveys_with_Pics_Reviewed_Final.csv')
+  baseline_survey_pulperias$group <- 'pulperia'
+  baseline_survey_pulperias$tiempo_pago <- ''
+  baseline_survey_pulperias$frequencia_confiabilidad <- ''
+  baseline_survey_pulperias$como_contro_de_consumo_code <- ''
+  baseline_survey_pulperias$re_jan_kwh <- as.numeric(as.character(baseline_survey_pulperias$re_jan_kwh))
+  baseline_survey_pulperias$re_feb <- as.numeric(as.character(baseline_survey_pulperias$re_feb))
+  baseline_survey_pulperias$re_march <- as.numeric(as.character(baseline_survey_pulperias$re_march))
+  baseline_survey_pulperias$re_april <- as.numeric(as.character(baseline_survey_pulperias$re_april))
+  baseline_survey_pulperias$re_may <- as.numeric(as.character(baseline_survey_pulperias$re_may))
+  baseline_survey_pulperias$re_june <- as.numeric(as.character(baseline_survey_pulperias$re_june))
+  baseline_survey_pulperias$re_july <- as.numeric(as.character(baseline_survey_pulperias$re_july))
+  baseline_survey_pulperias$re_august <- as.numeric(as.character(baseline_survey_pulperias$re_august))
+  baseline_survey_pulperias$re_sept <- as.numeric(as.character(baseline_survey_pulperias$re_sept))
+  baseline_survey_pulperias$re_oct <- as.numeric(as.character(baseline_survey_pulperias$re_oct))
+  baseline_survey_pulperias$re_nov <- as.numeric(as.character(baseline_survey_pulperias$re_nov))
+  baseline_survey_pulperias$re_dec <- as.numeric(as.character(baseline_survey_pulperias$re_dec))
+  
+  baseline_survey_pulperias_merge <-baseline_survey_pulperias  %>% mutate(encuesta_id=survey_id,cambio_tarifa=precio_electricidad) %>%select(today,encuesta_id,ano,sexo,nivel_educacion,dificultad_pago,type_pago,tiempo_pago,cambio_tarifa,nivel_satisfaccion_confiabilidad,nivel_satisfaccion_calidad,nivel_satisfaccion_precios,luz_confiabilidad,frequencia_confiabilidad,apaga_refrigerador,como_contro_de_consumo_code,diferentes_epocas,r_monthly_kwh,r_total_cordobas,r_monthly_cordobas,group)
+  
+  #Houses
+  baseline_survey_houses <- read.csv('houses_2017.csv') 
+  baseline_survey_houses$ano <- ''
+  baseline_survey_houses$group <- 'house'
+  baseline_survey_houses$nivel_satisfaccion_precios <- ''
+  baseline_survey_houses_merge <- baseline_survey_houses %>% select(today,encuesta_id,ano,sexo,nivel_educacion,dificultad_pago,type_pago,tiempo_pago,cambio_tarifa,nivel_satisfaccion_confiabilidad,nivel_satisfaccion_calidad,nivel_satisfaccion_precios,luz_confiabilidad,frequencia_confiabilidad,apaga_refrigerador,como_contro_de_consumo_code,diferentes_epocas,r_monthly_kwh,r_total_cordobas,r_monthly_cordobas,group)
+  
+  baseline_survey_houses <- baseline_survey_houses[,c('today','encuesta_id','ano','sexo','nivel_educacion',
+                                                      'problema_actual','problema_actual_razon1','problema_actual_razon2',
+                                                      'problema_actual_razon3', 'futuros_problemas_primero','futuros_problemas_segundo',
+                                                      'futuros_problemas_tercero','cambio_climatico_sabe', 'cambio_climatico_causa1',
+                                                      'cambio_climatico_causa2','cambio_climatico_causa3', 'preocupacion_cambio_climatico',	
+                                                      'preocupacion_eventos_climaticos','dificultad_pago','gasto_electrico_cordobas','gastos_mensuales')]
+  
+  baseline_survey_houses$gasto_electrico_cordobas <- as.numeric(as.character(baseline_survey_houses$gasto_electrico_cordobas))
+  baseline_survey_houses$gastos_mensuales <- as.numeric(as.character(baseline_survey_houses$gastos_mensuales))
+  
+  
+  #####################
+  # Baseline Parameters 
+  baseline_df <- rbind(baseline_survey_pulperias_merge,baseline_survey_houses_merge)
+  
+  return(list(baseline_df,baseline_survey_pulperias_merge,baseline_survey_houses_merge))
+  
 }
 
 

@@ -42,6 +42,11 @@
   # 4.2 
 
 
+########### Sources
+#https://cran.r-project.org/web/packages/BEST/vignettes/BEST.pdf
+
+
+
 ############ Libraries
 
 library(RPostgreSQL)
@@ -65,6 +70,7 @@ library(doParallel)
 library(doMC)
 library(tidyr)
 library(qdap)
+library(BEST)
 
 
 # Turn warnings off
@@ -87,6 +93,7 @@ source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_d
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/scraping_scripts.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/tariff_analysis_functions.R')
 source('/Users/Diego/Desktop/Projects_Code/flexbox-data-dump-analysis/complete_data_analysis/marginal_value_information_plotting_functions.R')
+
 
 ############ Define Functions
 
@@ -457,16 +464,24 @@ data_time_series_nooutliers.dt$energia_ajustada <- as.numeric(data_time_series_n
 #####
 ##### 3. Making sure that the groups are balanced: see if the outcome variable is balanced before the intervention
 
-# All data from houses including the one previous calculated before the experiment began
-ggplot(subset(time.series.receipt,time.series.receipt$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
-ggplot(subset(time.series.receipt,time.series.receipt$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Consumption (kWh)') + ggtitle('Treatment: Energy Consumption pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+time.series.receipt_pre <- subset(time.series.receipt,time.series.receipt$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01")
+time.series.receipt.control_pre <- subset(time.series.receipt.control,time.series.receipt.control$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01")
 
-ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$importe_dl,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
-ggplot(subset(time.series.receipt.control,time.series.receipt.control$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+time.series.receipt_pre_no <- subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<="2016-06-01" & time.series.receipt.nooutliers$fecha>="2015-01-01")
+time.series.receipt_pre_no_cl <- subset(time.series.receipt.control.nooutliers,time.series.receipt.control.nooutliers$fecha<="2016-06-01" & time.series.receipt.control.nooutliers$fecha>="2015-01-01")
+
+
+
+# All data from houses including the one previous calculated before the experiment began
+ggplot(time.series.receipt_pre, aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(time.series.receipt_pre, aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt,time.series.receipt$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Consumption (kWh)') + ggtitle('Treatment: Energy Consumption pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+
+ggplot(time.series.receipt.control_pre, aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$importe_dl,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(time.series.receipt.control_pre, aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.control,time.series.receipt.control$fecha<"2016-06-01")$energia,na.rm=TRUE))  + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Control: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
 
 # Same data but after removing outliers
-ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
-ggplot(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<="2016-06-01" & time.series.receipt$fecha>="2015-01-01"), aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$energia,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(time.series.receipt_pre_no, aes(x=Casa, y=importe_dl)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$importe_dl,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
+ggplot(time.series.receipt_pre_no, aes(x=Casa, y=energia)) + geom_point() + geom_boxplot(outlier.colour=NA, fill=NA, colour="grey20") + geom_hline(yintercept=mean(subset(time.series.receipt.nooutliers,time.series.receipt.nooutliers$fecha<"2016-06-01")$energia,na.rm=TRUE)) + xlab('House ID') + ylab('Energy Costs ($US)') + ggtitle('Treatment: Energy Costs pre Implementation') +theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) 
 
 
 # T- test to make sure that energia and importe are balanced before the intervention
@@ -475,8 +490,8 @@ t.test(time.series.receipt$importe_dl, time.series.receipt.control$importe_dl) #
 t.test(time.series.receipt$energia, time.series.receipt.control$energia) #energia
 
 #No outliers
-t.test(time.series.receipt.nooutliers$importe_dl, time.series.receipt.control.nooutliers$importe_dl) #importe
-t.test(time.series.receipt.nooutliers$energia, time.series.receipt.control.nooutliers$energia) #energia
+t.test(time.series.receipt_pre_no$importe_dl, time.series.receipt_pre_no_cl$importe_dl) #importe
+t.test(time.series.receipt_pre_no$energia, time.series.receipt_pre_no_cl$energia) #energia
 
 houses_before_implementation <- as.data.table(rbind(time.series.receipt,time.series.receipt.control))
 houses_before_implementation_no_outliers <- as.data.table(rbind(time.series.receipt.nooutliers,time.series.receipt.control.nooutliers))
@@ -596,26 +611,45 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
           
      #2.1.1 Plotting the baseline, control, and treatment groups against each other
 
-      survey.data.plot <- survey.data.complete %>% mutate(data='treatment') %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
-      baseline_receipt_data_for_plot <- baseline_receipt_data_for_merge %>% mutate(data='Baseline',r_total_cordobas=baseline_monthly_cordobas,gasto_electrico_cordobas=baseline_gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
+      survey.data.plot <- survey.data.complete %>% mutate(data='treatment') %>% select(encuesta_id,r_total_cordobas,r_monthly_cordobas,gasto_electrico_cordobas,data)
+      baseline_receipt_data_for_plot <- baseline_receipt_data_for_merge %>% mutate(data='Baseline',r_total_cordobas=baseline_monthly_cordobas,gasto_electrico_cordobas=baseline_gasto_electrico) %>% select(encuesta_id,r_total_cordobas,r_monthly_cordobas,gasto_electrico_cordobas,data)
       implementation_baseline <- implementation.baseline %>% mutate(data='Mid-Baseline',r_total_cordobas=r_total,gasto_electrico_cordobas=gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
       baseline_study_households <- subset(implementation.baseline,implementation.baseline$control_estudio=='estudio' & implementation.baseline$tipo_establecimiento=='casa') %>% mutate(data='baseline',r_total_cordobas=r_total,gasto_electrico_cordobas=gasto_electrico) %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
       baseline_all_households <- house_baseline %>% mutate(data='household baseline') %>% select(encuesta_id,r_total_cordobas,gasto_electrico_cordobas,data)
       
-      baseline_current_plot <- rbind(baseline_receipt_data_for_plot,survey.data.plot,baseline_households) %>% mutate(total_cordobas_estimate_diff_pct=r_total_cordobas-gasto_electrico_cordobas)
+      baseline_current_plot <- rbind(baseline_receipt_data_for_plot,survey.data.plot,baseline_study_households) %>% mutate(total_cordobas_estimate_diff_pct=r_total_cordobas-gasto_electrico_cordobas)
 
       all_baseline_data <- rbind(baseline_receipt_data_for_plot,baseline_study_households,baseline_all_households)
       all_baseline_data$gasto_electrico_cordobas <- as.numeric(all_baseline_data$gasto_electrico_cordobas)
+      all_baseline_data$diff_perc_cost <- (all_baseline_data$gasto_electrico_cordobas - all_baseline_data$r_total_cordobas)/all_baseline_data$r_total_cordobas
       
-      # All Baseline
-      ggplot(subset(all_baseline_data,all_baseline_data$gasto_electrico_cordobas<20000), aes(gasto_electrico_cordobas, r_total_cordobas)) + geom_point(alpha=0.5) + geom_abline(slope=1, intercept=0) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") + ggtitle("Baseline Actual vs Perceived Costs")
+      # All Baseline Cordobas
+      ggplot(subset(all_baseline_data,all_baseline_data$gasto_electrico_cordobas<20000), aes(gasto_electrico_cordobas/29, r_total_cordobas/29)) + geom_point(alpha=0.5) + geom_smooth(method = "lm")+ geom_abline(slope=1, intercept=0) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) + xlab("Perceived Electricity Cost ($US)") + ylab("Actual Electricity Cost ($US)") + ggtitle("Baseline Actual vs Perceived Costs") + annotate("text", x = 500, y=100, label = "equality line") + annotate("text", x = 500, y=90, label = "trend line",colour='blue')
+      median(all_baseline_data$diff_perc_cost,na.rm=TRUE)
       
-      # Treatment
-
-      ggplot(aggregate_tretment_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+      # All Baseline kWh
+      house_baseline$gasto_electrico <- as.numeric(as.character(house_baseline$gasto_electrico))
+      house_baseline$r_monthly_kwh <- as.numeric(as.character(house_baseline$r_monthly_kwh))
+      house_baseline$energy_pcvd_diff <- (house_baseline$gasto_electrico - house_baseline$r_monthly_kwh)/house_baseline$r_monthly_kwh
+      
+      ggplot(subset(house_baseline,house_baseline$gasto_electrico<1000), aes(gasto_electrico,r_monthly_kwh)) + geom_point(alpha=0.5) + geom_smooth(method = "lm") + geom_abline(slope=1, intercept=0) + theme(panel.background = element_blank(),axis.text=element_text(size=13),axis.title=element_text(size=14,face="bold")) + theme(legend.position="bottom") +  guides(fill=guide_legend(title=NULL)) + xlab("Perceived Electricity Consumption (kWh)") + ylab("Actual Electricity Consumption (kWh)") + ggtitle("Baseline Actual vs Perceived Costs")
+      median(house_baseline$energy_pcvd_diff,na.rm=TRUE)
+      
+      ### Treatment
+      
+      
+      #Cost
+      ggplot(aggregate_tretment_data, aes(gasto_electrico_cordobas/29, r_total_cordobas/29,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
         theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
-        theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
+        theme(legend.position="bottom",legend.title=element_blank()) +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost ($US)") + ylab("Actual Electricity Cost ($US)") 
 
+      #Energy
+      ggplot(aggregate_tretment_data, aes(gasto_electrico_cordobas/29, r_total_cordobas/29,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+        theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
+        theme(legend.position="bottom",legend.title=element_blank()) +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost ($US)") + ylab("Actual Electricity Cost ($US)") 
+      
+      
+      
       #Control
       control_baseline <- subset(baseline_receipt_data_for_plot, as.character(baseline_receipt_data_for_plot$encuesta_id) %in% control_group_list) 
       control_baseline_households <- subset(implementation_baseline, as.character(implementation_baseline$encuesta_id) %in% control_group_list)
@@ -631,9 +665,9 @@ learning.data <- merge(survey.data.complete,baseline_receipt_data_for_merge,by="
       control_group_all_data$gasto_electrico_cordobas <- as.numeric(control_group_all_data$gasto_electrico_cordobas)
       
       # Merged Data
-      ggplot(aggregate_control_data, aes(gasto_electrico_cordobas, r_total_cordobas,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
+      ggplot(aggregate_control_data, aes(gasto_electrico_cordobas/29, r_total_cordobas/29,group=data,colour=data)) + geom_point(alpha=0.3) + geom_abline(slope=1, intercept=0) + 
         theme_bw() + theme(axis.line = element_line(colour = "grey"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) +
-        theme(legend.position="bottom") +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost") + ylab("Actual Electricity Cost") 
+        theme(legend.position="bottom",legend.title=element_blank()) +  guides(fill=guide_legend(title="Timeline:"))  + xlab("Perceived Electricity Cost ($US)") + ylab("Actual Electricity Cost ($US)") 
       
       
 #####################################################
@@ -822,5 +856,115 @@ consumo_refrigerador
       
       
 #How hard is it for you to pay your bills?
-      
+
+
+
+################
+################
+################ 6. Bayes
+
+baseline_df <- all.survey.analysis.data()[[1]]
+baseline_survey_pulperias_merge <- all.survey.analysis.data()[[2]]
+baseline_survey_houses_merge <- all.survey.analysis.data()[[3]]
+
+
+######  Baseline Bayesian Means Test (Monthly Energy Consumption)
+
+energy_pre_treatment <- time.series.receipt_pre_no$energia #energia, importe_dl
+energy_pre_control <- time.series.receipt_pre_no_cl$energia #energia, importe_dl
+
+#Simple Means
+mean(energy_pre_treatment, na.rm=TRUE)
+mean(energy_pre_control, na.rm=TRUE)
+
+# Bayesian Plots
+#Bayesian Plots
+muM_pre <- mean(baseline_df$r_monthly_kw,na.rm=TRUE) #r_monthly_kw, r_monthly_cordobas/29
+muSD_pre <- sd(baseline_df$r_monthly_kw,na.rm=TRUE) #r_monthly_kw, r_monthly_cordobas/29
+
+prior_pre_implementation <- list(muM = muM_pre, muSD = muSD_pre)
+BEST_pre_implementation <- BESTmcmc(na.omit(energy_pre_treatment), na.omit(energy_pre_control), priors=prior_pre_implementation, parallel=FALSE)
+
+plot(BEST_pre_implementation)
+plot(BEST_pre_implementation, which="sd")
+plot(BEST_pre_implementation, compVal=1, ROPE=c(-5,5))
+plotAll(BEST_pre_implementation)
+
+
+
+######  Post-Intervention Bayesian Means Test (Energy Consumption)
+
+post_int_sms_dr <- subset(data_time_series_nooutliers.dt, data_time_series_nooutliers.dt$Ano == 2016 & data_time_series_nooutliers.dt$Mes == 'Junio' | data_time_series_nooutliers.dt$Ano == 2016 & data_time_series_nooutliers.dt$Mes == 'Julio' | data_time_series_nooutliers.dt$Ano == 2016 & data_time_series_nooutliers.dt$Mes == 'Agosto' | data_time_series_nooutliers.dt$Ano == 2016 & data_time_series_nooutliers.dt$Mes == 'Septiembre' | data_time_series_nooutliers.dt$Ano == 2016 & data_time_series_nooutliers.dt$Mes == 'Octubre')
+post_int_sms_dr_energy_tr <- subset(post_int_sms_dr,post_int_sms_dr$treatment=="Treatment")$energia #importe_dl, energia
+post_int_sms_dr_energy_cl <- subset(post_int_sms_dr,post_int_sms_dr$treatment=="Control")$energia #importe_dl, energia
+
+
+#Simple Means
+treat_mean_post <- mean(subset(post_int_sms_dr,post_int_sms_dr$treatment=="Treatment")$energia,na.rm=TRUE) #importe_dl, energia
+control_mean_post <- mean(subset(post_int_sms_dr,post_int_sms_dr$treatment=="Control")$energia,na.rm=TRUE) #importe_dl, energia
+
+t.test(post_int_sms_dr_energy_tr,post_int_sms_dr_energy_cl)
+
+#Bayesian Plots
+BEST_post_impl <- BESTmcmc(na.omit(post_int_sms_dr_energy_tr), na.omit(post_int_sms_dr_energy_cl), priors=prior_pre_implementation, parallel=FALSE)
+plot(BEST_post_impl)
+plot(BEST_post_impl, compVal=1, ROPE=c(-5,5))
+plotAll(BEST_post_impl)
+
+
+
+######  Post-Intervention One Year Afterwards
+
+time_series_data_table <- data_time_series_nooutliers.dt
+energia_text_var <-'importe_dl' #importe_dl, energia
+energy_file <- 'no_outliers'
+
+month_diffs_dt <- month_diffs(time_series_data_table,energia_text_var)
+month_diffs_dt$sms_dr <- ifelse(month_diffs_dt$Ano == 2016 & month_diffs_dt$Mes == 'Junio' | month_diffs_dt$Ano == 2016 & month_diffs_dt$Mes == 'Julio' | month_diffs_dt$Ano == 2016 & month_diffs_dt$Mes == 'Agosto' | month_diffs_dt$Ano == 2016 & month_diffs_dt$Mes == 'Septiembre' | month_diffs_dt$Ano == 2016 & month_diffs_dt$Mes == 'Octubre' ,'DR Intervetnion + SMS','Other')
+only_sms_dr <- subset(month_diffs_dt,month_diffs_dt$sms_dr == "DR Intervetnion + SMS")
+
+sub_treat <- subset(only_sms_dr,only_sms_dr$treatment == "Treatment")
+sub_control  <- subset(only_sms_dr,only_sms_dr$treatment == "Control")
+
+y1 <- sub_treat[['month_diff']]
+y2 <- sub_control[['month_diff']]
+
+#Simple Means
+t.test(y1,y2)
+       
+prior_vals <- list(muM = 10.5, muSD = 11,sigmaMode = 11,sigmaSD=8.5)
+BESTout <- BESTmcmc(y1, na.omit(y2), priors=prior_vals, parallel=FALSE)
+
+# Difference in Means Plot
+plot(BESTout)
+plot(BESTout, which="sd")
+plot(BESTout, compVal=1, ROPE=c(-2,1))
+plotAll(BESTout)
+
+
+######  Post-Intervention Month-by-Month
+
+energia_text_var <-'energia' #importe_dl, energia
+month_by_month_dt <- month_by_month(time_series_data_table,energia_text_var)
+month_by_month_dt$sms_dr <- ifelse(month_by_month_dt$Ano == 2016 & month_by_month_dt$Mes == 'Junio' | month_by_month_dt$Ano == 2016 & month_by_month_dt$Mes == 'Julio' | month_by_month_dt$Ano == 2016 & month_by_month_dt$Mes == 'Agosto' | month_by_month_dt$Ano == 2016 & month_by_month_dt$Mes == 'Septiembre' | month_by_month_dt$Ano == 2016 & month_by_month_dt$Mes == 'Octubre' ,'DR Intervetnion + SMS','Other')
+mbm_sms_dr <- subset(month_by_month_dt,month_by_month_dt$sms_dr == "DR Intervetnion + SMS")
+
+sub_treat_mbm <- subset(mbm_sms_dr,mbm_sms_dr$treatment == "Treatment")
+sub_control_mbm  <- subset(mbm_sms_dr,mbm_sms_dr$treatment == "Control")
+
+y1_mbm <- sub_treat_mbm[['diff_variable']]
+y2_mbm <- sub_control_mbm[['diff_variable']]
+
+#Simple Means
+t.test(y1_mbm,y2_mbm)
+
+prior_vals_mbm <- list(muM = 10.5, muSD = 11,sigmaMode = 11,sigmaSD=8.5)
+BESTout_mbm <- BESTmcmc(y1_mbm, y2_mbm, priors=prior_vals_mbm, parallel=FALSE)
+
+# Difference in Means Plot
+plot(BESTout_mbm)
+plot(BESTout_mbm, compVal=1, ROPE=c(-2,1))
+plotAll(BESTout_mbm)
+
+
 
